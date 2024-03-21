@@ -35,7 +35,6 @@ namespace WebAPI.Controllers
         }
 
 
-        [Authorize]
         [HttpPost]
         public IActionResult Post(MedicoViewModel medico)
         {
@@ -43,6 +42,8 @@ namespace WebAPI.Controllers
 
             user.Nome = medico.Nome;
             user.Email = medico.Email;
+            user.Foto = medico.Foto;
+            user.Senha = medico.Senha;
             user.TipoUsuarioId = medico.IdTipoUsuario;
 
             user.Medico = new Medico();
