@@ -10,17 +10,47 @@ import { ButtonTitle, ButtonTitleGoogle } from "../../components/ButtonTitle/sty
 // Import da Image
 import logo from "../../../assets/logo.png"
 
+// Import da API
+import api from '../../services/services'
+
 // Import do icon
 import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
+import { useState } from "react"
+import { InputText } from "../../components/Input"
+import { Alert } from "react-native"
 
 export const Login = ({
     navigation
 }) => {
 
-    async function Login() {
-        navigation.replace("Main")
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+
+    async function Logar() {
+        await api.post('/Login', {
+            email: email,
+            senha: senha
+        }).then( response => {
+            console.log( response )
+        }).catch(error => {
+            console.log( error )
+
+            Alert.alert(
+                //Title
+                'Erro',
+                //Body
+                'Email e/ou senha incorreto!!'
+            )
+
+            // alert( "Email e/ou senha incorreto!!" )
+        })
+
+
+        // navigation.replace("Main")
     }
+
+
 
     return (
         <Container>
@@ -30,12 +60,19 @@ export const Login = ({
             <Title marginBottom={"20px"}>Entrar ou criar conta</Title>
 
             <ContainerInput>
-                <InputStyle
+                <InputText
                     placeholder="Usuário ou email"
+
+                    fieldValue={email}
+                    onChangeText={(txt) => setEmail(txt)}
                 />
 
-                <InputStyle
+                <InputText
                     placeholder="Senha"
+                    secureTextEntry={true}
+
+                    fieldValue={senha}
+                    onChangeText={(txt) => setSenha(txt)}
                 />
             </ContainerInput>
 
@@ -44,7 +81,7 @@ export const Login = ({
             </LinkUtil>
 
             <ContainerInput>
-                <Button onPress={(e) => Login()}>
+                <Button onPress={() => Logar()}>
                     <ButtonTitle>Entrar</ButtonTitle>
                 </Button>
 

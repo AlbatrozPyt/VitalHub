@@ -42,9 +42,16 @@ public partial class VitalContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
+    // IP Matheus Note-Senai
+    /*
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); */
+
+
+    // IP Pedro Note-Senai
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
+
+    // IP Pedro PC-Casa
+  /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); */
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
