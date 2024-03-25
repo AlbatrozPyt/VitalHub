@@ -20,6 +20,9 @@ import { useState } from "react"
 import { InputText } from "../../components/Input"
 import { Alert } from "react-native"
 
+// Import do Storage
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 export const Login = ({
     navigation
 }) => {
@@ -31,8 +34,12 @@ export const Login = ({
         await api.post('/Login', {
             email: email,
             senha: senha
-        }).then( response => {
-            console.log( response )
+        }).then( async response => {
+            await AsyncStorage.setItem("token", JSON.stringify(response.data))
+
+            console.log(response.data);
+            
+            navigation.replace("Main")
         }).catch(error => {
             console.log( error )
 
@@ -45,9 +52,6 @@ export const Login = ({
 
             // alert( "Email e/ou senha incorreto!!" )
         })
-
-
-        // navigation.replace("Main")
     }
 
 

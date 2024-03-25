@@ -3,7 +3,23 @@ import { BoxHeader, CntHeader, ContainerTxtHeader, HeaderContainer, HeaderConten
 import fotoPerfilHome from "../../../assets/fotoPerfilHome.png"
 import sino from "../../../assets/iconeSino.png"
 
+import { userDecodeToken } from "../../Utils/Auth"
+import { useEffect } from "react"
+
 export function HeaderHome() {
+
+    async function profileLoad(){
+        const token = await userDecodeToken();
+
+        if (token) {
+            console.log(token);
+        }
+    }
+
+    useEffect(() => {
+        profileLoad()
+    },[])
+
     return (
         <CntHeader>
             
