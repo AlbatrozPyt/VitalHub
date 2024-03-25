@@ -6,7 +6,7 @@ if( !global.atob ){
     global.atob = decode
 }
 
-if( !global.atob ){
+if( !global.btoa ){
     global.btoa = encode
 }
 

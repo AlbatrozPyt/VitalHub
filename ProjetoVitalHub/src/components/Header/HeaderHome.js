@@ -4,15 +4,19 @@ import fotoPerfilHome from "../../../assets/fotoPerfilHome.png"
 import sino from "../../../assets/iconeSino.png"
 
 import { userDecodeToken } from "../../Utils/Auth"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export function HeaderHome() {
+
+    const [nameUser, setNameUser]= useState()
 
     async function profileLoad(){
         const token = await userDecodeToken();
 
         if (token) {
             console.log(token);
+
+            setNameUser(token.name)
         }
     }
 
@@ -30,7 +34,7 @@ export function HeaderHome() {
 
                         <ContainerTxtHeader>
                             <TextHeader>Bem vindo</TextHeader>
-                            <TextName>Dr. Cludio</TextName>
+                            <TextName>{nameUser}</TextName>
                         </ContainerTxtHeader>
                     </BoxHeader>
                     <IconeSino source={sino} />
