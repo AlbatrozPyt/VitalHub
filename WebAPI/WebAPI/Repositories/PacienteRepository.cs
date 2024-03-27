@@ -13,27 +13,35 @@ namespace WebAPI.Repositories
 
         public Paciente AtualizarPerfil(Guid Id, PacienteViewModel paciente)
         {
-            Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id);
+            //foto
+            //data nascimento
+            //cpf
+            //endereco logradouro numero cep
+
+            Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id)!;
+
+            if (paciente.Foto != null)
+                pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
 
             if (paciente.DataNascimento != null)
-                pacienteBuscado.DataNascimento = paciente.DataNascimento;
+                pacienteBuscado!.DataNascimento = paciente.DataNascimento;
 
-            if (paciente.Senha != null)
-                pacienteBuscado.IdNavigation.Senha = paciente.Senha;
-
-            if (paciente.Cep != null)
-                pacienteBuscado.Endereco.Cep = paciente.Cep;
+            if (paciente.Cpf != null)
+                pacienteBuscado!.Cpf = paciente.Cpf;
 
             if (paciente.Logradouro != null)
-                pacienteBuscado.Endereco.Logradouro = paciente.Logradouro;
+                pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
 
             if (paciente.Numero != null)
-                pacienteBuscado.Endereco.Numero = paciente.Numero;
+                pacienteBuscado!.Endereco!.Numero = paciente.Numero;
 
-            ctx.Pacientes.Update(pacienteBuscado);
+            if (paciente.Cep != null)
+                pacienteBuscado!.Endereco!.Cep = paciente.Cep;
+
+            ctx.Pacientes.Update(pacienteBuscado!);
             ctx.SaveChanges();
 
-            return pacienteBuscado;
+            return pacienteBuscado!;
         }
 
         public List<Consulta> BuscarAgendadas(Guid Id)
@@ -44,6 +52,14 @@ namespace WebAPI.Repositories
         public List<Consulta> BuscarCanceladas(Guid Id)
         {
             return ctx.Consultas.Include(x => x.Situacao).Where(x => x.PacienteId == Id && x.Situacao.Situacao == "Cancelada").ToList();
+        }
+
+        public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
+        {
+           return ctx.Consultas
+                .Include(x => x.Situacao)
+                .Where(x  => x.PacienteId == idPaciente && x.DataConsulta == dataConsulta)
+                .ToList();
         }
 
         public Paciente BuscarPorId(Guid Id)
