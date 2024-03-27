@@ -12,7 +12,7 @@ import { ButtonAppointment } from "../../components/ButtonAppointment"
 import { handleCallNotifications } from "../../components/Notification/Notification"
 
 const Consultas = [
-    { id: 1, nome: "Pedro Felix", idade: "20", typeExame: "Rotina", horario: "16h",  situacao: "pendente" },
+    { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h",  situacao: "pendente" },
     { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h",  situacao: "realizado" },
     { id: 3, nome: "Gois Garbelini", idade: "17", typeExame: "Exame", horario: "18h",  situacao: "cancelado" },
     { id: 4, nome: "Murilo Fois", idade: "18", typeExame: "Urgência", horario: "19h",  situacao: "realizado" },
