@@ -42,7 +42,7 @@ export const Home = ({
                 onPressConsulta={() => setShowModalConsultas(true)}
             />
 
-            <HeaderHome />
+            <HeaderHome navigation={navigation} />
 
             {/* Calendario */}
             <Calendarhome />
@@ -73,6 +73,7 @@ export const Home = ({
 
             {/* Cards */}
             {/* <CardConsulta/> */}
+            
 
             <ListComponent
                 data={Consultas}
