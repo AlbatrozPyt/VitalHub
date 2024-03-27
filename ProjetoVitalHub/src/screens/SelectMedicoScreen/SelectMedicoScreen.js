@@ -19,13 +19,14 @@ const ListMedicos = [
 export const SelectMedicoScreen = ({ navigation }) => {
 
     const [selectMedico, setSelectMedico] = useState("")
-    const [medicos, setMedicos] = useState();
+    const [medicos, setMedicos] = useState([]);
 
 
     useEffect(() => {
         async function getMedicos() {
             const promise = await api.get(`/Medicos`);
             setMedicos(promise.data);
+            console.log(medicos);
         }
 
         getMedicos();
@@ -42,10 +43,11 @@ export const SelectMedicoScreen = ({ navigation }) => {
                         data={medicos}
                         keyExtractor={(item) => item.id}
 
-                        renderItem={({ item }) =>
+                        renderItem={({ item }) => 
                             <SelectView>
                                 <BoxSelectMedico
                                     medicos={item}
+                                    ListMedicos={item}
                                     situacao={item.situacao}
                                     clickButton={item.id === selectMedico}
                                     onPress={() => setSelectMedico(item.id)}

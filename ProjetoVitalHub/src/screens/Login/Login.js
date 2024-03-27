@@ -45,13 +45,13 @@ export const Login = ({
             navigation.replace("Main")
         }).catch(error => {
             console.log(error)
-
-            Alert.alert(
+            setTimeout(() => Alert.alert(
                 //Title
                 'Erro',
                 //Body
                 'Email e/ou senha incorreto!!'
-            )
+            ), 2000)
+            
 
             // alert( "Email e/ou senha incorreto!!" )
         })
@@ -61,6 +61,18 @@ export const Login = ({
 
     return (
         <Container>
+
+
+            {
+                loadButton ? (
+                    <View style={styles.boxSpinner}>
+                        <ActivityIndicator
+                            size={"large"}
+                            color={"#496bba"}
+                            style={styles.spinner} />
+                    </View>
+                ) : null
+            }
 
             <LogoStyle source={logo} />
 
@@ -74,7 +86,7 @@ export const Login = ({
                     fieldValue={email}
                     onChangeText={(txt) => setEmail(txt)}
                 />
-                { emailInvalid ? <ValidationText>Email inválido !!!</ValidationText> : null }
+                {/* { emailInvalid ? <ValidationText>Email inválido !!!</ValidationText> : null } */}
 
                 <InputText
                     placeholder="Senha"
@@ -83,7 +95,7 @@ export const Login = ({
                     fieldValue={senha}
                     onChangeText={(txt) => setSenha(txt)}
                 />
-                { passwordInvalid ? <ValidationText>Senha inválida !!!</ValidationText> : null }
+                {/* { passwordInvalid ? <ValidationText>Senha inválida !!!</ValidationText> : null } */}
             </ContainerInput>
 
             <LinkUtil onPress={() => navigation.navigate("RecuperarSenha")}>
@@ -98,26 +110,11 @@ export const Login = ({
                         Logar()
                         setLoadButton(true)
                         setTimeout(() => setLoadButton(false), 2000)
-                        if (email !== null) {
-                            setTimeout(() => setEmailInvalid(true), 5000)
-                        }
-                        if (senha !== null) {
-                            setTimeout(() => setPasswordInvalid(true), 5000)
-                        }
+
                     }}>
                     <ButtonTitle>Entrar</ButtonTitle>
                 </Button>
 
-                {
-                    loadButton ? (
-                        <View style={styles.boxSpinner}>
-                            <ActivityIndicator
-                                size={"large"}
-                                color={"#496bba"}
-                                style={styles.spinner} />
-                        </View>
-                    ) : null
-                }
 
                 <ButtonGoogle>
                     <AntDesign name="google" size={18} color="#496BBA" />
