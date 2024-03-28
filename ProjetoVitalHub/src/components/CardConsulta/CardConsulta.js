@@ -27,7 +27,7 @@ export const CardConsulta = ({
             <ContentCard>
                 {/* Conteúdo do card */}
                 <BoxInfos>
-                    <TitleName>{data.nome}</TitleName>
+                    <TitleName>{data.crm}</TitleName>
 
                     <AgeAndTypeBox>
                         <TextAge>{data.idade} anos</TextAge>

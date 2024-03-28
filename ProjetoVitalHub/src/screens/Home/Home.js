@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { Calendarhome } from "../../components/CalendarHome/CalendarHome"
 import { Container } from "../../components/Container/style"
@@ -10,6 +10,9 @@ import { CancellationModal } from "../../components/CancellationModal/Cancellati
 import { AppointmentModal, ModalConsultas, ModalPerfilMed } from "../../components/AppointmentModal/AppointmentModal"
 import { ButtonAppointment } from "../../components/ButtonAppointment"
 import { handleCallNotifications } from "../../components/Notification/Notification"
+
+// Import da API
+import api from "../../services/services"
 
 const Consultas = [
     { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h",  situacao: "pendente" },
@@ -34,6 +37,18 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
+
+    const [consultaLista, setConsultaLista] = useState([])
+
+    useEffect(() => {
+        async function getConsultas() {
+            const promise = await api.get(`/Consultas/ConsultasMedico`);
+            setConsultaLista(promise.data);
+            console.log(consultaLista);
+        }
+
+        getConsultas();
+    }, []);
     return (
         <Container>
             {/* MUDAR O BACKGROUND COLOR
@@ -76,7 +91,7 @@ export const Home = ({
             
 
             <ListComponent
-                data={Consultas}
+                data={consultaLista}
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
