@@ -44,19 +44,18 @@ public partial class VitalContext : DbContext
 
 
     // IP Matheus Note-Senai
-<<<<<<< HEAD
-    
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
+    // HEAD
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
 
 
     // IP Pedro Note-Senai
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
 
     // IP Pedro PC-Casa
-  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
-=======
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
 
 
     // IP Pedro Note-Senai
@@ -64,7 +63,9 @@ public partial class VitalContext : DbContext
 
     // IP Pedro PC-Casa
     /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); */
->>>>>>> origin/Matheus
+
+    // Ip Senai Lucca
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE19-SALA21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
