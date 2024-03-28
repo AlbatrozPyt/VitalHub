@@ -22,6 +22,9 @@ import { ActivityIndicator, Alert, StyleSheet, View } from "react-native"
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+// Componente que roda o spinner de load do login
+import { Spinner } from "../../components/Spinner"
+
 export const Login = ({
     navigation
 }) => {
@@ -39,7 +42,8 @@ export const Login = ({
             senha: senha
         }).then(async response => {
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
-
+            
+            console.log('Login');
             console.log(response.data);
 
             navigation.replace("Main")
@@ -56,21 +60,16 @@ export const Login = ({
             // alert( "Email e/ou senha incorreto!!" )
         })
     }
-
-
-
     return (
         <Container>
-
-
+            
+            {/* Spinner de carregamento para home */}
             {
                 loadButton ? (
-                    <View style={styles.boxSpinner}>
-                        <ActivityIndicator
-                            size={"large"}
-                            color={"#496bba"}
-                            style={styles.spinner} />
-                    </View>
+                    <Spinner 
+                        navigation={navigation}
+                        screen={'Main'}
+                    />
                 ) : null
             }
 
@@ -107,10 +106,9 @@ export const Login = ({
                     disabled={loadButton}
                     fieldBckColor={loadButton ? `gray` : " #496bba"}
                     onPress={() => {
-                        Logar()
+                        // Mostrar o carregamento do bot
                         setLoadButton(true)
-                        setTimeout(() => setLoadButton(false), 2000)
-
+                        Logar()
                     }}>
                     <ButtonTitle>Entrar</ButtonTitle>
                 </Button>
@@ -134,21 +132,3 @@ export const Login = ({
         </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    boxSpinner: {
-        position: `absolute`,
-        zIndex: 1,
-        width: `100%`,
-        height: `100%`,
-        alignItems: `center`,
-        justifyContent: `center`,
-        backgroundColor: `black`,
-        opacity: .7
-    },
-    spinner: {
-        width: 200,
-        height: 200,
-        opacity: 1
-    }
-})
