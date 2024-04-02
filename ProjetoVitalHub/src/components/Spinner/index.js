@@ -1,8 +1,12 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 
-export const Spinner = ({ setFalse, navigation, screen }) => {
-    setTimeout(() => navigation.replace(screen), 2000)
+export const Spinner = ({ time = 2000, navigation = null, screen }) => {
+
+    if (navigation !== null) {
+        setTimeout(() => navigation.replace(screen), time)
+    }
+
     return (
         <View style={styles.boxSpinner}>
             <ActivityIndicator
@@ -22,7 +26,7 @@ const styles = StyleSheet.create({
         height: `100%`,
         alignItems: `center`,
         justifyContent: `center`,
-        backgroundColor: `black`,
+        backgroundColor: `white`,
         opacity: .7
     },
     spinner: {

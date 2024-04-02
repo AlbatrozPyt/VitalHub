@@ -17,7 +17,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
 import { useState } from "react"
 import { InputText } from "../../components/Input"
-import { ActivityIndicator, Alert, StyleSheet, View } from "react-native"
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native"
 
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -42,34 +42,30 @@ export const Login = ({
             senha: senha
         }).then(async response => {
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
-            
-            console.log('Login');
-            console.log(response.data);
 
-            navigation.replace("Main")
-        }).catch(error => {
-            console.log(error)
-            setTimeout(() => Alert.alert(
-                //Title
-                'Erro',
-                //Body
-                'Email e/ou senha incorreto!!'
-            ), 2000)
-            
+            setTimeout(() => {
+                navigation.replace("Main")
+            }, 1000);
 
-            // alert( "Email e/ou senha incorreto!!" )
+        }).catch(() => {
+            setTimeout(() => {
+                Alert.alert(
+                    //Title
+                    'Erro',
+                    //Body
+                    'Email e/ou senha incorreto!!'
+                )
+
+                setLoadButton(false);
+            }, 1000)
         })
     }
     return (
         <Container>
-            
             {/* Spinner de carregamento para home */}
             {
                 loadButton ? (
-                    <Spinner 
-                        navigation={navigation}
-                        screen={'Main'}
-                    />
+                    <Spinner />
                 ) : null
             }
 
@@ -105,6 +101,7 @@ export const Login = ({
                 <Button
                     disabled={loadButton}
                     fieldBckColor={loadButton ? `gray` : " #496bba"}
+                    style={loadButton ? {borderColor: `gray`} : null}
                     onPress={() => {
                         // Mostrar o carregamento do bot
                         setLoadButton(true)
