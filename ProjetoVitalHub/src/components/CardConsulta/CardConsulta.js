@@ -10,11 +10,18 @@ import { useState } from "react";
 
 export const CardConsulta = ({
     data = [],
-    situacao = 'pendente',
+    nameUser,
+    situacao,
     onPressCancel,
     onPressAppointment,
     onPressPerfilMed,
-    navigation
+    navigation,
+
+    roleUsuario,
+    dataConsulta,
+    prioridade,
+    usuarioConsulta
+
 }) => {
     const [profile, setProfile] = useState("paciente")
 
@@ -27,11 +34,11 @@ export const CardConsulta = ({
             <ContentCard>
                 {/* Conteúdo do card */}
                 <BoxInfos>
-                    <TitleName>{data.crm}</TitleName>
+                    <TitleName>{usuarioConsulta.idNavigation.nome}</TitleName>
 
                     <AgeAndTypeBox>
-                        <TextAge>{data.idade} anos</TextAge>
-                        <TypeBold>{data.typeExame}</TypeBold>
+                        <TextAge>CRM: {roleUsuario == 'Médico' ? '22 anos' : usuarioConsulta.crm}</TextAge>
+                        <TypeBold>{prioridade == 0 ? "Rotina" : "Exame"}</TypeBold>
                     </AgeAndTypeBox>
                 </BoxInfos>
 

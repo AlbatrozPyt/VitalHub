@@ -13,14 +13,15 @@ import { handleCallNotifications } from "../../components/Notification/Notificat
 
 // Import da API
 import api from "../../services/services"
+import { userDecodeToken } from "../../Utils/Auth"
 
 const Consultas = [
-    { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h",  situacao: "pendente" },
-    { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h",  situacao: "realizado" },
-    { id: 3, nome: "Gois Garbelini", idade: "17", typeExame: "Exame", horario: "18h",  situacao: "cancelado" },
-    { id: 4, nome: "Murilo Fois", idade: "18", typeExame: "Urgência", horario: "19h",  situacao: "realizado" },
-    { id: 5, nome: "Daniel Viera", idade: "16", typeExame: "Rotina", horario: "20h",  situacao: "cancelado" },
-    { id: 6, nome: "Pedro King's", idade: "16", typeExame: "Urgência", horario: "22h",  situacao: "pendente" },
+    { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
+    { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h", situacao: "realizado" },
+    { id: 3, nome: "Gois Garbelini", idade: "17", typeExame: "Exame", horario: "18h", situacao: "cancelado" },
+    { id: 4, nome: "Murilo Fois", idade: "18", typeExame: "Urgência", horario: "19h", situacao: "realizado" },
+    { id: 5, nome: "Daniel Viera", idade: "16", typeExame: "Rotina", horario: "20h", situacao: "cancelado" },
+    { id: 6, nome: "Pedro King's", idade: "16", typeExame: "Urgência", horario: "22h", situacao: "pendente" },
 
 ]
 
@@ -40,15 +41,45 @@ export const Home = ({
 
     const [consultaLista, setConsultaLista] = useState([])
 
+    const [dataConsulta, setDataConsulta] = useState('')
+
+    const [nameUser, setNameUser] = useState()
+    
+    const [profile, setProfile] = useState()
+
+
+
     useEffect(() => {
+
+        const url = (profile == 'Médico' ? "Medicos" : "Pacientes")
+
         async function getConsultas() {
-            const promise = await api.get(`/Consultas/ConsultasMedico`);
+            const promise = await api.get(`/${url}/BuscarPorData?data=2024-03-28&id=CB7E4953-39ED-445F-BD31-9F21590DD70E`);
             setConsultaLista(promise.data);
-            console.log(consultaLista);
         }
 
+        async function profileLoad() {
+            const token = await userDecodeToken();
+    
+            if (token) {
+                //console.log(token.name);
+    
+                setNameUser(token.name)
+                setProfile(token)
+            }
+        }
+
+        profileLoad()
         getConsultas();
     }, []);
+
+    useEffect(() => {
+        //console.log(dataConsulta);
+    }, [dataConsulta])
+
+
+
+
     return (
         <Container>
             {/* MUDAR O BACKGROUND COLOR
@@ -60,7 +91,9 @@ export const Home = ({
             <HeaderHome navigation={navigation} />
 
             {/* Calendario */}
-            <Calendarhome />
+            <Calendarhome
+                setDataConsulta={setDataConsulta}
+            />
 
             {/* Filtros (botoes) */}
             <FilterAppointment>
@@ -88,21 +121,27 @@ export const Home = ({
 
             {/* Cards */}
             {/* <CardConsulta/> */}
-            
+
 
             <ListComponent
                 data={consultaLista}
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
-                    statusLista == item.situacao && (
+                    statusLista == item.situacao.situacao && (
                         <CardConsulta
+                            nameUser={nameUser}
                             data={item}
-                            situacao={item.situacao}
+                            situacao={item.situacao.situacao}
                             onPressCancel={() => setShowModalCancel(true)}
                             onPressAppointment={() => setShowModalAppointment(true)}
                             onPressPerfilMed={() => setShowModalPerfilMed(true)}
                             navigation={navigation}
+
+                            roleUsuario={profile.role}
+                            dataConsulta={item.dataConsulta}
+                            prioridade={item.prioridade.prioridade}
+                            usuarioConsulta={profile.role == "Médico" ? item.paciente : item.medicoClinica.medico}
                         />
                     )
 
@@ -132,13 +171,13 @@ export const Home = ({
                 setShowModalConsultas={setShowModalConsultas}
                 navigation={navigation}
             />
-            
+
             <ModalPerfilMed
                 visible={showModalPerfilMed}
                 setShowModalPerfilMed={setShowModalPerfilMed}
                 navigation={navigation}
             />
-            
+
 
         </Container>
     )
