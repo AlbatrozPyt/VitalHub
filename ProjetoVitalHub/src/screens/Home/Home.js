@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { Calendarhome } from "../../components/CalendarHome/CalendarHome"
 import { Container } from "../../components/Container/style"
@@ -11,6 +11,7 @@ import { AppointmentModal, ModalConsultas, ModalPerfilMed } from "../../componen
 import { ButtonAppointment } from "../../components/ButtonAppointment"
 import { handleCallNotifications } from "../../components/Notification/Notification"
 import { Spinner } from "../../components/Spinner"
+import { userDecodeToken } from "../../Utils/Auth"
 
 const Consultas = [
     { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
@@ -26,6 +27,18 @@ export const Home = ({
     navigation
 }) => {
 
+    const [user, setUser] = useState();
+
+    async function loadProfile()
+    {
+        const token = await userDecodeToken();
+
+        if (token !== null)
+        {
+            setUser(token);
+        }
+    }
+
     // State para o estado da lista(cards)
     const [statusLista, setStatusList] = useState("pendente");
 
@@ -36,6 +49,12 @@ export const Home = ({
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
     const [spinner, setSpinner] = useState(false);
+
+
+    useEffect(() => {
+        loadProfile();
+    }, [])
+
 
     return (
         <Container>

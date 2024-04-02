@@ -10,6 +10,7 @@ import { BoxInput } from "../BoxInput"
 import { BntListConsulta, BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { Label } from "../Label"
 import { useState } from "react"
+import { Mapa } from "../../screens/Mapa/Mapa"
 
 
 export const AppointmentModal = ({
@@ -166,10 +167,19 @@ export const ModalPerfilMed = ({
     setShowModalPerfilMed,
     navigation,
 }) => {
+
+    const [mapa, setMapa] = useState(false);
+
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
+
+            {
+                mapa ? <Mapa navigation={navigation}/> : null
+            }
+
+
             {/* Container */}
-            <AppointmentModalStyle>
+            <AppointmentModalStyle style={mapa ? {display: `none`} : null}>
 
                 <AppointmentContent>
                     <ImagePatient
@@ -180,7 +190,7 @@ export const ModalPerfilMed = ({
 
                     <Subtitle>Cliníco geral    CRM-15286</Subtitle>
 
-                    <ButtonModal onPress={() => navigation.navigate("Mapa") || setShowModalPerfilMed(false)}>
+                    <ButtonModal onPress={() => setMapa(true) || setShowModalPerfilMed(false)}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 
