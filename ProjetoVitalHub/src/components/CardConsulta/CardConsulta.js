@@ -37,7 +37,7 @@ export const CardConsulta = ({
                     <TitleName>{usuarioConsulta.idNavigation.nome}</TitleName>
 
                     <AgeAndTypeBox>
-                        <TextAge>CRM: {roleUsuario == 'Médico' ? '22 anos' : usuarioConsulta.crm}</TextAge>
+                        <TextAge>{roleUsuario == 'Medico' ? '22 anos' : `CRM: ${usuarioConsulta.crm}`}</TextAge>
                         <TypeBold>{prioridade == 0 ? "Rotina" : "Exame"}</TypeBold>
                     </AgeAndTypeBox>
                 </BoxInfos>

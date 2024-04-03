@@ -16,7 +16,9 @@ export const AppointmentModal = ({
     visible,
     setShowModalAppointment,
     dados,
-    navigation
+    navigation,
+    roleUsuario,
+    consulta
 }) => {
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -165,7 +167,11 @@ export const ModalPerfilMed = ({
     visible,
     setShowModalPerfilMed,
     navigation,
+    consulta
 }) => {
+    function handlePress( rota ){
+        navigation.navigate(rota, {clinicaId : consulta.medicoClinica.clinicaId})
+    }
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {/* Container */}
@@ -176,11 +182,11 @@ export const ModalPerfilMed = ({
                         // margin={"20px"}
                         source={{ uri: "https://media.licdn.com/dms/image/D4D03AQFY7jiWefxVnA/profile-displayphoto-shrink_800_800/0/1678934773265?e=1714608000&v=beta&t=ez1fnmpbDyUkDmRn3GHLkjaw05s7n8f6jb8Pik-_RUg" }} />
 
-                    <Title>Dr. Irmão do Murilo</Title>
+                    {/* <Title>Dr. {consulta.medicoClinica.medico.idNavigation.nome}</Title> */}
 
                     <Subtitle>Cliníco geral    CRM-15286</Subtitle>
 
-                    <ButtonModal onPress={() => navigation.navigate("Mapa") || setShowModalPerfilMed(false)}>
+                    <ButtonModal onPress={() => handlePress("Mapa")}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 
