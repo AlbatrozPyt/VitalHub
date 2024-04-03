@@ -7,6 +7,7 @@ export const Container = styled.SafeAreaView`
 `
 export const Scroll = styled.ScrollView`
     width: 100%;
+    background-color: #FAFAFA;
 `
 
 export const ContentAccount = styled.View`

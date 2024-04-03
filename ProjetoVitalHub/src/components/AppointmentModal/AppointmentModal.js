@@ -168,19 +168,11 @@ export const ModalPerfilMed = ({
     navigation,
 }) => {
 
-    const [mapa, setMapa] = useState(false);
-
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
 
-            {
-                mapa ? <Mapa navigation={navigation}/> : null
-            }
-
-
             {/* Container */}
-            <AppointmentModalStyle style={mapa ? {display: `none`} : null}>
-
+            <AppointmentModalStyle >
                 <AppointmentContent>
                     <ImagePatient
                         // margin={"20px"}
@@ -190,7 +182,7 @@ export const ModalPerfilMed = ({
 
                     <Subtitle>Cliníco geral    CRM-15286</Subtitle>
 
-                    <ButtonModal onPress={() => setMapa(true) || setShowModalPerfilMed(false)}>
+                    <ButtonModal onPress={() => navigation.navigate("Mapa") || setShowModalPerfilMed(false)}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 

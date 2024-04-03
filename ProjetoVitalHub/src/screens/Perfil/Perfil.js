@@ -43,6 +43,9 @@ export const Perfil = ({
 
     const [userName, setUserName] = useState();
     const [userEmail, setUserEmail] = useState();
+    const [dataNascimento, setDataNascimento] = useState();
+    const [cpf, setCpf] = useState();
+    const [cep, setCep] = useState();
 
     async function profileLoad() {
         const token = await userDecodeToken();    
@@ -54,7 +57,7 @@ export const Perfil = ({
     }
 
     useEffect(() => { profileLoad() }, [])
-
+    
     return (
         <Container>
             <Scroll>
