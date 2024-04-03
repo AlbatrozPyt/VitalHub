@@ -14,7 +14,15 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c5ae4ae5f55e008e856f48eba6e9da519ff5671")]
+=======
+<<<<<<< HEAD
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+528484d322e8e496be2d0cd94380706d4c348032")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+abeb12aad63f9429f0afcf61e72ab87f7ec3970a")]
+>>>>>>> origin/Matheus
+>>>>>>> 6218c0022e1cbb725f8820834a9f788c7088c898
 [assembly: System.Reflection.AssemblyProductAttribute("WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

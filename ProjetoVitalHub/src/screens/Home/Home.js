@@ -10,6 +10,7 @@ import { CancellationModal } from "../../components/CancellationModal/Cancellati
 import { AppointmentModal, ModalConsultas, ModalPerfilMed } from "../../components/AppointmentModal/AppointmentModal"
 import { ButtonAppointment } from "../../components/ButtonAppointment"
 import { handleCallNotifications } from "../../components/Notification/Notification"
+import { Spinner } from "../../components/Spinner"
 
 // Import da API
 import api from "../../services/services"
@@ -38,6 +39,7 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
+<<<<<<< HEAD
 
     const [consultaLista, setConsultaLista] = useState([])
 
@@ -77,6 +79,7 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
+<<<<<<< HEAD
     }, [dataConsulta]);
 
     useEffect(() => {
@@ -99,15 +102,37 @@ export const Home = ({
     }
 
 
+=======
+    }, []);
+=======
+    const [spinner, setSpinner] = useState(false);
+
+>>>>>>> origin/Matheus
+>>>>>>> 6218c0022e1cbb725f8820834a9f788c7088c898
     return (
         <Container>
+            {/* Spinner de carregamento */}
+            {
+                spinner ? (
+                    <Spinner 
+                        setFalse={setSpinner}
+                        navigation={navigation}
+                        screen={'Login'} 
+                    />
+                ) : null
+            }
+
+
             {/* MUDAR O BACKGROUND COLOR
              */}
             <ButtonAppointment
                 onPressConsulta={() => setShowModalConsultas(true)}
             />
 
-            <HeaderHome navigation={navigation} />
+            <HeaderHome
+                navigation={navigation}
+                setSpinnerHome={setSpinner}
+            />
 
             {/* Calendario */}
             <Calendarhome

@@ -57,16 +57,27 @@ namespace WebAPI.Repositories
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idPaciente)
         {
            return ctx.Consultas
+<<<<<<< HEAD
                   .Include(x => x.Situacao)
                   .Include(x => x.Prioridade)
                   .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
                   .Where(x => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
                   .ToList();
+=======
+                .Include(x => x.Situacao)
+                .Include(x => x.Prioridade)
+                .Include (x => x.MedicoClinica!.Medico!.IdNavigation)
+                .Where(x  => x.PacienteId == idPaciente && EF.Functions.DateDiffDay(x.DataConsulta, dataConsulta) == 0)
+                .ToList();
+>>>>>>> 6218c0022e1cbb725f8820834a9f788c7088c898
         }
 
         public Paciente BuscarPorId(Guid Id)
         {
-            return ctx.Pacientes.FirstOrDefault(x => x.Id == Id);
+            return ctx.Pacientes
+                .Include(x => x.IdNavigation)
+                .Include(x => x.Endereco)
+                .FirstOrDefault(x => x.Id == Id)!;
         }
 
         public List<Consulta> BuscarRealizadas(Guid Id)
