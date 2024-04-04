@@ -13,6 +13,9 @@ import { handleCallNotifications } from "../../components/Notification/Notificat
 import { Spinner } from "../../components/Spinner"
 import { userDecodeToken } from "../../Utils/Auth"
 
+// Import da API
+import api from "../../services/services"
+
 const Consultas = [
     { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
     { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h", situacao: "realizado" },
@@ -48,14 +51,32 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
+<<<<<<< HEAD
+
+    const [consultaLista, setConsultaLista] = useState([])
+
+    useEffect(() => {
+        async function getConsultas() {
+            const promise = await api.get(`/Consultas/ConsultasMedico`);
+            setConsultaLista(promise.data);
+            console.log(consultaLista);
+        }
+
+        getConsultas();
+    }, []);
+=======
     const [spinner, setSpinner] = useState(false);
 
+<<<<<<< HEAD
 
     useEffect(() => {
         loadProfile();
     }, [])
 
 
+=======
+>>>>>>> origin/Matheus
+>>>>>>> Pedro
     return (
         <Container>
             {/* Spinner de carregamento */}
@@ -113,7 +134,7 @@ export const Home = ({
 
 
             <ListComponent
-                data={Consultas}
+                data={consultaLista}
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
