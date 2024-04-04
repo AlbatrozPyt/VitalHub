@@ -38,7 +38,7 @@ export const CardConsulta = ({
 
                     <AgeAndTypeBox>
                         <TextAge>{roleUsuario == 'Medico' ? '22 anos' : `CRM: ${usuarioConsulta.crm}`}</TextAge>
-                        <TypeBold>{prioridade == 0 ? "Rotina" : "Exame"}</TypeBold>
+                        <TypeBold>{prioridade == 0 ? "Rotina" : prioridade == 1 ? "Exame" : "Urgencia"}</TypeBold>
                     </AgeAndTypeBox>
                 </BoxInfos>
 

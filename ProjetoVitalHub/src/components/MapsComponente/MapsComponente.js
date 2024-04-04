@@ -56,6 +56,8 @@ export const MapsComponente = () => {
         // )
     }, [10000000])
 
+    const [coordenadas, setCoordenadas] = useState()
+
     return (
         <BoxMaps>
             {

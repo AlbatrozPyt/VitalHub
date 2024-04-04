@@ -186,7 +186,7 @@ export const ModalPerfilMed = ({
 
                     <Subtitle>Cliníco geral    CRM-15286</Subtitle>
 
-                    <ButtonModal onPress={() => handlePress("Mapa")}>
+                    <ButtonModal onPress={() => setShowModalPerfilMed(false) || handlePress("Mapa")}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 

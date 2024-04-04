@@ -23,47 +23,52 @@ export const Mapa = ({ navigation, route }) => {
 
     async function BuscarClinica() {
         const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
-  
-        setClinica(promise)
 
-        console.log(promise);
+        setClinica(promise.data)
+
+        console.log(promise.data);
     }
     return (
-
         <Container>
-            <MapsComponente />
+            {
+                clinica != null && (
+                    <>
+                        <MapsComponente />
 
-            <Title marginTop={"30px"}>Clínica Natureh</Title>
-            {/* <Subtitle>{clinica.nomeFantasia}</Subtitle> */}
+                        <Title marginTop={"30px"}>{clinica.nomeFantasia}</Title>
+                        <Subtitle>{clinica.endereco.cidade}</Subtitle>
 
-            <ContainerPerfil>
-                <BoxInput
-                    textLabel='Endereço'
-                    placeholder='Endereço...'
-                    fieldValue='Rua Vicenso Silva, 987'
-                />
+                        <ContainerPerfil>
+                            <BoxInput
+                                textLabel='Endereço'
+                                placeholder='Endereço...'
+                                // fieldValue={clinica.endereco.numero}
+                            />
 
-                <ContainerBox>
-                    <BoxInput
-                        fieldWidth={45}
-                        textLabel='Número'
-                        placeholder='Número...'
-                        fieldValue='589'
-                    />
+                            <ContainerBox>
+                                <BoxInput
+                                    fieldWidth={45}
+                                    textLabel='Número'
+                                    placeholder='Número...'
+                                    fieldValue='589'
+                                />
 
-                    <BoxInput
-                        fieldWidth={50}
-                        textLabel='Bairro'
-                        placeholder='Bairro...'
-                        fieldValue='Moema-SP'
-                    />
-                </ContainerBox>
+                                <BoxInput
+                                    fieldWidth={50}
+                                    textLabel='Bairro'
+                                    placeholder='Bairro...'
+                                    fieldValue='Moema-SP'
+                                />
+                            </ContainerBox>
 
-                <ButtonSecondary onPress={() => navigation.replace("Main")}>
-                    <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
-                </ButtonSecondary>
+                            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                                <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
+                            </ButtonSecondary>
 
-            </ContainerPerfil>
+                        </ContainerPerfil>
+                    </>
+                )
+            }
         </Container>
     )
 }

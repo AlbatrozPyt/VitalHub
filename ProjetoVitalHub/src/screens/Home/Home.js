@@ -79,10 +79,6 @@ export const Home = ({
         getConsultas();
     }, [dataConsulta]);
 
-    useEffect(() => {
-        //console.log(dataConsulta);
-    }, [dataConsulta])
-
 
     function MostrarModal(modal, consulta){
 
