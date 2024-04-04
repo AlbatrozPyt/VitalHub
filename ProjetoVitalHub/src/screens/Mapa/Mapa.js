@@ -13,6 +13,11 @@ import api from "../../services/services"
 export const Mapa = ({ navigation, route }) => {
     const [clinica, setClinica] = useState(null)
 
+    const [latitude, setLatitude] = useState()
+    const [longitude, setLongitude] = useState()
+    const [logradouro, setLogradouro] = useState()
+    const [numero, setNumero] = useState()
+
     useEffect(() => {
         if (clinica == null) {
             BuscarClinica()
@@ -26,14 +31,22 @@ export const Mapa = ({ navigation, route }) => {
 
         setClinica(promise.data)
 
-        console.log(promise.data);
+        setLogradouro(promise.data.endereco.logradouro)
+        setNumero(promise.data.endereco.numero)
+        console.log(promise.data.endereco.numero)
+
+        setLatitude(promise.data.endereco.latitude);
+        setLongitude(promise.data.endereco.longitude);
     }
     return (
         <Container>
             {
                 clinica != null && (
                     <>
-                        <MapsComponente />
+                        <MapsComponente
+                            latitude={latitude}
+                            longitude={longitude}
+                        />
 
                         <Title marginTop={"30px"}>{clinica.nomeFantasia}</Title>
                         <Subtitle>{clinica.endereco.cidade}</Subtitle>
@@ -42,7 +55,7 @@ export const Mapa = ({ navigation, route }) => {
                             <BoxInput
                                 textLabel='Endereço'
                                 placeholder='Endereço...'
-                                // fieldValue={clinica.endereco.numero}
+                                fieldValue={logradouro}
                             />
 
                             <ContainerBox>
@@ -50,7 +63,7 @@ export const Mapa = ({ navigation, route }) => {
                                     fieldWidth={45}
                                     textLabel='Número'
                                     placeholder='Número...'
-                                    fieldValue='589'
+                                    fieldValue={numero}
                                 />
 
                                 <BoxInput
