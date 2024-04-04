@@ -32,12 +32,10 @@ export const Home = ({
 
     const [user, setUser] = useState();
 
-    async function loadProfile()
-    {
+    async function loadProfile() {
         const token = await userDecodeToken();
 
-        if (token !== null)
-        {
+        if (token !== null) {
             setUser(token);
         }
     }
@@ -51,8 +49,6 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
-<<<<<<< HEAD
-
     const [consultaLista, setConsultaLista] = useState([])
 
     useEffect(() => {
@@ -63,29 +59,20 @@ export const Home = ({
         }
 
         getConsultas();
+        loadProfile();
     }, []);
-=======
+
     const [spinner, setSpinner] = useState(false);
 
-<<<<<<< HEAD
-
-    useEffect(() => {
-        loadProfile();
-    }, [])
-
-
-=======
->>>>>>> origin/Matheus
->>>>>>> Pedro
     return (
         <Container>
             {/* Spinner de carregamento */}
             {
                 spinner ? (
-                    <Spinner 
+                    <Spinner
                         setFalse={setSpinner}
                         navigation={navigation}
-                        screen={'Login'} 
+                        screen={'Login'}
                     />
                 ) : null
             }
