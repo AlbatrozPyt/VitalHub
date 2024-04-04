@@ -42,3 +42,10 @@ export const ButtonModalStyle = styled(Button)`
     width: 90%;
     margin-top: 25px;
 `
+
+// Mensagem da verficacao de campos preenchidos
+export const ValidationText = styled.Text`
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Quicksand_500Medium;
+`

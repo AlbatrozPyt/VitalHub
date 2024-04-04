@@ -15,7 +15,7 @@ namespace WebAPI.Repositories
 
             if (user == null) return false;
 
-            if (!Criptografia.CompararHash(user.Senha, senhaAntiga)) return false;
+            if (!Criptografia.CompararHash(user.Senha!, senhaAntiga)) return false;
             user.Senha = Criptografia.GerarHash(senhaNova);
             ctx.Update(user);
             ctx.SaveChanges();
@@ -24,8 +24,6 @@ namespace WebAPI.Repositories
             return true;
 
         }
-
-        
 
         public Usuario BuscarPorEmailESenha(string email, string senha)
         {

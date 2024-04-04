@@ -6,10 +6,14 @@ import { BoxInfosMedicos, BoxSelectMedicoStyle } from "./style"
 
 
 export const BoxSelectMedico = ({
-    ListMedicos = [],
+    medicos,
+    ListMedicos,
     clickButton,
     onPress
 }) => {
+    console.log(`List Medicoss`);
+    console.log(ListMedicos);
+
     return(
         
         <BoxSelectMedicoStyle clickButton={clickButton} onPress={onPress}>
@@ -18,9 +22,9 @@ export const BoxSelectMedico = ({
                     uri: "https://github.com/guihenrique16.png",
                 }}/>
             <BoxInfosMedicos>
-            <TitleName>{ListMedicos.nome}</TitleName>
+            <TitleName>{medicos.idNavigation.nome}</TitleName>
 
-            <Subtitle>{ListMedicos.area}, {ListMedicos.especializacao}</Subtitle>
+            <Subtitle>Nome da clinica, {medicos.especialidade.especialidade1}</Subtitle>
             </BoxInfosMedicos>
             </>
         </BoxSelectMedicoStyle>

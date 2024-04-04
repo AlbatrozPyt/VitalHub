@@ -10,6 +10,7 @@ import { BoxInput } from "../BoxInput"
 import { BntListConsulta, BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { Label } from "../Label"
 import { useState } from "react"
+import { Mapa } from "../../screens/Mapa/Mapa"
 
 
 export const AppointmentModal = ({
@@ -166,11 +167,12 @@ export const ModalPerfilMed = ({
     setShowModalPerfilMed,
     navigation,
 }) => {
+
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
-            {/* Container */}
-            <AppointmentModalStyle>
 
+            {/* Container */}
+            <AppointmentModalStyle >
                 <AppointmentContent>
                     <ImagePatient
                         // margin={"20px"}

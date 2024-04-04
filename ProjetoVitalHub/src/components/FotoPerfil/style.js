@@ -23,3 +23,11 @@ export const ImageUser = styled(FotoStyle)`
     margin: 0;
 `
 
+export const BoxIcons = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 70px;
+`
+

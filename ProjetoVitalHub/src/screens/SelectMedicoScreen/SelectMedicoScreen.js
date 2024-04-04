@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BoxSelectMedico } from "../../components/BoxSelectMedico"
 import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style"
 import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
@@ -7,6 +7,7 @@ import { TitleConsulta } from "../../components/Title/style"
 import { SelectView } from "../SelectClinic/style"
 import { ContentSelect } from "./style"
 import { ListComponent } from "../../components/List/List"
+import api from "../../services/services"
 
 const ListMedicos = [
     { id: 1, nome: "Pedro Felix", area: "Demartologa", especializacao: "Estitca" },
@@ -18,6 +19,19 @@ const ListMedicos = [
 export const SelectMedicoScreen = ({ navigation }) => {
 
     const [selectMedico, setSelectMedico] = useState("")
+    const [medicos, setMedicos] = useState([]);
+
+
+    useEffect(() => {
+        async function getMedicos() {
+            const promise = await api.get(`/Medicos`);
+            setMedicos(promise.data);
+            console.log(medicos);
+        }
+
+        getMedicos();
+    }, []);
+
 
     return (
         <Container>
@@ -25,15 +39,14 @@ export const SelectMedicoScreen = ({ navigation }) => {
                 <ContentSelect>
                     <TitleConsulta>Selecionar médico</TitleConsulta>
 
-
-
                     <ListComponent
-                        data={ListMedicos}
+                        data={medicos}
                         keyExtractor={(item) => item.id}
 
-                        renderItem={({ item }) =>
+                        renderItem={({ item }) => 
                             <SelectView>
                                 <BoxSelectMedico
+                                    medicos={item}
                                     ListMedicos={item}
                                     situacao={item.situacao}
                                     clickButton={item.id === selectMedico}

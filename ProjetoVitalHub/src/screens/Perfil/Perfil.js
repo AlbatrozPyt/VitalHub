@@ -11,6 +11,8 @@ import { Button } from "../../components/Button/style"
 import { ButtonTitle } from "../../components/ButtonTitle/style"
 import { Alert } from "react-native"
 import { DadosPessoais } from "./style"
+import { useEffect, useState } from "react"
+import { userDecodeToken } from "../../Utils/Auth"
 
 // Array de objetos mocados
 let profile =
@@ -26,6 +28,7 @@ let profile =
 }
 
 
+
 export const Perfil = ({
     navigation,
 }) => {
@@ -37,14 +40,32 @@ export const Perfil = ({
             'Página em desenvolvimento'
         )
     }
+
+    const [userName, setUserName] = useState();
+    const [userEmail, setUserEmail] = useState();
+    const [dataNascimento, setDataNascimento] = useState();
+    const [cpf, setCpf] = useState();
+    const [cep, setCep] = useState();
+
+    async function profileLoad() {
+        const token = await userDecodeToken();    
+
+        if (token) {
+            setUserName(token.name)
+            setUserEmail(token.email)
+        }
+    }
+
+    useEffect(() => { profileLoad() }, [])
+    
     return (
         <Container>
             <Scroll>
                 <FotoStyle source={fotoPerfil} />
 
                 <DadosPessoais>
-                    <Title textAlign={"center"}>{profile.nome}</Title>
-                    <Subtitle>{profile.email}</Subtitle>
+                    <Title textAlign={"center"}>{userName}</Title>
+                    <Subtitle>{userEmail}</Subtitle>
                 </DadosPessoais>
 
                 <ContainerPerfil>
@@ -87,7 +108,7 @@ export const Perfil = ({
                         <Button onPress={AlertPage}>
                             <ButtonTitle>editar</ButtonTitle>
                         </Button>
-                        
+
                         <Button fieldBckColor={"#ACABB7"} fieldBorderColor={"#ACABB7"} onPress={AlertPage}>
                             <ButtonTitle>sair do app</ButtonTitle>
                         </Button>

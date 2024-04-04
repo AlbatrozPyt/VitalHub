@@ -56,12 +56,10 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("BuscarPorID")]
-        public IActionResult BuscarPorID(Usuario user)
+        [HttpGet("BuscarPorId")]
+        public IActionResult BuscarPorId(Guid id)
         {
-            Guid idUsuario = user.Id;
-
-            return Ok(pacienteRepository.BuscarPorId(idUsuario));
+            return Ok(pacienteRepository.BuscarPorId(id));
         }
 
         [HttpPost]
@@ -82,13 +80,30 @@ namespace WebAPI.Controllers
             user.Paciente.Cpf = pacienteModel.Cpf;
 
             user.Paciente.Endereco = new Endereco();
+
             user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
             user.Paciente.Endereco.Numero = pacienteModel.Numero;
             user.Paciente.Endereco.Cep = pacienteModel.Cep;
+            user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
 
             pacienteRepository.Cadastrar(user);
 
             return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult AtualizarPerfil(PacienteViewModel paciente)
+        {
+            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+            return Ok(pacienteRepository.AtualizarPerfil(idUsuario, paciente));
+        }
+
+
+        [HttpGet("BuscarPorData")]
+        public IActionResult BuscarPorData(DateTime data, Guid id)
+        {
+            return Ok(pacienteRepository.BuscarPorData(data,id));
         }
     }
 }

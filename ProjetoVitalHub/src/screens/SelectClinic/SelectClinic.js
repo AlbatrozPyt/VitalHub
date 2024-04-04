@@ -6,8 +6,9 @@ import { SelectContent, SelectView } from "./style"
 
 import { Container, ContainerPerfil, Scroll } from "../../components/Container/style"
 import { BoxSelect } from "../../components/BoxSelect"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ListComponent } from "../../components/List/List"
+import api from "../../services/services"
 
 const ListClinic = [
     { id: 1, nome: "Clinic Natureh", estado: "SP", cidade: "SCS" },
@@ -21,21 +22,33 @@ export const SelectClinic = ({
 }) => {
     const [selectedClinic, setSelectedClinic] = useState("teste");
 
+    const [clinicas, setClinicas] = useState();
+
+    useEffect(() => {
+        async function getClinics() {
+            const promise = await api.get("/Clinica/ListarTodas")
+            await setClinicas(promise.data);
+            console.log(clinicas);
+        }
+
+        getClinics()
+    }, [])
+
+
     return (
         <Container>
-            <Scroll>
                 <SelectContent>
                     <TitleConsulta>Selecionar clínica</TitleConsulta>
 
                     
-                    
                        <ListComponent
-                        data={ListClinic}
+                        data={clinicas}
                         keyExtractor={(item) => item.id}
 
                         renderItem={({ item }) =>
                         <SelectView>
                             <BoxSelect
+                                clinica={item}
                                 ListClinic={item}
                                 situacao={item.situacao}
                                 clickButton={item.id === selectedClinic}
@@ -43,7 +56,7 @@ export const SelectClinic = ({
                             />
                             </SelectView>
                         }
-                        showsVerticalScrollIndicator={false}
+                        showsVerticalScrollIndicator={true}
                     />
 
                     
@@ -57,7 +70,6 @@ export const SelectClinic = ({
                     </ButtonSecondary>
 
                 </SelectContent>
-            </Scroll>
         </Container>
     )
 }

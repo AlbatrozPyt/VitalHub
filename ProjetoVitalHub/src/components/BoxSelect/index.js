@@ -12,13 +12,14 @@ export const BoxSelect = ({
     onSelect,
     clickButton = false,
     fieldBckColor,
-    onPress
+    onPress,
+    clinica
 }) => {
     return (
         <BoxSelectStyle clickButton={clickButton} onPress={onPress}>
             <>
                 <BoxInformacoes>
-                <TitleName>Clínica Natureh</TitleName>
+                <TitleName>{clinica.nomeFantasia}</TitleName>
                 <Avaliacao source={aval}/>
             </BoxInformacoes>
 
