@@ -3347,24 +3347,40 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\54297548895\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+=======
+    "C:\\Users\\48746019871\\.nuget\\packages\\": {}
+>>>>>>> origin/Pedro
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\54297548895\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
       "projectPath": "C:\\Users\\54297548895\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\54297548895\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\54297548895\\Desktop\\VitalHub\\WebAPI\\WebAPI\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\48746019871\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectName": "WebAPI",
+      "projectPath": "C:\\Users\\48746019871\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "packagesPath": "C:\\Users\\48746019871\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\48746019871\\Desktop\\VitalHub\\WebAPI\\WebAPI\\obj\\",
+>>>>>>> origin/Pedro
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\54297548895\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+=======
+        "C:\\Users\\48746019871\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/Pedro
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

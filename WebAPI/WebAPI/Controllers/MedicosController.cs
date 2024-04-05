@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
-           
+
             return Ok(_medicoRepository.BuscarPorId(id)); ;
         }
 
@@ -77,6 +77,12 @@ namespace WebAPI.Controllers
         {
 
             return Ok(_medicoRepository.ListarPorClinica(id)); ;
+        }
+
+        [HttpGet("BuscarPorData")]
+        public IActionResult GetByDate(DateTime data, Guid id)
+        {
+            return Ok(_medicoRepository.BuscarPorData(data, id)); 
         }
     }
 }

@@ -14,6 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
+<<<<<<< HEAD
 
       // Trocar o IP
       //"applicationUrl": "http://172.16.39.89:4466",
@@ -25,6 +26,12 @@
 
       "applicationUrl": "http://192.168.21.67:4466",
 
+=======
+      // Trocar o IP
+      //"applicationUrl": "http://172.16.39.89:4466",
+      // Trocar o IP
+      "applicationUrl": "http://172.16.39.73:4466",
+>>>>>>> origin/Pedro
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

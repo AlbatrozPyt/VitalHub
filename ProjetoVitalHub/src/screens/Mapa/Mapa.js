@@ -7,15 +7,34 @@ import { BoxInput } from "../../components/BoxInput"
 import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style"
 import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
 import { MapsComponente } from "../../components/MapsComponente/MapsComponente"
+import { useEffect, useState } from "react"
+import api from "../../services/services"
 
-export const Mapa = ({ navigation }) => {
+export const Mapa = ({ navigation, route }) => {
+    const [clinica, setClinica] = useState(null)
+
+    useEffect(() => {
+        if (clinica == null) {
+            BuscarClinica()
+        }
+
+        // console.log(route.params.clinicaId);
+    }, [clinica])
+
+    async function BuscarClinica() {
+        const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
+  
+        setClinica(promise)
+
+        console.log(promise);
+    }
     return (
+
         <Container>
-            {/* <ImageMapa source={mapaImage} /> */}
-            <MapsComponente/>
+            <MapsComponente />
 
             <Title marginTop={"30px"}>Clínica Natureh</Title>
-            <Subtitle>São Paulo, SP</Subtitle>
+            {/* <Subtitle>{clinica.nomeFantasia}</Subtitle> */}
 
             <ContainerPerfil>
                 <BoxInput
@@ -45,7 +64,6 @@ export const Mapa = ({ navigation }) => {
                 </ButtonSecondary>
 
             </ContainerPerfil>
-
         </Container>
     )
 }

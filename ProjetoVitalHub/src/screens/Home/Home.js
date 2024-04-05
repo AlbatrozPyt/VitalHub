@@ -13,6 +13,10 @@ import { handleCallNotifications } from "../../components/Notification/Notificat
 import { Spinner } from "../../components/Spinner"
 import { userDecodeToken } from "../../Utils/Auth"
 
+// Import da API
+import api from "../../services/services"
+import { userDecodeToken } from "../../Utils/Auth"
+
 const Consultas = [
     { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
     { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h", situacao: "realizado" },
@@ -48,14 +52,85 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
+<<<<<<< HEAD
+
+    const [consultaLista, setConsultaLista] = useState([])
+
+    const [dataConsulta, setDataConsulta] = useState('')
+
+    const [nameUser, setNameUser] = useState()
+    
+    const [profile, setProfile] = useState()
+
+    const [consultaSelecionada, setConsultaSelecionada] = useState(null)
+
+    const [idUser, setIdUser] = useState('')
+
+
+
+    useEffect(() => {
+
+        const url = (profile == 'Medico' ? "Medicos" : "Pacientes")
+        
+        async function getConsultas() {
+            const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
+            setConsultaLista(promise.data);
+            // console.log(promise.data);
+        }
+
+        async function profileLoad() {
+            const token = await userDecodeToken();
+    
+            if (token) {
+                setIdUser(token.id);
+    
+                setNameUser(token.name)
+                setProfile(token.role)
+                // console.log(profile);
+            }
+        }
+
+        profileLoad()
+        getConsultas();
+<<<<<<< HEAD
+    }, [dataConsulta]);
+
+    useEffect(() => {
+        //console.log(dataConsulta);
+    }, [dataConsulta])
+
+
+    function MostrarModal(modal, consulta){
+
+        setConsultaSelecionada( consulta )
+
+        
+        if (modal == 'cancelar') {
+            setShowModalCancel(true)
+        }else if(modal == 'prontuario'){
+            setShowModalPerfilMed(true)
+        }else{
+            setShowModalConsultas(true)
+        }
+    }
+
+
+=======
+    }, []);
+=======
     const [spinner, setSpinner] = useState(false);
 
+<<<<<<< HEAD
 
     useEffect(() => {
         loadProfile();
     }, [])
 
 
+=======
+>>>>>>> origin/Matheus
+>>>>>>> 6218c0022e1cbb725f8820834a9f788c7088c898
+>>>>>>> origin/Pedro
     return (
         <Container>
             {/* Spinner de carregamento */}
@@ -82,7 +157,9 @@ export const Home = ({
             />
 
             {/* Calendario */}
-            <Calendarhome />
+            <Calendarhome
+                setDataConsulta={setDataConsulta}
+            />
 
             {/* Filtros (botoes) */}
             <FilterAppointment>
@@ -113,18 +190,29 @@ export const Home = ({
 
 
             <ListComponent
-                data={Consultas}
+                data={consultaLista}
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
-                    statusLista == item.situacao && (
+                    statusLista == item.situacao.situacao && (
                         <CardConsulta
+                            nameUser={nameUser}
                             data={item}
-                            situacao={item.situacao}
+                            situacao={item.situacao.situacao}
                             onPressCancel={() => setShowModalCancel(true)}
-                            onPressAppointment={() => setShowModalAppointment(true)}
-                            onPressPerfilMed={() => setShowModalPerfilMed(true)}
+                            //onPressAppointment={() => setShowModalAppointment(true)}
+                            //onPressPerfilMed={() => setShowModalPerfilMed(true)}
+
+                             onPressAppointment={()=> MostrarModal('cancelar', item)}
+                             onPressPerfilMed={()=> MostrarModal('prontuario', item)}
+
+
                             navigation={navigation}
+
+                            roleUsuario={profile}
+                            dataConsulta={item.dataConsulta}
+                            prioridade={item.prioridade.prioridade}
+                            usuarioConsulta={profile == "Medico" ? item.paciente : item.medicoClinica.medico}
                         />
                     )
 
@@ -143,6 +231,9 @@ export const Home = ({
 
             {/* modal ver protuário */}
             <AppointmentModal
+                consulta={consultaSelecionada}
+                roleUsuario={profile}
+
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
                 dados={Consultas}
@@ -156,6 +247,9 @@ export const Home = ({
             />
 
             <ModalPerfilMed
+                consulta={consultaSelecionada}
+                roleUsuario={profile}
+
                 visible={showModalPerfilMed}
                 setShowModalPerfilMed={setShowModalPerfilMed}
                 navigation={navigation}

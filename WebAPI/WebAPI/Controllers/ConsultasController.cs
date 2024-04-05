@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("ConsultasPacientes")]
         public IActionResult BuscarConsultasPaciente()
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
@@ -29,11 +29,11 @@ namespace WebAPI.Controllers
             return Ok(consultas);
         }
 
-        [Authorize(Roles ="Medico")]
+     //   [Authorize(Roles ="Medico")]
         [HttpGet("ConsultasMedico")]
-        public IActionResult BuscarConsultasMedico()
+        public IActionResult BuscarConsultasMedico(Guid idUsuario)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+           // Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
             List<Consulta> consultas = consultaRepository.ListarPorMedico(idUsuario);
             return Ok(consultas);
