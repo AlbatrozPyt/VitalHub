@@ -9,7 +9,8 @@ export const InputText = ({
     onChangeText = null,
     keyType,
     maxLength,
-    secureTextEntry
+    secureTextEntry,
+    editable
 }) => {
     return (
         <InputDados
@@ -22,6 +23,7 @@ export const InputText = ({
             value={fieldValue}
             onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}
+            editable={editable}
         />
     )
 }

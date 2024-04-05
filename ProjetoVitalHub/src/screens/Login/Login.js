@@ -17,10 +17,13 @@ import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
 import { useState } from "react"
 import { InputText } from "../../components/Input"
-import { ActivityIndicator, Alert, StyleSheet, View } from "react-native"
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native"
 
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// Componente que roda o spinner de load do login
+import { Spinner } from "../../components/Spinner"
 
 export const Login = ({
     navigation
@@ -40,37 +43,29 @@ export const Login = ({
         }).then(async response => {
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
 
-            console.log(response.data);
+            setTimeout(() => {
+                navigation.replace("Main")
+            }, 1000);
 
-            navigation.replace("Main")
-        }).catch(error => {
-            console.log(error)
-            setTimeout(() => Alert.alert(
-                //Title
-                'Erro',
-                //Body
-                'Email e/ou senha incorreto!!'
-            ), 2000)
-            
+        }).catch(() => {
+            setTimeout(() => {
+                Alert.alert(
+                    //Title
+                    'Erro',
+                    //Body
+                    'Email e/ou senha incorreto!!'
+                )
 
-            // alert( "Email e/ou senha incorreto!!" )
+                setLoadButton(false);
+            }, 1000)
         })
     }
-
-
-
     return (
         <Container>
-
-
+            {/* Spinner de carregamento para home */}
             {
                 loadButton ? (
-                    <View style={styles.boxSpinner}>
-                        <ActivityIndicator
-                            size={"large"}
-                            color={"#496bba"}
-                            style={styles.spinner} />
-                    </View>
+                    <Spinner />
                 ) : null
             }
 
@@ -106,11 +101,11 @@ export const Login = ({
                 <Button
                     disabled={loadButton}
                     fieldBckColor={loadButton ? `gray` : " #496bba"}
+                    style={loadButton ? {borderColor: `gray`} : null}
                     onPress={() => {
-                        Logar()
+                        // Mostrar o carregamento do bot
                         setLoadButton(true)
-                        setTimeout(() => setLoadButton(false), 2000)
-
+                        Logar()
                     }}>
                     <ButtonTitle>Entrar</ButtonTitle>
                 </Button>
@@ -134,21 +129,3 @@ export const Login = ({
         </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    boxSpinner: {
-        position: `absolute`,
-        zIndex: 1,
-        width: `100%`,
-        height: `100%`,
-        alignItems: `center`,
-        justifyContent: `center`,
-        backgroundColor: `black`,
-        opacity: .7
-    },
-    spinner: {
-        width: 200,
-        height: 200,
-        opacity: 1
-    }
-})
