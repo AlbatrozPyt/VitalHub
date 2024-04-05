@@ -91,10 +91,10 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public IActionResult AtualizarPerfil(PacienteViewModel paciente)
+        [HttpPut("AtualizarPerfil")]
+        public IActionResult AtualizarPerfil(Guid idUsuario, PacienteViewModel paciente)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+           // Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
             return Ok(pacienteRepository.AtualizarPerfil(idUsuario, paciente));
         }

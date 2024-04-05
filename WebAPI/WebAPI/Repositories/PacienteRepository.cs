@@ -19,9 +19,12 @@ namespace WebAPI.Repositories
             //endereco logradouro numero cep
 
             Paciente pacienteBuscado = ctx.Pacientes.FirstOrDefault(x => x.Id == Id)!;
+            Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Id == Id)!;
+            Endereco endereco = ctx.Enderecos.FirstOrDefault(x => x.Id == pacienteBuscado.EnderecoId)!;
+
 
             if (paciente.Foto != null)
-                pacienteBuscado!.IdNavigation.Foto = paciente.Foto;
+                usuarioBuscado.Foto = paciente.Foto;
 
             if (paciente.DataNascimento != null)
                 pacienteBuscado!.DataNascimento = paciente.DataNascimento;
@@ -30,18 +33,22 @@ namespace WebAPI.Repositories
                 pacienteBuscado!.Cpf = paciente.Cpf;
 
             if (paciente.Logradouro != null)
-                pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
+                endereco.Logradouro = paciente.Logradouro;
 
             if (paciente.Numero != null)
-                pacienteBuscado!.Endereco!.Numero = paciente.Numero;
+                endereco.Numero = paciente.Numero;
 
             if (paciente.Cep != null)
-                pacienteBuscado!.Endereco!.Cep = paciente.Cep;
+                endereco.Cep = paciente.Cep;
+
+            if (paciente.Rg != null)
+                pacienteBuscado!.Rg = paciente.Rg;
 
             ctx.Pacientes.Update(pacienteBuscado!);
+            ctx.Enderecos.Update(endereco);
             ctx.SaveChanges();
 
-            return pacienteBuscado!;
+            return pacienteBuscado;
         }
 
         public List<Consulta> BuscarAgendadas(Guid Id)

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../Utils/Auth"
 
 import api from "../../services/services"
+import { faL } from "@fortawesome/free-solid-svg-icons"
 
 // Array de objetos mocados
 let profile =
@@ -61,15 +62,36 @@ export const Perfil = ({
         }
     }
 
-    useEffect(() => { 
-        async function getPerfil() {
-            const promise = await api.get(`/Pacientes/BuscarPorId?id=7EE5B34C-A5D4-44EF-A6D7-790334609EE3`);
-            setPerfil(promise)
-            console.log(perfil);
-        }
+
+    async function getPerfil() {
+        const promise = await api.get(`/Pacientes/BuscarPorId?id=${userId}`);
+        await setPerfil(promise.data)
+        console.log(perfil);
+
+        setDataNascimento(perfil.dataNascimento);
+        setCpf(perfil.cpf)
+        setLogradouro(perfil.endereco.logradouro)
+        setCep(perfil.endereco.cep)
+        setCidade(perfil.endereco.cidade)
+    }
+
+    async function putPerfil() {
+        await api.put(`/Pacientes/AtualizarPerfil?idUsuario=7EE5B34C-A5D4-44EF-A6D7-790334609EE3`, {
+            "cpf": cpf,
+            "dataNascimento": dataNascimento,
+            "cep": cep,
+            "logradouro": logradouro,
+            "cidade": cidade,
+        })
+            .then(() => Alert.alert('Funcionou', 'Yes!!'))
+            .catch((e) => console.log(e))
+    }
+
+
+    useEffect(() => {
 
         getPerfil()
-        profileLoad() 
+        profileLoad()
     }, [])
 
     return (
@@ -84,43 +106,59 @@ export const Perfil = ({
 
                 <ContainerPerfil>
                     <BoxInput
+                        onChangeText={(x) => setDataNascimento(x)}
                         textLabel='Data de nascimento'
-                        placeholder='Data de nascimento...'
-                        fieldValue={perfil.dataNascimento}
+                        placeholder={
+                            !edit
+                                ? new Date(dataNascimento).toLocaleDateString()
+                                : new Date(perfil.dataNascimento).toLocaleDateString()
+                            }
+                        // fieldValue={!edit ? dataNascimento : null}
                         editable={edit}
                     />
                     <BoxInput
+                        onChangeText={(x) => setCpf(x)}
                         textLabel='CPF'
-                        placeholder='CPF...'
-                        fieldValue={cpf}
+                        placeholder={!edit ? cpf : perfil.cpf}
+                        // fieldValue={!edit ? cpf : ''}
+                        keyType={"numeric"}
                         editable={edit}
                     />
                     <BoxInput
+                        onChangeText={(x) => setLogradouro(x)}
                         textLabel='Endereço'
-                        placeholder='Endereço...'
-                        fieldValue={logradouro}
+                        placeholder={!edit ? logradouro : perfil.logradouro}
+                        // fieldValue={!edit ? logradouro : ''}
                         editable={edit}
                     />
                     <ContainerBox>
                         <BoxInput
+                            onChangeText={(x) => setCep(x)}
                             fieldWidth={45}
                             textLabel='CEP'
-                            placeholder='CEP...'
-                            fieldValue={cep}
+                            placeholder={cep}
+                            // fieldValue={!edit ? cep : ''}
                             editable={edit}
                         />
 
                         <BoxInput
+                            onChangeText={(x) => setCidade(x)}
                             fieldWidth={50}
                             textLabel='Cidade'
-                            placeholder='Cidade...'
-                            fieldValue={cidade}
+                            placeholder={cidade}
+                            // fieldValue={!edit ? cidade : ''}
                             editable={edit}
                         />
                     </ContainerBox>
 
                     <ContainerInputButtom>
-                        <Button onPress={() => navigation.navigate("Main")}>
+                        <Button
+                            onPress={() => {
+                                setEdit(false)
+                                putPerfil();
+                            }}
+                            disabled={!edit}
+                        >
                             <ButtonTitle>Salvar</ButtonTitle>
                         </Button>
 
