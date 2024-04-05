@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@sentry/react-native": "5.19.1",
+    "expo": "^50.0.14",
+    "expo-module-scripts": "^3.4.1",
+    "metro-cache": "^0.80.8",
+    "npx": "^10.2.2"
+  }
+}

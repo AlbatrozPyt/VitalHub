@@ -23,7 +23,7 @@
       // Trocar o IP
       // "applicationUrl": "http://172.16.39.73:4466",
 
-      "applicationUrl": "http://172.16.39.104",
+      "applicationUrl": "http://192.168.21.67:4466",
 
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
