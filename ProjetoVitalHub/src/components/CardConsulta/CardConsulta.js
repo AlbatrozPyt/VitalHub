@@ -25,6 +25,8 @@ export const CardConsulta = ({
 }) => {
     const [profile, setProfile] = useState("paciente")
 
+    const [nome, setNome] = useState(usuarioConsulta.idNavigation.nome);
+
     return (
         // Container principal
         <CardConsultaStyle onPress={onPressPerfilMed}>
@@ -34,7 +36,7 @@ export const CardConsulta = ({
             <ContentCard>
                 {/* Conteúdo do card */}
                 <BoxInfos>
-                    <TitleName>{usuarioConsulta.idNavigation.nome}</TitleName>
+                    <TitleName>{nome.length > 10 ? nome.substring(15, -1)+"..." : nome }</TitleName>
 
                     <AgeAndTypeBox>
                         <TextAge>{roleUsuario == 'Medico' ? '22 anos' : `CRM: ${usuarioConsulta.crm}`}</TextAge>
@@ -61,7 +63,7 @@ export const CardConsulta = ({
                                 <ButtonText situacao={situacao}>Cancelar</ButtonText>
                             </ButtonCard>
                         ) : (
-                            <ButtonCard onPress={ profile !== "paciente" ? onPressAppointment : () => navigation.replace("Prescricao")}>
+                            <ButtonCard onPress={ roleUsuario !== "Paciente" ? onPressAppointment : () => navigation.replace("Prescricao")}>
                                 <ButtonText situacao={situacao}>Ver prontuário</ButtonText>
                             </ButtonCard>
                         )

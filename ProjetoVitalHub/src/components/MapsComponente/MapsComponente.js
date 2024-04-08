@@ -35,7 +35,7 @@ export const MapsComponente = ({
 
             setInitialPosition(currentPosition)
 
-            console.log(initialPosition)
+            // console.log(initialPosition)
         }
     }
 

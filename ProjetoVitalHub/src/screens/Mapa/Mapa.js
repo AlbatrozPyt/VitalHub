@@ -32,12 +32,13 @@ export const Mapa = ({ navigation, route }) => {
         setClinica(promise.data)
 
         setLogradouro(promise.data.endereco.logradouro)
-        setNumero(promise.data.endereco.numero)
-        console.log(promise.data.endereco.numero)
+        setNumero(promise.data.endereco.numero.toString())
+        // console.log(promise.data.endereco)
 
         setLatitude(promise.data.endereco.latitude);
         setLongitude(promise.data.endereco.longitude);
     }
+
     return (
         <Container>
             {

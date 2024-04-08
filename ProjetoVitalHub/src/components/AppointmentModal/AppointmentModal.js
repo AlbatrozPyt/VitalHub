@@ -167,10 +167,15 @@ export const ModalPerfilMed = ({
     visible,
     setShowModalPerfilMed,
     navigation,
-    consulta
+    consulta,
+    roleUsuario
 }) => {
+    // const [consultax, setConsulta] = useState()
     function handlePress( rota ){
         navigation.navigate(rota, {clinicaId : consulta.medicoClinica.clinicaId})
+        // setConsulta({consulta})
+
+        // console.log(consulta);
     }
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -182,7 +187,8 @@ export const ModalPerfilMed = ({
                         // margin={"20px"}
                         source={{ uri: "https://media.licdn.com/dms/image/D4D03AQFY7jiWefxVnA/profile-displayphoto-shrink_800_800/0/1678934773265?e=1714608000&v=beta&t=ez1fnmpbDyUkDmRn3GHLkjaw05s7n8f6jb8Pik-_RUg" }} />
 
-                    {/* <Title>Dr. {consulta.medicoClinica.medico.idNavigation.nome}</Title> */}
+                    {/* Terminar essa parte */}
+                    <Title>Dr. {consulta.paciente.rg}</Title>
 
                     <Subtitle>Cliníco geral    CRM-15286</Subtitle>
 
