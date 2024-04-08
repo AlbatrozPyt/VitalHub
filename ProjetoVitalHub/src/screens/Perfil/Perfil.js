@@ -16,6 +16,7 @@ import { userDecodeToken } from "../../Utils/Auth"
 
 import api from "../../services/services"
 import { faL } from "@fortawesome/free-solid-svg-icons"
+import { Spinner } from "../../components/Spinner"
 
 // Array de objetos mocados
 let profile =
@@ -48,54 +49,85 @@ export const Perfil = ({
     const [token, setToken] = useState();
     const [perfil, setPerfil] = useState();
 
+    const [spinner, setSpinner] = useState();
+
     // Ativa a edicao do perfil
     const [edit, setEdit] = useState(false);
 
     async function profileLoad() {
         const token = await userDecodeToken();
-        setToken(token)
 
         if (token) {
             setUserName(token.name)
             setUserEmail(token.email)
             setUserId(token.id)
+
+            getPerfil(token)
+
+            // setToken(token)
         }
     }
 
+    async function getPerfil(user) {
 
-    async function getPerfil() {
-        const promise = await api.get(`/Pacientes/BuscarPorId?id=${userId}`);
-        await setPerfil(promise.data)
-        console.log(perfil);
+        let rota = '';
 
-        setDataNascimento(perfil.dataNascimento);
-        setCpf(perfil.cpf)
-        setLogradouro(perfil.endereco.logradouro)
-        setCep(perfil.endereco.cep)
-        setCidade(perfil.endereco.cidade)
+        if (token.role === 'Paciente') rota = `Pacientes`
+        if (token.role === 'Medico') rota = `Medicos`
+
+        const promise = await api.get(`/${rota}/BuscarPorId?id=${user.id}`);
+        const response = promise.data
+
+        setDataNascimento(response.dataNascimento);
+        setCpf(response.cpf)
+        setLogradouro(response.endereco.logradouro)
+        setCep(response.endereco.cep)
+        setCidade(response.endereco.cidade)
+
+
+        // else (token.role === 'Medico')
+        // {
+        //     const promise = await api.get(`/Medicos/BuscarPorId?id=${userId}`);
+        //     setPerfil(promise.data)
+
+        //     setDataNascimento(perfil.dataNascimento);
+        //     setCpf(perfil.cpf)
+        //     setLogradouro(perfil.endereco.logradouro)
+        //     setCep(perfil.endereco.cep)
+        //     setCidade(perfil.endereco.cidade)
+        // }
+
     }
 
     async function putPerfil() {
-        await api.put(`/Pacientes/AtualizarPerfil?idUsuario=7EE5B34C-A5D4-44EF-A6D7-790334609EE3`, {
+        await api.put(`/Pacientes/AtualizarPerfil?idUsuario=${userId}`, {
             "cpf": cpf,
             "dataNascimento": dataNascimento,
             "cep": cep,
             "logradouro": logradouro,
             "cidade": cidade,
         })
-            .then(() => Alert.alert('Funcionou', 'Yes!!'))
-            .catch((e) => console.log(e))
     }
 
 
     useEffect(() => {
-
-        getPerfil()
+        // console.log('Use efecct');
         profileLoad()
+        // getPerfil()
     }, [])
 
     return (
         <Container>
+
+            {
+                spinner ?
+                    <Spinner
+                        state={setSpinner}
+                        time={2000}
+                    />
+                    : null
+            }
+
             <Scroll>
                 <FotoStyle source={fotoPerfil} />
 
@@ -112,7 +144,7 @@ export const Perfil = ({
                             !edit
                                 ? new Date(dataNascimento).toLocaleDateString()
                                 : new Date(perfil.dataNascimento).toLocaleDateString()
-                            }
+                        }
                         // fieldValue={!edit ? dataNascimento : null}
                         editable={edit}
                     />
@@ -127,7 +159,7 @@ export const Perfil = ({
                     <BoxInput
                         onChangeText={(x) => setLogradouro(x)}
                         textLabel='Endereço'
-                        placeholder={!edit ? logradouro : perfil.logradouro}
+                        placeholder={!edit ? logradouro : perfil.endereco.logradouro}
                         // fieldValue={!edit ? logradouro : ''}
                         editable={edit}
                     />
@@ -136,7 +168,7 @@ export const Perfil = ({
                             onChangeText={(x) => setCep(x)}
                             fieldWidth={45}
                             textLabel='CEP'
-                            placeholder={cep}
+                            placeholder={!edit ? cep : perfil.endereco.cep}
                             // fieldValue={!edit ? cep : ''}
                             editable={edit}
                         />
@@ -145,7 +177,7 @@ export const Perfil = ({
                             onChangeText={(x) => setCidade(x)}
                             fieldWidth={50}
                             textLabel='Cidade'
-                            placeholder={cidade}
+                            placeholder={!edit ? cidade : perfil.endereco.cidade}
                             // fieldValue={!edit ? cidade : ''}
                             editable={edit}
                         />
@@ -153,16 +185,21 @@ export const Perfil = ({
 
                     <ContainerInputButtom>
                         <Button
+                            style={!edit ? { backgroundColor: '#ACABB7', borderColor: '#ACABB7' } : null}
                             onPress={() => {
                                 setEdit(false)
-                                putPerfil();
+                                putPerfil()
+                                setSpinner(true)
                             }}
                             disabled={!edit}
                         >
                             <ButtonTitle>Salvar</ButtonTitle>
                         </Button>
 
-                        <Button onPress={() => setEdit(true)}>
+                        <Button
+                            onPress={() => setEdit(true)}
+                            style={edit ? { backgroundColor: '#ACABB7', borderColor: '#ACABB7' } : null}
+                        >
                             <ButtonTitle>editar</ButtonTitle>
                         </Button>
 
