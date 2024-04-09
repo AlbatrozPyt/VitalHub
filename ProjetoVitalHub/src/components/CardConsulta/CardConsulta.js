@@ -29,7 +29,8 @@ export const CardConsulta = ({
 
     return (
         // Container principal
-        <CardConsultaStyle onPress={onPressPerfilMed}>
+        
+        <CardConsultaStyle onPress={ roleUsuario == 'Paciente' ? onPressPerfilMed : null}>
             {/* Imagem do paciente */}
             <ImageUser source={ImageUser1} />
 

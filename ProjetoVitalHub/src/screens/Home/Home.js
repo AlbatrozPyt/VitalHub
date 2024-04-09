@@ -44,7 +44,7 @@ export const Home = ({
     const [dataConsulta, setDataConsulta] = useState('')
 
     const [nameUser, setNameUser] = useState()
-    
+
     const [profile, setProfile] = useState()
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null)
@@ -56,7 +56,7 @@ export const Home = ({
     useEffect(() => {
 
         const url = (profile == 'Medico' ? "Medicos" : "Pacientes")
-        
+
         async function getConsultas() {
             const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
             setConsultaLista(promise.data);
@@ -65,10 +65,10 @@ export const Home = ({
 
         async function profileLoad() {
             const token = await userDecodeToken();
-    
+
             if (token) {
                 setIdUser(token.id);
-    
+
                 setNameUser(token.name)
                 setProfile(token.role)
                 // console.log(profile);
@@ -80,17 +80,17 @@ export const Home = ({
     }, [dataConsulta]);
 
 
-    function MostrarModal(modal, consulta){
+    function MostrarModal(modal, consulta) {
 
-        setConsultaSelecionada( consulta )
+        setConsultaSelecionada(consulta)
 
-        
-        if (modal == 'cancelar') {
-            setShowModalCancel(true)
-        }else if(modal == 'prontuario'){
+
+        if (modal == 'prontuario') {
+            setShowModalAppointment(true)
+        } else if (modal == 'prescricao') {
             setShowModalPerfilMed(true)
-        }else{
-            setShowModalConsultas(true)
+        } else {
+            setShowModalCancel(true)
         }
     }
 
@@ -148,12 +148,12 @@ export const Home = ({
                             nameUser={nameUser}
                             data={item}
                             situacao={item.situacao.situacao}
-                            onPressCancel={() => setShowModalCancel(true)}
-                            //onPressAppointment={() => setShowModalAppointment(true)}
+                            // onPressAppointment={() => setShowModalAppointment(true)}
                             //onPressPerfilMed={() => setShowModalPerfilMed(true)}
-
-                             onPressAppointment={()=> MostrarModal('cancelar', item)}
-                             onPressPerfilMed={()=> MostrarModal('prontuario', item)}
+                            
+                            onPressAppointment={() => MostrarModal('prontuario', item)}
+                            onPressPerfilMed={() => MostrarModal('prescricao', item)}
+                            onPressCancel={() => setShowModalCancel(true)}
 
 
                             navigation={navigation}
