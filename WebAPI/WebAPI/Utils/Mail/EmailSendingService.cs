@@ -31,7 +31,7 @@ namespace WebAPI.Utils.Mail
             }
         }
 
-        public async Task Recovery(string email, int codigo)
+        public async Task SendRecovery(string email, int codigo)
         {
             try
             {
