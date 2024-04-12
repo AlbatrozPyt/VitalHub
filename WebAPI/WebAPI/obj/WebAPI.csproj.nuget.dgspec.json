@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\24004134870\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj": {}
+    "C:\\Users\\24004134870\\Desktop\\2023-3S-3DS-Alunos\\Tarde\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\24004134870\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj": {
+    "C:\\Users\\24004134870\\Desktop\\2023-3S-3DS-Alunos\\Tarde\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\24004134870\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\24004134870\\Desktop\\2023-3S-3DS-Alunos\\Tarde\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Users\\24004134870\\Desktop\\VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+        "projectPath": "C:\\Users\\24004134870\\Desktop\\2023-3S-3DS-Alunos\\Tarde\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\24004134870\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\24004134870\\Desktop\\VitalHub\\WebAPI\\WebAPI\\obj\\",
+        "outputPath": "C:\\Users\\24004134870\\Desktop\\2023-3S-3DS-Alunos\\Tarde\\API-VitalHub\\WebAPI\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\24004134870\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,9 +40,17 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Azure.Storage.Blobs": {
+              "target": "Package",
+              "version": "[12.19.1, )"
+            },
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.4.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -65,6 +73,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.14, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.4.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

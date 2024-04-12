@@ -90,7 +90,9 @@ export const Perfil = ({
 
     // ATUALIZAR O USUARIO
     async function putPerfil() {
-        await api.put(`/Pacientes/AtualizarPerfil?idUsuario=${userId}`, {
+        const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
+
+        await api.put(`/${rota}/AtualizarPerfil?idUsuario=${userId}`, {
             "cpf": cpf,
             "rg": rg,
             "dataNascimento": dataNascimento,

@@ -20,20 +20,32 @@ namespace WebAPI.Controllers
             usuarioRepository = new UsuarioRepository();
         }
 
-        [Authorize]
         [HttpPut("AlterarSenha")]
-        public IActionResult AlterarSenha(AlterarSenhaViewModel senhas)
+        public IActionResult UpdatePassword(string email, AlterarSenhaViewModel senha)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
+                usuarioRepository.AlterarSenha(email, senha.SenhaNova!);
 
-            bool correto = usuarioRepository.AlterarSenha(idUsuario, senhas.SenhaAntiga, senhas.SenhaNova);
-            if (!correto)
-                return Unauthorized("Senha incorreta");
-
-            return Ok();
+                return Ok("Senha alterada com sucesso !");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        
-
+        [HttpGet("BuscarPorId")]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(usuarioRepository.BuscarPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
