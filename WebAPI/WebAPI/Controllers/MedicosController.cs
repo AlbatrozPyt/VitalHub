@@ -5,6 +5,8 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.Utils.BlobStorage;
+using WebAPI.Utils.Mail;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
@@ -14,9 +16,11 @@ namespace WebAPI.Controllers
     public class MedicosController : ControllerBase
     {
         private IMedicoRepository _medicoRepository;
-        public MedicosController()
+        private readonly EmailSendService emailSendService;
+        public MedicosController(EmailSendService _emailSendService)
         {
             _medicoRepository = new MedicoRepository();
+            emailSendService = _emailSendService;
         }
 
         [HttpGet]
@@ -47,14 +51,24 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public IActionResult Post(MedicoViewModel medicoModel)
+        public async Task<IActionResult> Post([FromForm]MedicoViewModel medicoModel)
         {
             Usuario user = new Usuario();
             user.Nome = medicoModel.Nome;
             user.Email = medicoModel.Email;
             user.TipoUsuarioId = medicoModel.IdTipoUsuario;
-            user.Foto = medicoModel.Foto;
             user.Senha = medicoModel.Senha;
+            
+            user.Foto = medicoModel.Foto;
+
+            // Define o nome do container do blob
+            var containerName = "containervitalhubpedro";
+
+            // String de conexão
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg15;AccountKey=IN+DEYZjIQLDCG4pTvAa3ZGD+yCno9aN4lFvYzx/c7gWu1qL5vkMS5xlDcs481AIga9Q68gZa3u1+AStLB6aag==;EndpointSuffix=core.windows.net";
+
+            // Método para upload de imagem            
+            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
 
             user.Medico = new Medico();
             user.Medico.Crm = medicoModel.Crm;
@@ -67,6 +81,8 @@ namespace WebAPI.Controllers
             user.Medico.Endereco.Cep = medicoModel.Cep;
 
             _medicoRepository.Cadastrar(user);
+
+            await emailSendService.SendWelcomeEmail(user.Email!, user.Nome!);
 
             return Ok();
         }
