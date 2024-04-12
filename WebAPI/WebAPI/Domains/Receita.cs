@@ -9,7 +9,5 @@ public partial class Receita
 
     public string? Medicamento { get; set; }
 
-    public string? Observacoes { get; set; }
-
     public virtual ICollection<Consulta> Consulta { get; set; } = new List<Consulta>();
 }

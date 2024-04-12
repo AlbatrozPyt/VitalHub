@@ -9,64 +9,102 @@ namespace WebAPI.Repositories
     {
         VitalContext ctx = new VitalContext();
 
-        public bool AlterarSenha(Guid Id, string senhaAntiga, string senhaNova)
+        public bool AlterarSenha(string email, string senhaNova)
         {
-            var user = ctx.Usuarios.FirstOrDefault(x => x.Id == Id);
+            try
+            {
+                var user = ctx.Usuarios.FirstOrDefault(x => x.Email == email);
 
-            if (user == null) return false;
+                if (user == null) return false;
 
-            if (!Criptografia.CompararHash(user.Senha, senhaAntiga)) return false;
-            user.Senha = Criptografia.GerarHash(senhaNova);
-            ctx.Update(user);
-            ctx.SaveChanges();
+                user.Senha = Criptografia.GerarHash(senhaNova);
 
+                ctx.Update(user);
 
-            return true;
+                ctx.SaveChanges();
 
+                return true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void AtualizarFoto(Guid id, string novaUrlFoto)
+        {
+            try
+            {
+                Usuario usuarioBuscado = ctx.Usuarios.FirstOrDefault(x => x.Id == id)!;
+
+                if (usuarioBuscado != null)
+                {
+                    usuarioBuscado.Foto = novaUrlFoto;
+                }
+
+                ctx.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Usuario BuscarPorEmailESenha(string email, string senha)
         {
-           // var user = ctx.Usuarios.FirstOrDefault
-               // (x => x.Email== email);
-
-            var user = ctx.Usuarios.Select(u => new Usuario
+            try
             {
-                Id = u.Id,
-                Email = u.Email,
-                Senha = u.Senha,
-                Nome =  u.Nome,
-                TipoUsuario = new TiposUsuario
+                var user = ctx.Usuarios.Select(u => new Usuario
                 {
-                    Id = u.TipoUsuario.Id,
-                    TipoUsuario = u.TipoUsuario.TipoUsuario
-                }
-            }).FirstOrDefault
+                    Id = u.Id,
+                    Email = u.Email,
+                    Senha = u.Senha,
+                    Nome = u.Nome,
+                    TipoUsuario = new TiposUsuario
+                    {
+                        Id = u.TipoUsuario!.Id,
+                        TipoUsuario = u.TipoUsuario.TipoUsuario
+                    }
+                }).FirstOrDefault
                 (x => x.Email == email);
 
-            if (user == null) return null;
+                if (user == null) return null!;
 
-            // var senhaInformada = Criptografia.GerarHash(senha);
+                if (!Criptografia.CompararHash(senha, user.Senha!)) return null!;
 
-             if (!Criptografia.CompararHash(senha, user.Senha)) return null;
-
-            // if (!Criptografia.CompararHash(user.Senha, senhaInformada)) return null;
-
-            return user;
-            
+                return user;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Usuario BuscarPorId(Guid id)
         {
-            return ctx.Usuarios.FirstOrDefault(x => x.Id == id);
+            try
+            {
+                return ctx.Usuarios.FirstOrDefault(x => x.Id == id)!;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void Cadastrar(Usuario usuario)
         {
-            usuario.Senha = Criptografia.GerarHash(usuario.Senha);
-            ctx.Add(usuario);
-            ctx.SaveChanges();
-
+            try
+            {
+                usuario.Senha = Criptografia.GerarHash(usuario.Senha!);
+                ctx.Add(usuario);
+                ctx.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
