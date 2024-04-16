@@ -185,3 +185,6 @@ C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\refint\WebA
 C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll
+C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.dll
+C:\Users\48746019871\Desktop\VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\Microsoft.Rest.ClientRuntime.Azure.dll
