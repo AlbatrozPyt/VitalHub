@@ -11,6 +11,7 @@ import { Title } from "../../components/Title/style"
 export const MedicoProntuario = ({
     navigation
 }) => {
+    
     return (
         <Container>
             <Scroll>
