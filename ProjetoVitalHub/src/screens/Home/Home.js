@@ -38,7 +38,6 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
-<<<<<<< HEAD
 
     const [consultaLista, setConsultaLista] = useState([])
 
@@ -51,19 +50,18 @@ export const Home = ({
 
         getConsultas();
     }, []);
-=======
+    
     const [spinner, setSpinner] = useState(false);
 
->>>>>>> origin/Matheus
     return (
         <Container>
             {/* Spinner de carregamento */}
             {
                 spinner ? (
-                    <Spinner 
+                    <Spinner
                         setFalse={setSpinner}
                         navigation={navigation}
-                        screen={'Login'} 
+                        screen={'Login'}
                     />
                 ) : null
             }
