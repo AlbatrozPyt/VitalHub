@@ -29,8 +29,8 @@ export const Login = ({
     navigation
 }) => {
 
-    const [email, setEmail] = useState('paciente')
-    const [senha, setSenha] = useState('paciente')
+    const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br')
+    const [senha, setSenha] = useState('banana')
     const [emailInvalid, setEmailInvalid] = useState(false);
     const [passwordInvalid, setPasswordInvalid] = useState(false);
     const [loadButton, setLoadButton] = useState(false);

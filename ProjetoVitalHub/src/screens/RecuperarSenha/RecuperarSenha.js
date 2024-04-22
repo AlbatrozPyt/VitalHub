@@ -11,12 +11,30 @@ import { Title } from "../../components/Title/style"
 import logo from "../../../assets/logo.png"
 import IconVoltar from "../../../assets/setaVoltar.jpg"
 import { ButtonIcon, IconLogin } from "../Home/style"
+import { useState } from "react"
+import api from "../../services/services"
+import { Alert, Text } from "react-native"
+import { Spinner } from "../../components/Spinner"
 
 export const RecuperarSenha = ({
     navigation
 }) => {
+
+    const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br');
+    const [spinner, setSpinner] = useState(false);
+
+    async function MandarCodigo(e) {
+        const promise = await api.post(`/ReuperarSenha?email=${e}`)
+        setP(promise.data)
+    }
+
     return (
         <Container>
+
+            {/* {
+                spinner ? <Spinner navigation={navigation} screen={"VerificarEmail"} /> : null
+            } */}
+
 
             <ButtonIcon onPress={() => navigation.replace("Login")}>
                 <IconLogin source={IconVoltar} />
@@ -30,13 +48,23 @@ export const RecuperarSenha = ({
             <Subtitle>Digite abaixo seu email cadastrado que enviaremos um link para recuperação de senha</Subtitle>
             <ContainerInputButtom>
                 <InputStyle
-                    placeholder="Usuário ou email"
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={txt => setEmail(txt)}
                 />
 
-                <Button onPress={() => navigation.replace("VerificarEmail")}>
+                <Button onPress={() => {
+                    if (email !== '') {
+                        MandarCodigo(email)
+                    }
+
+                    navigation.replace("VerificarEmail", {email});
+                    setSpinner(true)
+                }}>
                     <ButtonTitle>Continuar</ButtonTitle>
                 </Button>
             </ContainerInputButtom>
+
         </Container>
     )
 }
