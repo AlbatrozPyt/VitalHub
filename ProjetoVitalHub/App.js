@@ -37,6 +37,11 @@ import { Prescricao } from './src/screens/Prescricao/Prescricao';
 import { Main } from './src/screens/Main/Main';
 
 
+import * as MediaLibrary from "expo-media-library"
+import * as ImagePicker from "expo-image-picker"
+import { Camera } from 'expo-camera';
+import { useEffect } from 'react';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -53,6 +58,13 @@ export default function App() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  async function requestGaleria() {
+    await MediaLibrary.requestPermissionsAsync();
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  }
+
+  // useEffect(() => requestGaleria(), [])
 
   return (
     //Estrututura 

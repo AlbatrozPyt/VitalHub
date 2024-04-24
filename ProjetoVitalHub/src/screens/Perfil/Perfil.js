@@ -9,15 +9,21 @@ import { Subtitle } from "../../components/Text/style"
 import { BoxInput } from "../../components/BoxInput"
 import { Button } from "../../components/Button/style"
 import { ButtonTitle } from "../../components/ButtonTitle/style"
-import { Alert } from "react-native"
+import { Alert, View } from "react-native"
 import { DadosPessoais } from "./style"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../Utils/Auth"
+
 
 import api from "../../services/services"
 import { faL } from "@fortawesome/free-solid-svg-icons"
 import { Spinner } from "../../components/Spinner"
 
+
+//Importando os icones
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { BottomCamera } from "./style"
+import { CameraComp } from "../../components/CameraComp/CameraComp"
 
 export const Perfil = ({
     navigation,
@@ -48,6 +54,9 @@ export const Perfil = ({
     // Ativa a edicao do perfil
     const [edit, setEdit] = useState(false);
 
+
+    const [showModalCamera, setShowModalCamera] = useState(false)
+    
 
     // CARREGA O USUARIO
     async function profileLoad() {
@@ -90,16 +99,19 @@ export const Perfil = ({
 
     // ATUALIZAR O USUARIO
     async function putPerfil() {
+        console.log(userId);
+
         const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
 
-        await api.put(`/${rota}/AtualizarPerfil?idUsuario=${userId}`, {
-            "cpf": cpf,
+        await api.put(`/Pacientes?idUsuario=${userId}`, {
             "rg": rg,
-            "dataNascimento": dataNascimento,
+            "cpf": cpf,
             "cep": cep,
             "logradouro": logradouro,
             "cidade": cidade,
+            "dataNascimento": dataNascimento,
         })
+            .catch(e => console.log(e))
     }
 
 
@@ -120,7 +132,17 @@ export const Perfil = ({
             }
 
             <Scroll>
-                <FotoStyle source={fotoPerfil} />
+                <View>
+                    <FotoStyle source={fotoPerfil} />
+                    <BottomCamera onPress={() => setShowModalCamera(true)}>
+                        <MaterialCommunityIcons name="camera-plus" size={20} color={'#fbfbfb'} />
+                    </BottomCamera>
+
+                    <CameraComp
+                        visible={showModalCamera}
+                        setShowCamera={setShowModalCamera}
+                    />
+                </View>
 
                 <DadosPessoais>
                     <Title textAlign={"center"}>{userName !== null ? userName : null}</Title>

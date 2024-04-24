@@ -15,6 +15,7 @@ import { ButtonIcon, IconLogin } from "../Home/style"
 import iconFechar from "../../../assets/fecharIcon.png"
 import { useRef, useState } from "react"
 import api from "../../services/services"
+import { Alert, TouchableOpacity } from "react-native"
 
 
 export const VerificarEmail = ({
@@ -24,7 +25,6 @@ export const VerificarEmail = ({
 
     const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const [code, setCode] = useState('');
-    const [p, setP] = useState("")
 
     function focusNextInput(index) {
         if (index < inputs.length - 1) {
@@ -43,7 +43,13 @@ export const VerificarEmail = ({
             .then(() => {
                 navigation.replace('RedifinirSenha', { email: route.params.email })
             })
-            .catch(e => console.log(e))
+            .catch(e => Alert.alert(`Codigo`, `Codigo inválido.`))
+    }
+
+    async function ReenviarCodigo(e) {
+        const promise = await api.post(`/ReuperarSenha?email=${e}`)
+            .then(() => Alert.alert('Codigo', 'O codigo foi reenviado com sucesso.'))
+            .catch(() => Alert.alert('Codigo', 'Não foi possivel reenviar o codigo.'))
     }
 
     return (
@@ -95,7 +101,9 @@ export const VerificarEmail = ({
                 </Button>
             </ContainerInputButtom>
 
-            <LinkUtil>Reenviar Código</LinkUtil>
+            <TouchableOpacity onPress={() => ReenviarCodigo(route.params.email)}>
+                <LinkUtil>Reenviar Código</LinkUtil>
+            </TouchableOpacity>
         </Container>
     )
 }

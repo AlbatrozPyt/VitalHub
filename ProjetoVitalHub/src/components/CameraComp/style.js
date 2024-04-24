@@ -55,3 +55,12 @@ export const BntClose = styled.TouchableOpacity`
     right: 30px;
     top: 60px;
 `
+
+
+// Atualizar a foto do usuario
+export const LastPhoto = styled.Image`
+    margin-bottom: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+`

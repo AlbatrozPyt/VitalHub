@@ -2,10 +2,10 @@
 import { Camera, CameraType } from 'expo-camera'
 
 // import style
-import { BntClose, BoxModal, BoxPhotoView, ButtonFlip, ButtonModal, ButtonPhoto, CameraView, PhotoImage, ViewModal } from './style'
+import { lastPhoto, BntClose, BoxModal, BoxPhotoView, ButtonFlip, ButtonModal, ButtonPhoto, CameraView, PhotoImage, ViewModal, LastPhoto } from './style'
 
 // import do modal
-import { Modal, StyleSheet } from 'react-native'
+import { Modal, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 
 // import do react
 import { useEffect, useRef, useState } from 'react'
@@ -15,23 +15,45 @@ import { FontAwesome } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
+import * as MediaLibrary from "expo-media-library"
+import * as ImagePicker from "expo-image-picker"
+
 
 export const CameraComp = ({
     visible,
     setShowCamera,
-    setPhotoPrescicao
+    setPhotoPrescicao,
+    getMediaLibrary = true
 }) => {
     const cameraRef = useRef(null)
-    const [tipoCamera, setTipoCamera] = useState(CameraType.front)
+    const [tipoCamera, setTipoCamera] = useState(CameraType.back)
     const [photo, setPhoto] = useState(null)
     const [openModal, setOpenModal] = useState(false)
+    const [lastPhoto, setLastPhoto] = useState(null)
 
+
+    async function GetLatestPhoto() {
+        const { assets } = await MediaLibrary.getAssetsAsync(
+            { sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 }
+        );
+
+        if (assets.length > 0) {
+            setLastPhoto(assets[0].uri)
+        }
+
+        console.log(assets);
+    }
 
 
     useEffect(() => {
         (async () => {
             const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync()
         })();
+
+        if (getMediaLibrary) {
+            GetLatestPhoto()
+        }
+
     }, [])
 
     async function CapturePhotos() {
@@ -59,6 +81,7 @@ export const CameraComp = ({
                 ref={cameraRef}
                 style={styles.camera}
                 type={tipoCamera}
+                ratio='16:9'
             >
                 <BoxPhotoView>
                     <ButtonPhoto onPress={() => CapturePhotos()}>
@@ -72,17 +95,26 @@ export const CameraComp = ({
                     <BntClose onPress={() => setShowCamera(false)}>
                         <AntDesign name="close" size={30} color="#fff" />
                     </BntClose>
+
+                    <TouchableOpacity>
+                        {
+                            lastPhoto !== null ? <LastPhoto source={{ uri: lastPhoto }} /> : null
+                        }
+                    </TouchableOpacity>
                 </BoxPhotoView>
             </Camera>
 
             <Modal animationType='slide' transparent={false} visible={openModal}>
                 <ViewModal>
+
+
+
                     <BoxModal>
                         <ButtonModal onPress={() => ClearModal()}>
                             <FontAwesome name='trash' size={35} color={'#ff0000'} />
                         </ButtonModal>
 
-                        <ButtonModal onPress={() => setPhotoPrescicao(photo) || ClearModal() }>
+                        <ButtonModal onPress={() => setPhotoPrescicao(photo) || ClearModal()}>
                             <FontAwesome name='upload' size={35} color={'#121212'} />
                         </ButtonModal>
                     </BoxModal>

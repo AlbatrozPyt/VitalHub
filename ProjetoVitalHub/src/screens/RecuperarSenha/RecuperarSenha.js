@@ -25,7 +25,6 @@ export const RecuperarSenha = ({
 
     async function MandarCodigo(e) {
         const promise = await api.post(`/ReuperarSenha?email=${e}`)
-        setP(promise.data)
     }
 
     return (

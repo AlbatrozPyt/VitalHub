@@ -30,7 +30,7 @@ export const Login = ({
 }) => {
 
     const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br')
-    const [senha, setSenha] = useState('banana')
+    const [senha, setSenha] = useState('Gg')
     const [emailInvalid, setEmailInvalid] = useState(false);
     const [passwordInvalid, setPasswordInvalid] = useState(false);
     const [loadButton, setLoadButton] = useState(false);

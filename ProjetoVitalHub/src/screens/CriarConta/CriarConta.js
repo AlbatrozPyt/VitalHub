@@ -28,6 +28,9 @@ export const CriarConta = ({
     const [confirmarSenha, setConfirmarSenha] = useState();
 
     async function createAccount() {
+        const form = new FormData();
+        form.append("idTipoUsuario")
+
         await api.post(`/Pacientes`, {
             idTipoUsuario: "300175F7-6A8F-4DAB-A5CF-5546D5E1B4A2",
             nome: `${nome} ${sobrenome}`,
@@ -36,7 +39,7 @@ export const CriarConta = ({
 
         })
             .then(async () => Alert.alert(`Conta criada`, `A conta foi criada com sucesso.`))
-            .catch(async () => Alert.alert(`Não foi possível criar conta`, `A conta não foi criada com sucesso.`))
+            .catch(async (e) => console.log(e))
 
     }
 
