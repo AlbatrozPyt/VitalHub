@@ -32,8 +32,10 @@ export const BoxPhotoView = styled.View`
 
 export const BoxModal = styled.View`
     margin: 20px;
-    flex-direction: row;
-    gap: 10px;
+    align-items: ${(props) => props.flexColumn ? 'center' : 'start'};
+    width: ${(props) => props.flexColumn ? '100%' : 'auto'};
+    flex-direction: ${(props) => !props.flexColumn ? 'row' : `column`};
+    gap: ${(props) => !props.flexColumn ? '10px' : '20px'};
 `
 
 export const ViewModal = styled.View`

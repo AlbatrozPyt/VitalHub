@@ -54,9 +54,11 @@ export const Perfil = ({
     // Ativa a edicao do perfil
     const [edit, setEdit] = useState(false);
 
+    const [photo, setPhoto] = useState(null);
+
 
     const [showModalCamera, setShowModalCamera] = useState(false)
-    
+
 
     // CARREGA O USUARIO
     async function profileLoad() {
@@ -86,6 +88,9 @@ export const Perfil = ({
 
         if (rota === 'Medicos') {
             setCrm(response.crm)
+            setLogradouro(response.endereco.logradouro)
+            setCep(response.endereco.cep)
+            setCidade(response.endereco.cidade)
         }
         else {
             setDataNascimento(response.dataNascimento)
@@ -99,25 +104,55 @@ export const Perfil = ({
 
     // ATUALIZAR O USUARIO
     async function putPerfil() {
-        console.log(userId);
-
         const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
 
-        await api.put(`/Pacientes?idUsuario=${userId}`, {
-            "rg": rg,
-            "cpf": cpf,
-            "cep": cep,
-            "logradouro": logradouro,
-            "cidade": cidade,
-            "dataNascimento": dataNascimento,
+        token.role === `Paciente` ?
+            await api.put(`/Pacientes?idUsuario=${userId}`, {
+                "rg": rg,
+                "cpf": cpf,
+                "cep": cep,
+                "logradouro": logradouro,
+                "cidade": cidade,
+                "dataNascimento": dataNascimento,
+            })
+                .catch(e => console.log(e))
+            :
+            await api.put(`/Medicos?idUsuario=${userId}`, {
+                "cep": cep,
+                "logradouro": logradouro,
+                "cidade": cidade,
+                "crm": crm,
+            })
+    }
+
+    // ATUALIZAR A FOTO DE PERFIL
+    async function AlterarFotoPerfil() {
+        const formData = new FormData();
+        formData.append('Arquivo', {
+            uri: photo,
+            name: `image.${photo.split(".")[3]}`,
+            type: `image/${photo.split(".")[3]}`
+        });
+
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formData, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
         })
-            .catch(e => console.log(e))
+            .then(response => setPhoto(response))
+            .catch(error => console.log(error))
     }
 
 
     useEffect(() => {
         profileLoad()
-    }, [])
+    }, [perfil])
+
+    useEffect(() => {
+        if (photo !== null) {
+            AlterarFotoPerfil()
+        }
+    }, [photo])
 
     return (
         <Container>
@@ -133,7 +168,7 @@ export const Perfil = ({
 
             <Scroll>
                 <View>
-                    <FotoStyle source={fotoPerfil} />
+                    <FotoStyle source={ perfil !== undefined ? { uri: perfil.idNavigation.foto } : null} />
                     <BottomCamera onPress={() => setShowModalCamera(true)}>
                         <MaterialCommunityIcons name="camera-plus" size={20} color={'#fbfbfb'} />
                     </BottomCamera>
@@ -141,6 +176,7 @@ export const Perfil = ({
                     <CameraComp
                         visible={showModalCamera}
                         setShowCamera={setShowModalCamera}
+                        setGalleryPhoto={setPhoto}
                     />
                 </View>
 
@@ -212,11 +248,34 @@ export const Perfil = ({
                             style={{ marginBottom: 40 }}
                         >
                             <BoxInput
-                                onChangeText={(x) => setDataNascimento(x)}
+                                onChangeText={(x) => setCrm(x)}
                                 textLabel='CRM'
-                                placeholder={crm}
+                                placeholder={!edit ? crm : perfil.crm}
                                 editable={edit}
                             />
+                            <BoxInput
+                                onChangeText={(x) => setLogradouro(x)}
+                                textLabel='Endereço'
+                                placeholder={!edit ? logradouro : perfil.endereco.logradouro}
+                                editable={edit}
+                            />
+                            <ContainerBox>
+                                <BoxInput
+                                    onChangeText={(x) => setCep(x)}
+                                    fieldWidth={45}
+                                    textLabel='CEP'
+                                    placeholder={!edit ? cep : perfil.endereco.cep}
+                                    editable={edit}
+                                />
+
+                                <BoxInput
+                                    onChangeText={(x) => setCidade(x)}
+                                    fieldWidth={50}
+                                    textLabel='Cidade'
+                                    placeholder={!edit ? cidade : perfil.endereco.cidade}
+                                    editable={edit}
+                                />
+                            </ContainerBox>
                         </ContainerPerfil>
                 }
 

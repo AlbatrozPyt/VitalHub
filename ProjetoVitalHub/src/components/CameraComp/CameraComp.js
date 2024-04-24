@@ -17,12 +17,15 @@ import { AntDesign } from '@expo/vector-icons';
 
 import * as MediaLibrary from "expo-media-library"
 import * as ImagePicker from "expo-image-picker"
+import { Button } from '../Button/style'
+import { ButtonTitle } from '../ButtonTitle/style'
 
 
 export const CameraComp = ({
     visible,
     setShowCamera,
     setPhotoPrescicao,
+    setGalleryPhoto,
     getMediaLibrary = true
 }) => {
     const cameraRef = useRef(null)
@@ -40,8 +43,34 @@ export const CameraComp = ({
         if (assets.length > 0) {
             setLastPhoto(assets[0].uri)
         }
+    }
 
-        console.log(assets);
+    async function CapturePhotos() {
+        if (cameraRef) {
+            const photo = await cameraRef.current.takePictureAsync()
+            setPhoto(photo.uri)
+            // setPhotoPrescicao(photo.uri)
+
+            setOpenModal(true)
+
+        }
+    }
+
+    async function SelectImageGallery() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1
+        });
+
+        if (!result.canceled) {
+            setPhoto(result.assets[0].uri)
+            setOpenModal(true)
+        }
+    }
+
+    function ClearModal() {
+        setPhoto(null)
+        setOpenModal(false)
     }
 
 
@@ -55,23 +84,6 @@ export const CameraComp = ({
         }
 
     }, [])
-
-    async function CapturePhotos() {
-        if (cameraRef) {
-            const photo = await cameraRef.current.takePictureAsync()
-            setPhoto(photo.uri)
-            // setPhotoPrescicao(photo.uri)
-
-            setOpenModal(true)
-
-            // console.log(photo)
-        }
-    }
-
-    function ClearModal() {
-        setPhoto(null)
-        setOpenModal(false)
-    }
 
 
 
@@ -96,7 +108,7 @@ export const CameraComp = ({
                         <AntDesign name="close" size={30} color="#fff" />
                     </BntClose>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => SelectImageGallery()}>
                         {
                             lastPhoto !== null ? <LastPhoto source={{ uri: lastPhoto }} /> : null
                         }
@@ -107,21 +119,27 @@ export const CameraComp = ({
             <Modal animationType='slide' transparent={false} visible={openModal}>
                 <ViewModal>
 
-
-
-                    <BoxModal>
-                        <ButtonModal onPress={() => ClearModal()}>
-                            <FontAwesome name='trash' size={35} color={'#ff0000'} />
-                        </ButtonModal>
-
-                        <ButtonModal onPress={() => setPhotoPrescicao(photo) || ClearModal()}>
-                            <FontAwesome name='upload' size={35} color={'#121212'} />
-                        </ButtonModal>
-                    </BoxModal>
-
                     <PhotoImage
                         source={{ uri: photo }}
                     />
+
+                    <BoxModal flexColumn={true}>
+
+                        <Button
+                            onPress={() => {
+                                setGalleryPhoto(photo)
+                                ClearModal()
+                                setShowCamera(false)
+                            }}
+                        >
+                            <ButtonTitle>Continuar</ButtonTitle>
+                        </Button>
+
+                        <Button onPress={() => ClearModal()} >
+                            <ButtonTitle>Cancelar</ButtonTitle>
+                        </Button>
+                    </BoxModal>
+
                 </ViewModal>
             </Modal>
 

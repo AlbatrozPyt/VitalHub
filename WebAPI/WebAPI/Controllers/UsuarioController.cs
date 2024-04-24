@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("AlterararFotoPerfil")]
+        [HttpPut("AlterarFotoPerfil")]
         public async Task<IActionResult> UploadProfileImage(Guid id, [FromForm] UsusarioViewModel user)
         {
             try

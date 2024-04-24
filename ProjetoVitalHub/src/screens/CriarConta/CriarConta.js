@@ -29,14 +29,16 @@ export const CriarConta = ({
 
     async function createAccount() {
         const form = new FormData();
-        form.append("idTipoUsuario")
 
-        await api.post(`/Pacientes`, {
-            idTipoUsuario: "300175F7-6A8F-4DAB-A5CF-5546D5E1B4A2",
-            nome: `${nome} ${sobrenome}`,
-            email: email,
-            senha: senha,
+        form.append("IdTipoUsuario", "300175F7-6A8F-4DAB-A5CF-5546D5E1B4A2")
+        form.append("Nome", `${nome} ${sobrenome}`)
+        form.append("Email", email)
+        form.append("Senha", senha)
 
+        await api.post(`/Pacientes`, form, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
         })
             .then(async () => Alert.alert(`Conta criada`, `A conta foi criada com sucesso.`))
             .catch(async (e) => console.log(e))
