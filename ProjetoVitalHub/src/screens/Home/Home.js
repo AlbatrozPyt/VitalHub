@@ -77,7 +77,7 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
-    }, [dataConsulta]);
+    }, [dataConsulta, showModalCancel]);
 
 
     function MostrarModal(modal, consulta) {
@@ -89,8 +89,10 @@ export const Home = ({
             setShowModalAppointment(true)
         } else if (modal == 'prescricao') {
             setShowModalPerfilMed(true)
-        } else {
+        } else if (modal == 'cancelar') {
             setShowModalCancel(true)
+        } else {
+            console.log("Há um erro.");
         }
     }
 
@@ -153,7 +155,7 @@ export const Home = ({
                             
                             onPressAppointment={() => MostrarModal('prontuario', item)}
                             onPressPerfilMed={() => MostrarModal('prescricao', item)}
-                            onPressCancel={() => setShowModalCancel(true)}
+                            onPressCancel={() => MostrarModal('cancelar', item)}
 
 
                             navigation={navigation}
@@ -171,6 +173,8 @@ export const Home = ({
             {/* modal cancelar */}
             <CancellationModal
                 visible={showModalCancel}
+                consulta={consultaSelecionada}
+
                 setShowModalCancel={setShowModalCancel}
                 ClosedModal={() => {
                     handleCallNotifications()

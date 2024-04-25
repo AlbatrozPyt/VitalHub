@@ -5,15 +5,25 @@ import { ModalContent, ModalText, PatientModal } from "./style"
 import { ButtonModal, ButtonSecondary } from "../Button/style"
 import { ButtonSecondaryTitle, ButtonTitle } from "../ButtonTitle/style"
 import { handleCallNotifications } from "../Notification/Notification"
+import api from "../../services/services"
 
 
 
 export const CancellationModal = ({
     visible,
     setShowModalCancel,
+    consulta,
     ClosedModal,
     ...rest
 }) => {
+
+    async function CancelarConsulta() {
+        await api.put(`/Consultas/Status?idConsulta=${consulta.id}&status=cancelado`)
+
+        ClosedModal()
+    }
+
+    // console.log(consulta.id);
 
     return(
         <Modal {...rest} visible={visible} transparent={true} animationType="fade">
@@ -28,7 +38,7 @@ export const CancellationModal = ({
                     Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?
                     </ModalText>
 
-                    <ButtonModal onPress={() => ClosedModal()}>
+                    <ButtonModal onPress={() => CancelarConsulta()}>
                         <ButtonTitle>Confirmar</ButtonTitle>
                     </ButtonModal>
 
