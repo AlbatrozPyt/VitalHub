@@ -9,6 +9,7 @@ import { FotoStyle } from "../../components/FotoPerfil/style"
 import { Subtitle } from "../../components/Text/style"
 import { Title } from "../../components/Title/style"
 import api from "../../services/services"
+import { Text } from "react-native"
 
 export const MedicoProntuario = ({
     navigation,
@@ -20,13 +21,14 @@ export const MedicoProntuario = ({
     // Dados da consulta
     const [descricao, setDescricao] = useState()
     const [diagnostico, setDiagnostico] = useState()
-    const [prescricao, setPrescicao] = useState()
+    const [medicamento, setMedicamento] = useState()
+
+    // const [id, setId] = useState(route.params.consultaId)
 
     function edit() {
         setEditable(true)
         setDescricao("")
         setDiagnostico(null)
-        setPrescicao(null)
     }
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export const MedicoProntuario = ({
                 // Dados da consulta
                 setDescricao(promise.data.descricao)
                 setDiagnostico(promise.data.diagnostico)
-                setPrescicao(promise.data.receita.medicamento)
+                setMedicamento(promise.data.receita.medicamento)
             }
             else {
                 console.log("Ocorreu um erro em médico prontuário");
@@ -46,53 +48,69 @@ export const MedicoProntuario = ({
         }
 
         getConsultas()
-    }, [])
+    }, [editable])
+
+    async function PutConsultas() {
+        await api.put(`/Consultas/Prontuario`, {
+            "consultaId": route.params.consultaId,
+            "medicamento": medicamento,
+            "descricao": descricao,
+            "diagnostico": diagnostico
+        })
+        setEditable(false)
+
+    }
+
     return (
         <Container>
             {
                 consulta != null && (
                     <Scroll>
                         <FotoStyle source={{
-                            uri: "https://github.com/Filipe-Gois.png",
+                            uri: consulta.paciente.idNavigation.foto,
                         }} />
 
                         <Title marginTop={'20px'} textAlign={"center"}>{consulta != null ? consulta.paciente.idNavigation.nome : "falta algo"}</Title>
                         <Subtitle>{consulta.paciente.dataNascimento == null ? "não há nada"
-                                : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1)} anos  {consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
+                            : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1)} anos  {consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
 
                         <ContainerPerfil>
                             <BoxInput
                                 fieldColor={"#34898F"}
-                                fieldBorderColor={"#49B3BA"}
+                                fieldBorderColor={!editable ? "#49B3BA" : "#fff"}
                                 fieldHeight={121}
                                 textLabel='Descrição da consulta'
-                                placeholder='Descrição'
+                                placeholder={!editable ? descricao : consulta.descricao}
                                 editable={editable}
-                                fieldValue={descricao}
+                                fieldValue={editable ? descricao : consulta.descricao}
+                                onChangeText={(x) => setDescricao(x)}
                             />
+
 
                             <BoxInput
                                 fieldColor={"#34898F"}
-                                fieldBorderColor={"#49B3BA"}
+                                fieldBorderColor={!editable ? "#49B3BA" : "#fff"}
                                 fieldHeight={53}
                                 textLabel='Diagnóstico do paciente'
-                                placeholder='Diagnóstico'
+                                placeholder={!editable ? diagnostico : consulta.diagnostico}
                                 editable={editable}
-                                // fieldValue={diagnostico}
+                                fieldValue={editable ? diagnostico : consulta.diagnostico}
+                                onChangeText={(x) => setDiagnostico(x)}
                             />
 
                             <BoxInput
                                 fieldColor={"#34898F"}
-                                fieldBorderColor={"#49B3BA"}
+                                fieldBorderColor={!editable ? "#49B3BA" : "#fff"}
                                 fieldHeight={121}
                                 textLabel='Prescrição médica'
-                                placeholder='Prescrição médica'
+                                placeholder={!editable ? medicamento : consulta.receita.medicamento}
                                 editable={editable}
-                                fieldValue={prescricao}
+                                fieldValue={editable ? medicamento : consulta.receita.medicamento}
+                                onChangeText={(x) => setMedicamento(x)}
                             />
 
                             <ContainerInputButtom>
-                                <Button>
+                                <Button onPress={() => PutConsultas()}>
                                     <ButtonTitle>Salvar</ButtonTitle>
                                 </Button>
 

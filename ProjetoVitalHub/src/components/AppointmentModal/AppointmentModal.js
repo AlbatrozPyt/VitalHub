@@ -28,31 +28,39 @@ export const AppointmentModal = ({
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {
-                consulta != null && (
-                    <AppointmentModalStyle>
+                roleUsuario == "Medico" && (
+                    <>
+                        {
+                            consulta != null && (
+                                <AppointmentModalStyle>
 
-                        <AppointmentContent>
-                            <ImagePatient source={fotoPerfil} />
+                                    <AppointmentContent>
+                                        <ImagePatient source={fotoPerfil} />
 
-                            <Title>{consulta != null ? consulta.paciente.idNavigation.nome : "Nome não carregou"}</Title>
+                                        <Title>{consulta != null ? consulta.paciente.idNavigation.nome : "Nome não carregou"}</Title>
 
-                            {/* Teste para não quebrar o code */}
-                            {/* {consulta == null ? "não há nada" : "Há algo"} */}
+                                        {/* Teste para não quebrar o code */}
+                                        {/* {consulta == null ? "não há nada" : "Há algo"} */}
 
-                            <Subtitle>{consulta.paciente.dataNascimento == null ? "não há nada"
-                                : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1) || consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
+                                        <Subtitle>{consulta.paciente.dataNascimento == null ? "não há nada"
+                                            : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1) || consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
 
-                            <ButtonModal onPress={() => handlePress("MedicoProntuario")} >
-                                <ButtonTitle>Inserir protuário</ButtonTitle>
-                            </ButtonModal>
+                                        <ButtonModal onPress={() => handlePress("MedicoProntuario")} >
+                                            <ButtonTitle>Inserir protuário</ButtonTitle>
+                                        </ButtonModal>
 
-                            <ButtonSecondary onPress={() => setShowModalAppointment(false)}>
-                                <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
-                            </ButtonSecondary>
-                        </AppointmentContent>
-                    </AppointmentModalStyle>
+                                        <ButtonSecondary onPress={() => setShowModalAppointment(false)}>
+                                            <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
+                                        </ButtonSecondary>
+                                    </AppointmentContent>
+                                </AppointmentModalStyle>
+                            )
+                        }
+                    </>
                 )
             }
+
+
             {/* Container */}
 
         </Modal>
@@ -181,44 +189,51 @@ export const ModalPerfilMed = ({
     visible,
     setShowModalPerfilMed,
     navigation,
-    consulta,
+    consultaMed,
     roleUsuario
 }) => {
     // const [consultax, setConsulta] = useState()
     function handlePress(rota) {
-        navigation.navigate(rota, { clinicaId: consulta.medicoClinica.clinicaId })
-        // setConsulta({consulta})
-
-        console.log(consulta);
+        navigation.navigate(rota, { clinicaId: consultaMed.medicoClinica.clinicaId })
     }
+
+    // console.log(roleUsuario);
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {/* Container */}
+
             {
-                consulta != null && (
-                    <AppointmentModalStyle>
+                roleUsuario != "Medico" && (
+                    <>
+                        {
+                            consultaMed != null && (
+                                <AppointmentModalStyle>
 
-                        <AppointmentContent>
-                            <ImagePatient
-                                // margin={"20px"}
-                                source={{ uri: "https://media.licdn.com/dms/image/D4D03AQFY7jiWefxVnA/profile-displayphoto-shrink_800_800/0/1678934773265?e=1714608000&v=beta&t=ez1fnmpbDyUkDmRn3GHLkjaw05s7n8f6jb8Pik-_RUg" }} />
+                                    <AppointmentContent>
+                                        <ImagePatient
+                                            // margin={"20px"}
+                                            source={{ uri: consultaMed.medicoClinica.medico.idNavigation.foto }} />
 
-                            {/* Terminar essa parte */}
-                            {/* <Title>Dr. {consulta != null ? consulta.medicoClinica.medico.idNavigation.nome : null}</Title> */}
+                                        <Title>Dr. {consultaMed.medicoClinica.medico.idNavigation.nome}</Title>
 
-                            {/* <Subtitle>Cliníco geral    CRM-{consulta != null ? consulta.medicoClinica.medico.crm : null}</Subtitle> */}
+                                        <Subtitle>{consultaMed.medicoClinica.medico.especialidade.especialidade1}    CRM-{consultaMed.medicoClinica.medico.crm}</Subtitle>
 
-                            <ButtonModal onPress={() => setShowModalPerfilMed(false) || handlePress("Mapa")}>
-                                <ButtonTitle>Ver local da consulta</ButtonTitle>
-                            </ButtonModal>
+                                        <ButtonModal onPress={() => setShowModalPerfilMed(false) || handlePress("Mapa")}>
+                                            <ButtonTitle>Ver local da consulta</ButtonTitle>
+                                        </ButtonModal>
 
-                            <ButtonSecondary onPress={() => setShowModalPerfilMed(false)}>
-                                <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
-                            </ButtonSecondary>
-                        </AppointmentContent>
-                    </AppointmentModalStyle>
+                                        <ButtonSecondary onPress={() => setShowModalPerfilMed(false)}>
+                                            <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
+                                        </ButtonSecondary>
+                                    </AppointmentContent>
+                                </AppointmentModalStyle>
+                            )
+                        }
+                    </>
                 )
             }
+
+
 
         </Modal>
     )

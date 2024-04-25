@@ -6,10 +6,11 @@ import { TitleName } from "../Title/style";
 import { TextAge, TypeBold } from "../Text/style";
 
 import { AntDesign } from '@expo/vector-icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../../services/services";
 
 export const CardConsulta = ({
-    data = [],
+    data,
     nameUser,
     situacao,
     onPressCancel,
@@ -18,7 +19,6 @@ export const CardConsulta = ({
     navigation,
 
     roleUsuario,
-    dataConsulta,
     prioridade,
     usuarioConsulta
 
@@ -27,17 +27,25 @@ export const CardConsulta = ({
 
     const [nome, setNome] = useState(usuarioConsulta.idNavigation.nome);
 
+
+
+    function handlePress(rota) {
+        navigation.replace(rota, { consultaId: data.id })
+    }
+    
     return (
         // Container principal
-        
-        <CardConsultaStyle onPress={ roleUsuario == 'Paciente' ? onPressPerfilMed : null}>
+
+        <CardConsultaStyle onPress={roleUsuario == 'Paciente' ? onPressPerfilMed : onPressAppointment}>
             {/* Imagem do paciente */}
-            <ImageUser source={ImageUser1} />
+            {roleUsuario == 'Paciente' ? <ImageUser source={{ uri: data.medicoClinica.medico.idNavigation.foto }} />
+                : <ImageUser source={{ uri: data.paciente.idNavigation.foto }} />}
+            {/* <ImageUser source={{ uri: data.medicoClinica.medico.idNavigation.foto }} /> */}
 
             <ContentCard>
                 {/* Conteúdo do card */}
                 <BoxInfos>
-                    <TitleName>{nome.length > 10 ? nome.substring(15, -1)+"..." : nome }</TitleName>
+                    <TitleName>{nome.length > 10 ? nome.substring(15, -1) + "..." : nome}</TitleName>
 
                     <AgeAndTypeBox>
                         <TextAge>{roleUsuario == 'Medico' ? '22 anos' : `CRM: ${usuarioConsulta.crm}`}</TextAge>
@@ -55,7 +63,7 @@ export const CardConsulta = ({
 
                     {/* Botão Cancelar ou ver prontuário */}
 
-                    { 
+                    {
                         situacao == "cancelado" ? (
                             <>
                             </>
@@ -64,7 +72,7 @@ export const CardConsulta = ({
                                 <ButtonText situacao={situacao}>Cancelar</ButtonText>
                             </ButtonCard>
                         ) : (
-                            <ButtonCard onPress={ roleUsuario !== "Paciente" ? onPressAppointment : () => navigation.replace("Prescricao")}>
+                            <ButtonCard onPress={roleUsuario !== "Paciente" ? onPressAppointment : () => handlePress("Prescricao")}>
                                 <ButtonText situacao={situacao}>Ver prontuário</ButtonText>
                             </ButtonCard>
                         )
