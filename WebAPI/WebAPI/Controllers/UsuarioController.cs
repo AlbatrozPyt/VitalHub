@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using WebAPI.Domains;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
 using WebAPI.Utils.BlobStorage;

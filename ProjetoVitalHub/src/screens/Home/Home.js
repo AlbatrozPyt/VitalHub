@@ -11,7 +11,6 @@ import { AppointmentModal, ModalConsultas, ModalPerfilMed } from "../../componen
 import { ButtonAppointment } from "../../components/ButtonAppointment"
 import { handleCallNotifications } from "../../components/Notification/Notification"
 import { Spinner } from "../../components/Spinner"
-import { userDecodeToken } from "../../Utils/Auth"
 
 // Import da API
 import api from "../../services/services"
@@ -89,29 +88,9 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
-<<<<<<< HEAD
     }, []);
     
     const [spinner, setSpinner] = useState(false);
-=======
-    }, [dataConsulta]);
-
-
-    function MostrarModal(modal, consulta) {
-
-        setConsultaSelecionada(consulta)
-
-
-        if (modal == 'prontuario') {
-            setShowModalAppointment(true)
-        } else if (modal == 'prescricao') {
-            setShowModalPerfilMed(true)
-        } else {
-            setShowModalCancel(true)
-        }
-    }
-
->>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974
 
     return (
         <Container>
