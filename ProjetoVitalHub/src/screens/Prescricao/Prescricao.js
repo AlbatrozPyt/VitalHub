@@ -11,9 +11,10 @@ import { ContainerBoxPrescricao, Linha } from "./style"
 import { CameraComp } from "../../components/CameraComp/CameraComp"
 
 //Componente nativo
-import { useState } from "react"
-import { Image, StyleSheet } from "react-native"
+import { useEffect, useState } from "react"
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Label } from "../../components/Label"
+import api from "../../services/services"
 
 export const Prescricao = ({
     navigation
@@ -21,10 +22,38 @@ export const Prescricao = ({
 
     const [showCamera, setShowCamera] = useState(false)
     const [photoPrescicao, setPhotoPrescicao] = useState(null)
+    const [photo, setPhoto] = useState(null)
+    const [descricao, setDescricao] = useState(null)
 
+    async function InserirExame() {
+        const formData = new FormData()
+        formData.append('ConsultaId', `C99800FE-CCC3-4503-BDB0-F0DCFD1AEF7E`);
+        formData.append('Imagem', {
+            uri: photo,
+            name: `image.${photo.split(".").pop()}`,
+            type: `image/${photo.split(".").pop()}`
+        })
+
+        await api.post('/Exame/Cadastrar', formData, {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        })
+            .then(response => {
+                setDescricao('\n' + response.data.descricao)
+                console.log(descricao);
+            })
+            .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        if (photo !== null) {
+            InserirExame()
+        }
+    }, [photo])
 
     return (
-        <Container>
+        < Container >
             <Scroll>
                 <FotoStyle source={{ uri: "https://media.licdn.com/dms/image/D4D03AQE9_PLYntkCmw/profile-displayphoto-shrink_800_800/0/1708700875958?e=1715212800&v=beta&t=ZCHIpyvcu03a35K-8J0mVD387-G4HjKh0_xoUw2rINQ" }} />
 
@@ -50,7 +79,7 @@ export const Prescricao = ({
                     />
 
                     {
-                        photoPrescicao == null ? (
+                        photo == null ? (
                             <BoxInput
                                 textLabel={"Exames médicos"}
                                 placeholder={"                  Nenhuma foto informada"}
@@ -59,10 +88,10 @@ export const Prescricao = ({
                             </BoxInput>
                         ) : (
                             <>
-                            <Label
-                                textLabel={"Exames médicos"}
-                            />
-                            <Image style={styles.imageStyle} source={{ uri: photoPrescicao }} />
+                                <Label
+                                    textLabel={"Exames médicos"}
+                                />
+                                <Image style={styles.imageStyle} source={{ uri: photo }} />
                             </>
                         )
                     }
@@ -75,17 +104,17 @@ export const Prescricao = ({
                         </Button>
 
 
-                        <ButtonSecondaryTitle onPress={() => navigation.navigate("Home")} color={"#C81D25"}>Cancelar</ButtonSecondaryTitle>
+                        <ButtonSecondaryTitle onPress={() => setPhoto(null)} color={"#C81D25"}>Cancelar</ButtonSecondaryTitle>
 
                     </ContainerBoxPrescricao>
 
                     <Linha />
 
-                    <BoxInput
-                        textLabel={"Exames médicos"}
-                        placeholder={"Resultado do exame de sangue:"}
-                        fieldHeight={"103"}
-                    />
+                
+
+                    <ScrollView style={{width: '90%', height: 103}}>
+                        <Text>{descricao}</Text>
+                    </ScrollView>
 
                     <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                         <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
@@ -97,10 +126,11 @@ export const Prescricao = ({
                     visible={showCamera}
                     setShowCamera={setShowCamera}
                     setPhotoPrescicao={setPhotoPrescicao}
+                    setGalleryPhoto={setPhoto}
                 />
 
             </Scroll>
-        </Container>
+        </Container >
     )
 }
 

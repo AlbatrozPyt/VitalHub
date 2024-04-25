@@ -130,8 +130,8 @@ export const Perfil = ({
         const formData = new FormData();
         formData.append('Arquivo', {
             uri: photo,
-            name: `image.${photo.split(".")[3]}`,
-            type: `image/${photo.split(".")[3]}`
+            name: `image.${photo.split(".").pop()}`,
+            type: `image/${photo.split(".").pop()}`
         });
 
         await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formData, {
@@ -168,7 +168,7 @@ export const Perfil = ({
 
             <Scroll>
                 <View>
-                    <FotoStyle source={ perfil !== undefined ? { uri: perfil.idNavigation.foto } : null} />
+                    <FotoStyle source={perfil !== undefined ? { uri: perfil.idNavigation.foto } : null} />
                     <BottomCamera onPress={() => setShowModalCamera(true)}>
                         <MaterialCommunityIcons name="camera-plus" size={20} color={'#fbfbfb'} />
                     </BottomCamera>

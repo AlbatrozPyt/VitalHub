@@ -47,7 +47,12 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
             {/* <HeaderContainer> */}
             <HeaderContent>
                 <BoxHeader>
-                    <FotoPerfilHome source={{uri: perfil.idNavigation.foto}} />
+                    <FotoPerfilHome
+                        source={
+                            perfil !== undefined ?
+                                { uri: perfil.idNavigation.foto } : null
+                        }
+                    />
 
                     <ContainerTxtHeader>
                         <TextHeader>Bem vindo</TextHeader>
