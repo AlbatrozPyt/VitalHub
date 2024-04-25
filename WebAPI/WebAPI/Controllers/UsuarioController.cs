@@ -46,17 +46,26 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("AlterarFotoPerfil")]
+<<<<<<< HEAD
         public async Task<IActionResult> UploadProfileImage(Guid id, [FromForm] UsusarioViewModel user)
         {
             try
             {
                 var usuarioBuscado = usuarioRepository.BuscarPorId(id);
 
+=======
+        public async Task<IActionResult> UploadProfileImage(Guid id,[FromForm] UsuarioViewModel user)
+        {
+            try
+            {
+                Usuario usuarioBuscado = usuarioRepository.BuscarPorId(id);
+>>>>>>> Pedro
                 if (usuarioBuscado == null)
                 {
                     return NotFound();
                 }
 
+<<<<<<< HEAD
                 // lógica para o upload de imagem
                 var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobmatheusenrike;AccountKey=wBs/O9Sjz94SbXLDSZa1JvmHfkKtI7sCuf5ZXRNMtYKQ6do+ljl+GJKB/0ySq4Yd34Wx8u6609c1+AStnI0uXg==;EndpointSuffix=core.windows.net";
 
@@ -64,11 +73,23 @@ namespace WebAPI.Controllers
 
                 string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
 
+=======
+                // Lógica para o upload de imagem
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg15;AccountKey=IN+DEYZjIQLDCG4pTvAa3ZGD+yCno9aN4lFvYzx/c7gWu1qL5vkMS5xlDcs481AIga9Q68gZa3u1+AStLB6aag==;EndpointSuffix=core.windows.net";
+
+                var containerName = "containervitalhubpedro";
+
+                string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
+
+                // Fim da lógica
+
+>>>>>>> Pedro
                 usuarioBuscado.Foto = fotoUrl;
 
                 usuarioRepository.AtualizarFoto(id, fotoUrl);
 
                 return Ok();
+<<<<<<< HEAD
             }
             catch (Exception e)
             {
@@ -76,5 +97,15 @@ namespace WebAPI.Controllers
             }
         }
 
+=======
+
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+>>>>>>> Pedro
     }
 }

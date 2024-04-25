@@ -9,15 +9,27 @@ import { useEffect, useState } from "react"
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { TouchableOpacity, View } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+<<<<<<< HEAD
 import { Spinner } from "../Spinner"
+<<<<<<< HEAD
 import api from "../../services/services"
+=======
+=======
+import api from "../../services/services"
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
+>>>>>>> Pedro
 
 export function HeaderHome({ navigation, setSpinnerHome }) {
 
+<<<<<<< HEAD
     const [nameUser, setNameUser] = useState()
     const [perfil, setPerfil] = useState()
     const [loadButton, setLoadButton] = useState(false);
+=======
+    const [user, setUser] = useState()
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
 
+<<<<<<< HEAD
 
     // BUSCAR O USUARIO
     async function getPerfil(token) {
@@ -30,20 +42,54 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
 
     async function profileLoad() {
         const token = await userDecodeToken();
+=======
+>>>>>>> Pedro
 
+<<<<<<< HEAD
         if (token) {
             getPerfil(token)
             setNameUser(token.name)
         }
     }
+=======
+
+    // const [fotoPerfil, setFotoPerfil] = useState()
+    // async function buscarFoto() {
+    //     const foto = await api.get(`/Usuario/BuscarPorId?id=${user.id}`)
+
+    //     setFotoPerfil(foto.data.foto)
+    // }
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
 
     useEffect(() => {
+        async function profileLoad() {
+            const token = await userDecodeToken();
+
+            if (token) {
+                // console.log(token);
+
+                setUser(token)
+
+                console.log(token.jti);
+            }
+        }
+
         profileLoad()
     }, [])
 
+    console.log(user);
+
     return (
         <CntHeader>
+            {
+                user != null && (
+                    <>
+                        {/* <HeaderContainer> */}
+                        <HeaderContent>
+                            <BoxHeader>
+                                <FotoPerfilHome source={{ uri: user.foto }} />
 
+<<<<<<< HEAD
             {/* <HeaderContainer> */}
             <HeaderContent>
                 <BoxHeader>
@@ -53,16 +99,26 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
                                 { uri: perfil.idNavigation.foto } : null
                         }
                     />
+=======
+                                <ContainerTxtHeader>
+                                    <TextHeader>Bem vindo</TextHeader>
+                                    <TextName>{user.role == "Medico" ? "Dr" : null} {user.name}</TextName>
+                                </ContainerTxtHeader>
+                            </BoxHeader>
+>>>>>>> Pedro
 
-                    <ContainerTxtHeader>
-                        <TextHeader>Bem vindo</TextHeader>
-                        <TextName>{nameUser}</TextName>
-                    </ContainerTxtHeader>
-                </BoxHeader>
+                            <BoxIcons>
+                                <IconeSino source={sino} />
 
-                <BoxIcons>
-                    <IconeSino source={sino} />
+                                <TouchableOpacity onPress={() => {
+                                    AsyncStorage.removeItem('token');
+                                    navigation.replace('Login');
+                                }}>
+                                    <SimpleLineIcons name="logout" size={20} color="white" />
+                                </TouchableOpacity>
+                            </BoxIcons>
 
+<<<<<<< HEAD
                     <TouchableOpacity
                         disabled={loadButton}
                         onPress={() => {
@@ -75,6 +131,14 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
                 </BoxIcons>
             </HeaderContent>
             {/* </HeaderContainer>  */}
+=======
+                        </HeaderContent>
+                        {/* </HeaderContainer>  */}
+                    </>
+                )
+            }
+
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
         </CntHeader>
 
     )

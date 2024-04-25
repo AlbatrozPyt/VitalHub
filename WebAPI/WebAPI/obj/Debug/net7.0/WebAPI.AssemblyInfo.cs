@@ -15,10 +15,21 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5dde764c7909d14b68041ca0718113a68bd0ae65")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8eaf5a21b863fb8b425a4b9342d557a3b64fc387")]
 >>>>>>> Matheus
+=======
+<<<<<<< HEAD
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6218c0022e1cbb725f8820834a9f788c7088c898")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d10c00bd695a1af61f98b64674933744fa35c969")]
+>>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b0c023c0d0514a6f345d32c4c4ea3b6639a03974")]
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
+>>>>>>> Pedro
 [assembly: System.Reflection.AssemblyProductAttribute("WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

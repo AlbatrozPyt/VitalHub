@@ -88,9 +88,41 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
+<<<<<<< HEAD
     }, []);
     
     const [spinner, setSpinner] = useState(false);
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    }, []);
+    
+    const [spinner, setSpinner] = useState(false);
+=======
+    }, [dataConsulta]);
+=======
+    }, [dataConsulta, showModalCancel]);
+>>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
+
+
+    function MostrarModal(modal, consulta) {
+
+        setConsultaSelecionada(consulta)
+
+
+        if (modal == 'prontuario') {
+            setShowModalAppointment(true)
+        } else if (modal == 'prescricao') {
+            setShowModalPerfilMed(true)
+        } else if (modal == 'cancelar') {
+            setShowModalCancel(true)
+        } else {
+            console.log("Há um erro.");
+        }
+    }
+
+>>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974
+>>>>>>> Pedro
 
     return (
         <Container>
@@ -161,11 +193,11 @@ export const Home = ({
                             data={item}
                             situacao={item.situacao.situacao}
                             // onPressAppointment={() => setShowModalAppointment(true)}
-                            //onPressPerfilMed={() => setShowModalPerfilMed(true)}
+                            // onPressPerfilMed={() => setShowModalPerfilMed(true)}
                             
                             onPressAppointment={() => MostrarModal('prontuario', item)}
                             onPressPerfilMed={() => MostrarModal('prescricao', item)}
-                            onPressCancel={() => setShowModalCancel(true)}
+                            onPressCancel={() => MostrarModal('cancelar', item)}
 
 
                             navigation={navigation}
@@ -183,6 +215,8 @@ export const Home = ({
             {/* modal cancelar */}
             <CancellationModal
                 visible={showModalCancel}
+                consulta={consultaSelecionada}
+
                 setShowModalCancel={setShowModalCancel}
                 ClosedModal={() => {
                     handleCallNotifications()
@@ -208,7 +242,7 @@ export const Home = ({
             />
 
             <ModalPerfilMed
-                consulta={consultaSelecionada}
+                consultaMed={consultaSelecionada}
                 roleUsuario={profile}
 
                 visible={showModalPerfilMed}
