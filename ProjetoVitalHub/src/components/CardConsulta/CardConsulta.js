@@ -10,28 +10,38 @@ import { useState } from "react";
 
 export const CardConsulta = ({
     data = [],
-    situacao = 'pendente',
+    nameUser,
+    situacao,
     onPressCancel,
     onPressAppointment,
     onPressPerfilMed,
-    navigation
+    navigation,
+
+    roleUsuario,
+    dataConsulta,
+    prioridade,
+    usuarioConsulta
+
 }) => {
     const [profile, setProfile] = useState("paciente")
 
+    const [nome, setNome] = useState(usuarioConsulta.idNavigation.nome);
+
     return (
         // Container principal
-        <CardConsultaStyle onPress={onPressPerfilMed}>
+        
+        <CardConsultaStyle onPress={ roleUsuario == 'Paciente' ? onPressPerfilMed : null}>
             {/* Imagem do paciente */}
             <ImageUser source={ImageUser1} />
 
             <ContentCard>
                 {/* Conteúdo do card */}
                 <BoxInfos>
-                    <TitleName>{data.crm}</TitleName>
+                    <TitleName>{nome.length > 10 ? nome.substring(15, -1)+"..." : nome }</TitleName>
 
                     <AgeAndTypeBox>
-                        <TextAge>{data.idade} anos</TextAge>
-                        <TypeBold>{data.typeExame}</TypeBold>
+                        <TextAge>{roleUsuario == 'Medico' ? '22 anos' : `CRM: ${usuarioConsulta.crm}`}</TextAge>
+                        <TypeBold>{prioridade == 0 ? "Rotina" : prioridade == 1 ? "Exame" : "Urgencia"}</TypeBold>
                     </AgeAndTypeBox>
                 </BoxInfos>
 
@@ -54,7 +64,7 @@ export const CardConsulta = ({
                                 <ButtonText situacao={situacao}>Cancelar</ButtonText>
                             </ButtonCard>
                         ) : (
-                            <ButtonCard onPress={ profile !== "paciente" ? onPressAppointment : () => navigation.replace("Prescricao")}>
+                            <ButtonCard onPress={ roleUsuario !== "Paciente" ? onPressAppointment : () => navigation.replace("Prescricao")}>
                                 <ButtonText situacao={situacao}>Ver prontuário</ButtonText>
                             </ButtonCard>
                         )
