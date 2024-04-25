@@ -9,7 +9,7 @@
         // Host do servidor SMTP
         public string? Host { get; set; }
         // Nome exibido do remetente
-        public string? Displayname { get; set;}
+        public string? Displayname { get; set; }
         // Porta do servidor SMTP
         public int Port { get; set; }
     }

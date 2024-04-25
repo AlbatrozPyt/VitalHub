@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
                     return BadRequest("Nenhuma imagem fornecida");
                 }
 
-                using(var stream = exameViewModel.Imagem.OpenReadStream())
+                using (var stream = exameViewModel.Imagem.OpenReadStream())
                 {
                     var result = await _ocrService.RecognizeTextAsync(stream);
 
@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest( ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

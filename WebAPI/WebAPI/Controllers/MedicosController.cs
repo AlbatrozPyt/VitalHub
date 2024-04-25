@@ -6,7 +6,6 @@ using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
 using WebAPI.Utils.BlobStorage;
-using WebAPI.Utils.Mail;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
@@ -36,12 +35,6 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("BuscarPorData")]
-        public IActionResult BuscarPorData(DateTime data, Guid id)
-        {
-            return Ok(_medicoRepository.BuscarPorData(data, id));
-        }
-
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
@@ -57,12 +50,19 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm]MedicoViewModel medicoModel)
+        public async Task<IActionResult> Post([FromForm] MedicoViewModel medicoModel)
         {
             Usuario user = new Usuario();
             user.Nome = medicoModel.Nome;
             user.Email = medicoModel.Email;
             user.TipoUsuarioId = medicoModel.IdTipoUsuario;
+
+            var containerName = "conteiner-mk";
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobmatheusenrike;AccountKey=wBs/O9Sjz94SbXLDSZa1JvmHfkKtI7sCuf5ZXRNMtYKQ6do+ljl+GJKB/0ySq4Yd34Wx8u6609c1+AStnI0uXg==;EndpointSuffix=core.windows.net";
+
+            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
+
+
             user.Senha = medicoModel.Senha;
             
             user.Foto = medicoModel.Foto;

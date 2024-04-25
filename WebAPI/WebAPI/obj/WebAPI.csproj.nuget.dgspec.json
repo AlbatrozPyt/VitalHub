@@ -68,10 +68,6 @@
               "target": "Package",
               "version": "[7.0.1, )"
             },
-            "Microsoft.CognitiveServices.Speech": {
-              "target": "Package",
-              "version": "[1.37.0, )"
-            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[7.0.14, )"

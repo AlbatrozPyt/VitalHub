@@ -1,4 +1,6 @@
-﻿namespace WebAPI.Utils.Mail
+﻿using WebAPI.Utils.Email;
+
+namespace WebAPI.Utils.Mail
 {
     public interface IEmailService
     {

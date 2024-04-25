@@ -9,6 +9,7 @@ namespace WebAPI.Utils.OCR
 
         private readonly string _endpoint = "https://cvvitalhub3dtpedro.cognitiveservices.azure.com/";
 
+
         public async Task<string> RecognizeTextAsync(Stream imageStream)
         {
             try
@@ -53,4 +54,5 @@ namespace WebAPI.Utils.OCR
             }
         }
     }
+
 }

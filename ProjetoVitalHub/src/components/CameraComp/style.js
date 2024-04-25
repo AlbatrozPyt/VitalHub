@@ -32,8 +32,10 @@ export const BoxPhotoView = styled.View`
 
 export const BoxModal = styled.View`
     margin: 20px;
-    flex-direction: row;
-    gap: 10px;
+    align-items: ${(props) => props.flexColumn ? 'center' : 'start'};
+    width: ${(props) => props.flexColumn ? '100%' : 'auto'};
+    flex-direction: ${(props) => !props.flexColumn ? 'row' : `column`};
+    gap: ${(props) => !props.flexColumn ? '10px' : '20px'};
 `
 
 export const ViewModal = styled.View`
@@ -54,4 +56,13 @@ export const BntClose = styled.TouchableOpacity`
 
     right: 30px;
     top: 60px;
+`
+
+
+// Atualizar a foto do usuario
+export const LastPhoto = styled.Image`
+    margin-bottom: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
 `

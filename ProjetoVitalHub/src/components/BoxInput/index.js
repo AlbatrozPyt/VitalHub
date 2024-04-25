@@ -6,7 +6,7 @@ import { FieldContent } from "./style"
 export const BoxInput = ({
     fieldWidth = 100,
     fieldHeight = 50,
-    editable = false,
+    editable,
     fieldBorderColor,
     fieldColor,
     textLabel,

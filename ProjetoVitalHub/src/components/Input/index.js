@@ -19,11 +19,12 @@ export const InputText = ({
             fieldColor={fieldColor}
             fieldBorderColor={fieldBorderColor}
             placeholder={placeholder}
-            keyBoardType={keyType}
+            keyboardType={keyType}
             maxLength={maxLength}
             value={fieldValue}
             onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}
+            editable={editable}
         />
     )
 }

@@ -4,44 +4,40 @@ namespace WebAPI.Utils.BlobStorage
 {
     public static class AzureBlobStorageHelper
     {
-        public static async Task<string> UploadImageBlobAsync(IFormFile arquivo, string stringConexao, string nomeContainer)
+        public static async Task<string> UploadImageBlobAsync(IFormFile file, string connectionString, string nomeContainer)
         {
 			try
 			{
-				// Verifica se o arquivo não é nulo
-				if (arquivo != null)
+				if (file != null)
 				{
-					// Gera um nome único + extensão do arquivo
-					var blobName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(arquivo.FileName);
+					// gera um nome unico + extensao do arquivo
+					var blobName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-					// Cria uma intancia do client Blob Service e passa a string de conexão
-					var blobServiceClient = new BlobServiceClient(stringConexao);
+					// cria uma instancia do client Blob Service e passa a string de conexao
+					var blobServiceClient = new BlobServiceClient(connectionString);
 
-					// Obtem um container client usando o nome do controlador do blob
+					// obtem um container client usando o nome do container do blob
 					var blobContainerClient = blobServiceClient.GetBlobContainerClient(nomeContainer);
 
-					// Obtem um blob client usando blob name
+					// obtem um blob client usando o blob name
 					var blobClient = blobContainerClient.GetBlobClient(blobName);
 
-					// Abre o fluxo de entrada do arquivo
-					using (var stream = arquivo.OpenReadStream())
+					// abre o fluxo de entrada do arquivo (foto)
+					using (var stream = file.OpenReadStream())
 					{
-						// Carrega o arquivo(foto) para o blob storage de forma assincrona
+						// carrega o arquivo para a blob storage
 						await blobClient.UploadAsync(stream, true);
 					}
 
-					// Retorna a URI do bloco como uma string
+					// retorn a url da imagem
 					return blobClient.Uri.ToString();
 				}
-				else
-				{
-					// Caso dê problema no carregamento da imagem, a padrão passará a ser utilizada
-					return "https://blobvitalhubg15.blob.core.windows.net/containervitalhubpedro/profilepattern.webp";
-				}
+
+				// imagem padrao
+				else return "https://blobmatheusenrike.blob.core.windows.net/conteiner-mk/defaultpattern.png";
 			}
 			catch (Exception)
 			{
-
 				throw;
 			}
         }

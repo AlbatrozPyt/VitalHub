@@ -37,6 +37,11 @@ import { Prescricao } from './src/screens/Prescricao/Prescricao';
 import { Main } from './src/screens/Main/Main';
 
 
+import * as MediaLibrary from "expo-media-library"
+import * as ImagePicker from "expo-image-picker"
+import { Camera } from 'expo-camera';
+import { useEffect } from 'react';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -53,6 +58,13 @@ export default function App() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  async function requestGaleria() {
+    await MediaLibrary.requestPermissionsAsync();
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  }
+
+  // useEffect(() => requestGaleria(), [])
 
   return (
     //Estrututura 
@@ -75,85 +87,86 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{ title: "Login" }}
+          options={{ title: "Login", headerShown: false }}
         />
 
         <Stack.Screen
           name='Main'
           component={Main}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
           name="RecuperarSenha"
           component={RecuperarSenha}
-          options={{ title: "Recuperar Senha" }}
+          options={{ title: "Recuperar Senha", headerShown: false }}
         />
 
         <Stack.Screen
           name="CriarConta"
           component={CriarConta}
-          options={{ title: "Criar Conta" }}
+          options={{ title: "Criar Conta", headerShown: false }}
         />
 
         <Stack.Screen
           name="VerificarEmail"
           component={VerificarEmail}
-          options={{ title: "Verificar Email" }}
+          options={{ title: "Verificar Email", headerShown: false }}
         />
 
         <Stack.Screen
           name="RedifinirSenha"
           component={RedifinirSenha}
-          options={{ title: "Redifinir Senha" }}
+          options={{ title: "Redifinir Senha", headerShown: false }}
         />
 
         <Stack.Screen
           name="Perfil"
           component={Perfil}
-          options={{ title: "Perfil" }}
+          options={{ title: "Perfil", headerShown: false }}
         />
 
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ title: "Home" }}
+          options={{ title: "Home", headerShown: false }}
         />
 
         <Stack.Screen
           name="MedicoProntuario"
           component={MedicoProntuario}
-          options={{ title: "Medico Prontuario" }}
+          options={{ title: "Medico Prontuario", headerShown: false }}
         />
 
         <Stack.Screen
           name="SelectClinic"
           component={SelectClinic}
-          options={{ title: "SelectClinic" }}
+          options={{ title: "SelectClinic", headerShown: false }}
         />
 
 
         <Stack.Screen
           name="SelectMedicoScreen"
           component={SelectMedicoScreen}
-          options={{ title: "SelectMedicoScreen" }}
+          options={{ title: "SelectMedicoScreen", headerShown: false }}
         />
 
         <Stack.Screen
           name="SelectDate"
           component={SelectDate}
-          options={{ title: "SelectDate" }}
+          options={{ title: "SelectDate", headerShown: false }}
         />
 
         <Stack.Screen
           name="Mapa"
           component={Mapa}
-          options={{ title: "Mapa" }}
+          options={{ title: "Mapa", headerShown: false }}
         />
 
         <Stack.Screen
           name="Prescricao"
           component={Prescricao}
-          options={{ title: "Prescricao" }}
+          options={{ title: "Prescricao", headerShown: false }}
         />
 
       </Stack.Navigator>

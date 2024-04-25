@@ -21,7 +21,7 @@ export const InputDados = styled(InputStyle)`
     /* color: ${props => props.fieldColor ? props.fieldColor : "#33303E"}; */
     background-color: #F5F3F3;
     /* border: 2px solid #F5F3F3; */
-    border: ${props => `2px solid ${props.fieldBorderColor}`};
+    border: ${props => props.editable ? `1px solid #33303E` : `2px solid ${props.fieldBorderColor}`};
 
     text-align: justify;
 

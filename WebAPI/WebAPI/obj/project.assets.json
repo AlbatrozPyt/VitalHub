@@ -8822,7 +8822,6 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 7.0.14",
       "Microsoft.AspNetCore.OpenApi >= 7.0.11",
       "Microsoft.Azure.CognitiveServices.Vision.ComputerVision >= 7.0.1",
-      "Microsoft.CognitiveServices.Speech >= 1.37.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.14",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.14",
       "MimeKit >= 4.4.0",
@@ -8896,10 +8895,6 @@
           "Microsoft.Azure.CognitiveServices.Vision.ComputerVision": {
             "target": "Package",
             "version": "[7.0.1, )"
-          },
-          "Microsoft.CognitiveServices.Speech": {
-            "target": "Package",
-            "version": "[1.37.0, )"
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
