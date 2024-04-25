@@ -1,12 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { encode, decode } from "base-64";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
 import { useEffect, useState } from "react";
 import api from "../services/services";
->>>>>>> Pedro
 
 if (!global.atob) {
     global.atob = decode
@@ -30,31 +26,17 @@ export const userDecodeToken = async () => {
     // Decodifica o token recebido
     const decoded = jwtDecode(token)
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> Pedro
-    return {
-        id: decoded.jti,
-        name: decoded.name,
-        email: decoded.email,
-<<<<<<< HEAD
-        role: decoded.role,
-=======
-        role: decoded.role
-=======
     // // buscar usuário
     let fotoPerfil = "https://blobvitalhubg15.blob.core.windows.net/containervitalhubpedro/imagemPadrao.jpg"
     if (decoded != null) {
         await api.get(`/Usuario/BuscarPorId?id=${decoded.jti}`)
-        .then( response => {
-            fotoPerfil = response.data.foto
+            .then(response => {
+                fotoPerfil = response.data.foto
 
-            console.log(response.data.foto);
-        }).catch(error => {
-            console.log(error);
-        })
+                console.log(response.data.foto);
+            }).catch(error => {
+                console.log(error);
+            })
     }
 
     return {
@@ -63,7 +45,5 @@ export const userDecodeToken = async () => {
         email: decoded.email,
         role: decoded.role,
         foto: fotoPerfil
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
->>>>>>> Pedro
     }
 }

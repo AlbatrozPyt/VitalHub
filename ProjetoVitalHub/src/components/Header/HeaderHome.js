@@ -9,57 +9,13 @@ import { useEffect, useState } from "react"
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { TouchableOpacity, View } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-<<<<<<< HEAD
 import { Spinner } from "../Spinner"
-<<<<<<< HEAD
 import api from "../../services/services"
-=======
-=======
-import api from "../../services/services"
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
->>>>>>> Pedro
 
 export function HeaderHome({ navigation, setSpinnerHome }) {
 
-<<<<<<< HEAD
-    const [nameUser, setNameUser] = useState()
-    const [perfil, setPerfil] = useState()
-    const [loadButton, setLoadButton] = useState(false);
-=======
     const [user, setUser] = useState()
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
 
-<<<<<<< HEAD
-
-    // BUSCAR O USUARIO
-    async function getPerfil(token) {
-        const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
-
-        const promise = await api.get(`/${rota}/BuscarPorId?id=${token.id}`)
-        const response = promise.data
-        setPerfil(response);
-    }
-
-    async function profileLoad() {
-        const token = await userDecodeToken();
-=======
->>>>>>> Pedro
-
-<<<<<<< HEAD
-        if (token) {
-            getPerfil(token)
-            setNameUser(token.name)
-        }
-    }
-=======
-
-    // const [fotoPerfil, setFotoPerfil] = useState()
-    // async function buscarFoto() {
-    //     const foto = await api.get(`/Usuario/BuscarPorId?id=${user.id}`)
-
-    //     setFotoPerfil(foto.data.foto)
-    // }
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
 
     useEffect(() => {
         async function profileLoad() {
@@ -89,23 +45,11 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
                             <BoxHeader>
                                 <FotoPerfilHome source={{ uri: user.foto }} />
 
-<<<<<<< HEAD
-            {/* <HeaderContainer> */}
-            <HeaderContent>
-                <BoxHeader>
-                    <FotoPerfilHome
-                        source={
-                            perfil !== undefined ?
-                                { uri: perfil.idNavigation.foto } : null
-                        }
-                    />
-=======
                                 <ContainerTxtHeader>
                                     <TextHeader>Bem vindo</TextHeader>
                                     <TextName>{user.role == "Medico" ? "Dr" : null} {user.name}</TextName>
                                 </ContainerTxtHeader>
                             </BoxHeader>
->>>>>>> Pedro
 
                             <BoxIcons>
                                 <IconeSino source={sino} />
@@ -118,27 +62,11 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
                                 </TouchableOpacity>
                             </BoxIcons>
 
-<<<<<<< HEAD
-                    <TouchableOpacity
-                        disabled={loadButton}
-                        onPress={() => {
-                            AsyncStorage.removeItem('token');
-                            setSpinnerHome(true)
-                        }}
-                    >
-                        <SimpleLineIcons name="logout" size={20} color="white" />
-                    </TouchableOpacity>
-                </BoxIcons>
-            </HeaderContent>
-            {/* </HeaderContainer>  */}
-=======
+
                         </HeaderContent>
-                        {/* </HeaderContainer>  */}
                     </>
                 )
             }
-
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
         </CntHeader>
 
     )

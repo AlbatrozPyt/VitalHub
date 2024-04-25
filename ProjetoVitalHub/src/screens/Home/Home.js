@@ -62,6 +62,8 @@ export const Home = ({
 
     const [idUser, setIdUser] = useState('')
 
+    const [spinner, setSpinner] = useState(false);
+
 
 
     useEffect(() => {
@@ -88,21 +90,7 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
-<<<<<<< HEAD
-    }, []);
-    
-    const [spinner, setSpinner] = useState(false);
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-    }, []);
-    
-    const [spinner, setSpinner] = useState(false);
-=======
-    }, [dataConsulta]);
-=======
     }, [dataConsulta, showModalCancel]);
->>>>>>> c326ea71aa18bec168ac805690097f57f9dd75a3
 
 
     function MostrarModal(modal, consulta) {
@@ -121,8 +109,6 @@ export const Home = ({
         }
     }
 
->>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974
->>>>>>> Pedro
 
     return (
         <Container>
@@ -194,7 +180,7 @@ export const Home = ({
                             situacao={item.situacao.situacao}
                             // onPressAppointment={() => setShowModalAppointment(true)}
                             // onPressPerfilMed={() => setShowModalPerfilMed(true)}
-                            
+
                             onPressAppointment={() => MostrarModal('prontuario', item)}
                             onPressPerfilMed={() => MostrarModal('prescricao', item)}
                             onPressCancel={() => MostrarModal('cancelar', item)}
