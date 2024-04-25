@@ -15,6 +15,7 @@ import { userDecodeToken } from "../../Utils/Auth"
 
 // Import da API
 import api from "../../services/services"
+import { userDecodeToken } from "../../Utils/Auth"
 
 const Consultas = [
     { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
@@ -49,20 +50,68 @@ export const Home = ({
     const [showModalConsultas, setShowModalConsultas] = useState(false)
     const [showModalPerfilMed, setShowModalPerfilMed] = useState(false)
 
+
     const [consultaLista, setConsultaLista] = useState([])
 
+    const [dataConsulta, setDataConsulta] = useState('')
+
+    const [nameUser, setNameUser] = useState()
+
+    const [profile, setProfile] = useState()
+
+    const [consultaSelecionada, setConsultaSelecionada] = useState(null)
+
+    const [idUser, setIdUser] = useState('')
+
+
+
     useEffect(() => {
+
+        const url = (profile == 'Medico' ? "Medicos" : "Pacientes")
+
         async function getConsultas() {
-            const promise = await api.get(`/Consultas/ConsultasMedico`);
+            const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
             setConsultaLista(promise.data);
-            console.log(consultaLista);
+            // console.log(promise.data);
         }
 
-        getConsultas();
-        loadProfile();
-    }, []);
+        async function profileLoad() {
+            const token = await userDecodeToken();
 
+            if (token) {
+                setIdUser(token.id);
+
+                setNameUser(token.name)
+                setProfile(token.role)
+                // console.log(profile);
+            }
+        }
+
+        profileLoad()
+        getConsultas();
+<<<<<<< HEAD
+    }, []);
+    
     const [spinner, setSpinner] = useState(false);
+=======
+    }, [dataConsulta]);
+
+
+    function MostrarModal(modal, consulta) {
+
+        setConsultaSelecionada(consulta)
+
+
+        if (modal == 'prontuario') {
+            setShowModalAppointment(true)
+        } else if (modal == 'prescricao') {
+            setShowModalPerfilMed(true)
+        } else {
+            setShowModalCancel(true)
+        }
+    }
+
+>>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974
 
     return (
         <Container>
@@ -90,7 +139,9 @@ export const Home = ({
             />
 
             {/* Calendario */}
-            <Calendarhome />
+            <Calendarhome
+                setDataConsulta={setDataConsulta}
+            />
 
             {/* Filtros (botoes) */}
             <FilterAppointment>
@@ -125,14 +176,25 @@ export const Home = ({
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
-                    statusLista == item.situacao && (
+                    statusLista == item.situacao.situacao && (
                         <CardConsulta
+                            nameUser={nameUser}
                             data={item}
-                            situacao={item.situacao}
+                            situacao={item.situacao.situacao}
+                            // onPressAppointment={() => setShowModalAppointment(true)}
+                            //onPressPerfilMed={() => setShowModalPerfilMed(true)}
+                            
+                            onPressAppointment={() => MostrarModal('prontuario', item)}
+                            onPressPerfilMed={() => MostrarModal('prescricao', item)}
                             onPressCancel={() => setShowModalCancel(true)}
-                            onPressAppointment={() => setShowModalAppointment(true)}
-                            onPressPerfilMed={() => setShowModalPerfilMed(true)}
+
+
                             navigation={navigation}
+
+                            roleUsuario={profile}
+                            dataConsulta={item.dataConsulta}
+                            prioridade={item.prioridade.prioridade}
+                            usuarioConsulta={profile == "Medico" ? item.paciente : item.medicoClinica.medico}
                         />
                     )
 
@@ -151,6 +213,9 @@ export const Home = ({
 
             {/* modal ver protuário */}
             <AppointmentModal
+                consulta={consultaSelecionada}
+                roleUsuario={profile}
+
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
                 dados={Consultas}
@@ -164,6 +229,9 @@ export const Home = ({
             />
 
             <ModalPerfilMed
+                consulta={consultaSelecionada}
+                roleUsuario={profile}
+
                 visible={showModalPerfilMed}
                 setShowModalPerfilMed={setShowModalPerfilMed}
                 navigation={navigation}

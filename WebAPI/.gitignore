@@ -410,4 +410,8 @@ obj/
 /node_modules
 /wwwroot/node_modules
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,csharp
+=======
+# End of https://www.toptal.com/developers/gitignore/api/dotnetcore,csharp
+>>>>>>> b0c023c0d0514a6f345d32c4c4ea3b6639a03974

@@ -19,7 +19,10 @@ import {
     from "expo-location"
 import { Title } from "../Title/style"
 
-export const MapsComponente = () => {
+export const MapsComponente = ({
+    latitude,
+    longitude
+}) => {
 
     // Posição inicial
     const [initialPosition, setInitialPosition] = useState(null);
@@ -32,7 +35,7 @@ export const MapsComponente = () => {
 
             setInitialPosition(currentPosition)
 
-            console.log(initialPosition)
+            // console.log(initialPosition)
         }
     }
 
@@ -56,15 +59,19 @@ export const MapsComponente = () => {
         // )
     }, [10000000])
 
+ 
+
     return (
         <BoxMaps>
             {
                 initialPosition != null
                     ? (
                         <MapView
+                        latitude={latitude}
+                        longitude={longitude}
                             initialRegion={{
-                                latitude: -23.60000,
-                                longitude: -46.7187,
+                                latitude: latitude,
+                                longitude: longitude,
                                 latitudeDelta: 0.005,
                                 longitudeDelta: 0.005
                             }}
@@ -75,8 +82,8 @@ export const MapsComponente = () => {
                             {/* Criando um marcador no mapa */}
                             <Marker
                                 coordinate={{
-                                    latitude: -23.60000,
-                                    longitude: -46.7187,
+                                    latitude: latitude,
+                                    longitude: longitude,
                                 }}
                                 title='Localização atual'
                                 description='Qualquer lugar do map'

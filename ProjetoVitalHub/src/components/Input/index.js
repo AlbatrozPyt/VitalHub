@@ -9,10 +9,12 @@ export const InputText = ({
     onChangeText = null,
     keyType,
     maxLength,
-    secureTextEntry
+    secureTextEntry,
+    editable
 }) => {
     return (
         <InputDados
+            editable={editable}
             fieldHeight={fieldHeight}
             fieldColor={fieldColor}
             fieldBorderColor={fieldBorderColor}
