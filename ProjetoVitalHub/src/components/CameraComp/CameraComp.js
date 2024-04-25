@@ -48,9 +48,8 @@ export const CameraComp = ({
     async function CapturePhotos() {
         if (cameraRef) {
             const photo = await cameraRef.current.takePictureAsync()
+            setGalleryPhoto(photo.uri)
             setPhoto(photo.uri)
-            // setPhotoPrescicao(photo.uri)
-
             setOpenModal(true)
 
         }
@@ -84,7 +83,6 @@ export const CameraComp = ({
         }
 
     }, [])
-
 
 
     return (
