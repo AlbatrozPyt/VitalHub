@@ -36,7 +36,7 @@ export const CardConsulta = ({
     return (
         // Container principal
 
-        <CardConsultaStyle onPress={roleUsuario == 'Paciente' ? onPressPerfilMed : null}>
+        <CardConsultaStyle onPress={roleUsuario == 'Paciente' ? onPressPerfilMed : onPressAppointment}>
             {/* Imagem do paciente */}
             {roleUsuario == 'Paciente' ? <ImageUser source={{ uri: data.medicoClinica.medico.idNavigation.foto }} />
                 : <ImageUser source={{ uri: data.paciente.idNavigation.foto }} />}

@@ -151,7 +151,7 @@ export const Home = ({
                             data={item}
                             situacao={item.situacao.situacao}
                             // onPressAppointment={() => setShowModalAppointment(true)}
-                            //onPressPerfilMed={() => setShowModalPerfilMed(true)}
+                            // onPressPerfilMed={() => setShowModalPerfilMed(true)}
                             
                             onPressAppointment={() => MostrarModal('prontuario', item)}
                             onPressPerfilMed={() => MostrarModal('prescricao', item)}
@@ -200,7 +200,7 @@ export const Home = ({
             />
 
             <ModalPerfilMed
-                consulta={consultaSelecionada}
+                consultaMed={consultaSelecionada}
                 roleUsuario={profile}
 
                 visible={showModalPerfilMed}
