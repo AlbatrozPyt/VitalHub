@@ -33,7 +33,7 @@ export const userDecodeToken = async () => {
             .then(response => {
                 fotoPerfil = response.data.foto
 
-                console.log(response.data.foto);
+                // console.log(response.data.foto);
             }).catch(error => {
                 console.log(error);
             })

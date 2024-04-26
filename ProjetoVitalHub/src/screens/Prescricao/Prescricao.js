@@ -29,7 +29,7 @@ export const Prescricao = ({
 
     async function InserirExame() {
         const formData = new FormData()
-        formData.append('ConsultaId', `C99800FE-CCC3-4503-BDB0-F0DCFD1AEF7E`);
+        formData.append('ConsultaId', `${route.params.consultaId}`);
         formData.append('Imagem', {
             uri: photo,
             name: `image.${photo.split(".").pop()}`,
@@ -80,17 +80,23 @@ export const Prescricao = ({
                                 textLabel={"Descrição da consulta"}
                                 placeholder={"Descrição da consulta..."}
                                 fieldHeight={"121"}
+                                fieldValue={consulta.descricao}
+                                editable={false}
                             />
 
                             <BoxInput
                                 textLabel={"Diagnóstico do paciente"}
                                 placeholder={"Diagnóstico..."}
+                                fieldValue={consulta.diagnostico}
+                                editable={false}
                             />
 
                             <BoxInput
                                 textLabel={"Prescrição médica"}
                                 placeholder={"Prescrição médica..."}
                                 fieldHeight={"133"}
+                                editable={false}
+                                fieldValue={consulta.receita.medicamento}
                             />
 
 
@@ -100,6 +106,7 @@ export const Prescricao = ({
                                         textLabel={"Exames médicos"}
                                         placeholder={"                  Nenhuma foto informada"}
                                         fieldHeight={"111"}
+                                        editable={false}
                                     >
                                     </BoxInput>
                                 ) : (
@@ -114,10 +121,19 @@ export const Prescricao = ({
 
 
 
+                            <ContainerBoxPrescricao>
+
+                                <Button fieldGap={"10px"} fieldWidth={"54%"} fieldHeight={"44px"} onPress={() => setShowCamera(true)}>
+                                    <MaterialCommunityIcons name="camera-plus-outline" size={20} color="#fff" />
+                                    <ButtonTitle>Enviar</ButtonTitle>
+                                </Button>
+
+
+                                <ButtonSecondaryTitle onPress={() => setPhoto(null)} color={"#C81D25"}>Cancelar</ButtonSecondaryTitle>
+
+                            </ContainerBoxPrescricao>
 
                             <Linha />
-
-
 
                             <ScrollView style={{ width: '90%', height: 103 }}>
                                 <Text>{descricao}</Text>
@@ -126,6 +142,8 @@ export const Prescricao = ({
                             <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                                 <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
                             </ButtonSecondary>
+
+
                         </ContainerInput >
 
 
@@ -135,17 +153,6 @@ export const Prescricao = ({
                             setPhotoPrescicao={setPhotoPrescicao}
                             setGalleryPhoto={setPhoto}
                         />
-
-
-                        <ContainerInput>
-                            <ButtonSecondary onPress={() => navigation.replace("Main")}>
-                                <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
-                            </ButtonSecondary>
-                        </ContainerInput >
-
-
-                        <ButtonSecondaryTitle onPress={() => setPhoto(null)} color={"#C81D25"}>Cancelar</ButtonSecondaryTitle>
-
 
                     </Scroll >
                 )

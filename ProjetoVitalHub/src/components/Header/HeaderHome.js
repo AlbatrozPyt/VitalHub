@@ -22,18 +22,12 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
             const token = await userDecodeToken();
 
             if (token) {
-                // console.log(token);
-
                 setUser(token)
-
-                console.log(token.jti);
             }
         }
 
         profileLoad()
-    }, [])
-
-    console.log(user);
+    }, [user])
 
     return (
         <CntHeader>
@@ -56,7 +50,7 @@ export function HeaderHome({ navigation, setSpinnerHome }) {
 
                                 <TouchableOpacity onPress={() => {
                                     AsyncStorage.removeItem('token');
-                                    navigation.replace('Login');
+                                    setSpinnerHome(true)
                                 }}>
                                     <SimpleLineIcons name="logout" size={20} color="white" />
                                 </TouchableOpacity>

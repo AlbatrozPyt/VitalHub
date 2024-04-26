@@ -104,7 +104,8 @@ export const Perfil = ({
 
     // ATUALIZAR O USUARIO
     async function putPerfil() {
-        const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
+        console.log(cidade);
+
 
         token.role === `Paciente` ?
             await api.put(`/Pacientes?idUsuario=${userId}`, {
@@ -123,11 +124,13 @@ export const Perfil = ({
                 "cidade": cidade,
                 "crm": crm,
             })
+                .catch((e) => console.log(e))
     }
 
     // ATUALIZAR A FOTO DE PERFIL
     async function AlterarFotoPerfil() {
         const formData = new FormData();
+
         formData.append('Arquivo', {
             uri: photo,
             name: `image.${photo.split(".").pop()}`,
@@ -146,7 +149,7 @@ export const Perfil = ({
 
     useEffect(() => {
         profileLoad()
-    }, [perfil])
+    }, [])
 
     useEffect(() => {
         if (photo !== null) {
@@ -193,36 +196,43 @@ export const Perfil = ({
                             <BoxInput
                                 onChangeText={(x) => setDataNascimento(x)}
                                 textLabel='Data de nascimento'
-                                placeholder={
+                                fieldValue={
                                     !edit ? new Date(dataNascimento).toLocaleDateString()
-                                        : new Date(perfil.dataNascimento).toLocaleDateString()
+                                        : null
                                 }
+                                placeholder={edit ? new Date(perfil.dataNascimento).toLocaleDateString() : null}
                                 editable={edit}
                             />
                             <BoxInput
-                                onChangeText={(x) => setCpf(x)}
+                                onChangeText={(x) => {
+                                    setCpf(x)
+                                    console.log(cpf);
+                                }}
                                 textLabel='CPF'
-                                placeholder={
+                                fieldValue={
                                     !edit ? cpf
-                                        : perfil.cpf
+                                        : null
                                 }
+                                placeholder={edit ? perfil.cpf : null}
                                 keyType={"numeric"}
                                 editable={edit}
                             />
                             <BoxInput
                                 onChangeText={(x) => setRg(x)}
                                 textLabel='RG'
-                                placeholder={
+                                fieldValue={
                                     !edit ? rg
-                                        : perfil.rg
+                                        : null
                                 }
+                                placeholder={edit ? perfil.rg : null}
                                 keyType={"numeric"}
                                 editable={edit}
                             />
                             <BoxInput
                                 onChangeText={(x) => setLogradouro(x)}
                                 textLabel='Endereço'
-                                placeholder={!edit ? logradouro : perfil.endereco.logradouro}
+                                fieldValue={!edit ? logradouro : null}
+                                placeholder={edit ? perfil.endereco.logradouro : null}
                                 editable={edit}
                             />
                             <ContainerBox>
@@ -230,7 +240,8 @@ export const Perfil = ({
                                     onChangeText={(x) => setCep(x)}
                                     fieldWidth={45}
                                     textLabel='CEP'
-                                    placeholder={!edit ? cep : perfil.endereco.cep}
+                                    fieldValue={!edit ? cep : null}
+                                    placeholder={edit ? perfil.endereco.cep: null}
                                     editable={edit}
                                 />
 
@@ -238,7 +249,8 @@ export const Perfil = ({
                                     onChangeText={(x) => setCidade(x)}
                                     fieldWidth={50}
                                     textLabel='Cidade'
-                                    placeholder={!edit ? cidade : perfil.endereco.cidade}
+                                    fieldValue={!edit ? cidade : null}
+                                    placeholder={edit ? perfil.endereco.cidade: null}
                                     editable={edit}
                                 />
                             </ContainerBox>
@@ -250,13 +262,15 @@ export const Perfil = ({
                             <BoxInput
                                 onChangeText={(x) => setCrm(x)}
                                 textLabel='CRM'
-                                placeholder={!edit ? crm : perfil.crm}
+                                fieldValue={!edit ? crm : null}
+                                placeholder={edit ? perfil.crm: null}
                                 editable={edit}
                             />
                             <BoxInput
                                 onChangeText={(x) => setLogradouro(x)}
                                 textLabel='Endereço'
-                                placeholder={!edit ? logradouro : perfil.endereco.logradouro}
+                                fieldValue={!edit ? logradouro : null}
+                                placeholder={edit ? perfil.endereco.logradouro : null}
                                 editable={edit}
                             />
                             <ContainerBox>
@@ -264,7 +278,8 @@ export const Perfil = ({
                                     onChangeText={(x) => setCep(x)}
                                     fieldWidth={45}
                                     textLabel='CEP'
-                                    placeholder={!edit ? cep : perfil.endereco.cep}
+                                    fieldValue={!edit ? cep : null}
+                                    placeholder={edit ? perfil.endereco.cep: null}
                                     editable={edit}
                                 />
 
@@ -272,7 +287,8 @@ export const Perfil = ({
                                     onChangeText={(x) => setCidade(x)}
                                     fieldWidth={50}
                                     textLabel='Cidade'
-                                    placeholder={!edit ? cidade : perfil.endereco.cidade}
+                                    fieldValue={!edit ? cidade : null}
+                                    placeholder={edit ? perfil.endereco.cidade: null}
                                     editable={edit}
                                 />
                             </ContainerBox>
