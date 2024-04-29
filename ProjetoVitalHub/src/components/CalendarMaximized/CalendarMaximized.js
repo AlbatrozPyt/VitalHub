@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
-const CalendarMaximized = () => {
+const CalendarMaximized = ({ setData, data }) => {
   const [selected, setSelected] = useState("");
 
   const currentDate = new Date();
@@ -62,10 +62,10 @@ const CalendarMaximized = () => {
         backgroundColor: "#FAFAFA",
       }}
       onDayPress={(day) => {
-        setSelected(day.dateString);
+        setData(day.dateString)
       }}
       markedDates={{
-        [selected]: {
+        [data]: {
           selected: true,
           disableTouchEvent: true,
         },

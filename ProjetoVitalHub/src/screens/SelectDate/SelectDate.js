@@ -10,13 +10,21 @@ import InputSelect from "../../components/InputSelect"
 import { InputLabel } from "../../components/Label/style"
 import { LabelDate } from "./style"
 import { ButtonModalConfirmar } from "../../components/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ModalAgendarConsulta } from "../../components/AppointmentModal/AppointmentModal"
 
 export const SelectDate = ({
-    navigation
+    navigation,
+    route
 }) => {
     const [showModalAgendar, setShowModalAgendar] = useState(false)
+    const [agendamento, setAgendamento] = useState('')
+    const [data, setData] = useState('')
+    const [hora, setHora] = useState('')
+
+    useEffect(() => {
+        console.log(data)
+    }, [data])
 
     return (
         <Container>
@@ -24,10 +32,16 @@ export const SelectDate = ({
                 <ContentSelect>
                     <TitleConsulta marginTop={"35px"}>Selecione data</TitleConsulta>
 
-                    <CalendarMaximized />
+                    <CalendarMaximized
+                        setData={setData}
+                        data={data}
+                    />
 
                     <LabelDate>Selecione um horário disponível</LabelDate>
-                   <InputSelect/>
+                    
+                    <InputSelect 
+                        setHora={setHora}
+                    />
 
                     <ButtonModalConfirmar
                         textValue={"Confirmar"}

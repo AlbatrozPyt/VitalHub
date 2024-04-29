@@ -73,7 +73,15 @@ export const ModalConsultas = ({
     setShowModalConsultas,
     navigation
 }) => {
+
     const [statusLista, setStatusList] = useState("");
+    const [angendamento, setAgendamento] = useState();
+
+    async function handleContinue() {
+        await setShowModalConsultas(false);
+
+        navigation.replace('SelectClinic', { agendamento: angendamento })
+    }
 
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -95,7 +103,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "rotina"}
-                            onPress={() => setStatusList("rotina")}
+                            onPress={() => {
+                                setStatusList("rotina")
+                                setAgendamento({
+                                    ...angendamento, // Mantem as informacoes que ja existem no state
+                                    prioridadeId: "F04CB0C8-E413-408A-B2A9-4F4C87918696",
+                                    prioridadeLabel: "Rotina"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -104,7 +119,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "exame"}
-                            onPress={() => setStatusList("exame")}
+                            onPress={() => {
+                                setStatusList("exame")
+                                setAgendamento({
+                                    ...angendamento,
+                                    prioridadeId: "B7214CF6-F840-49D7-80C7-B50A1CED7187",
+                                    prioridadeLabel: "Exame"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -113,7 +135,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "urgencia"}
-                            onPress={() => setStatusList("urgencia")}
+                            onPress={() => {
+                                setStatusList("urgencia")
+                                setAgendamento({
+                                    ...angendamento,
+                                    prioridadeId: "1CEFF7CF-0BDE-4B3F-A376-8B5B411CB7A9",
+                                    prioridadeLabel: "Urgencia"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -123,11 +152,16 @@ export const ModalConsultas = ({
                         fieldColor={"#34898F"}
                         fieldBorderColor={"#49B3BA"}
                         fieldHeight={53}
+                        value={angendamento ? angendamento.localizacao : null}
                         textLabel='Informe a localização desejada'
                         placeholder='Informe a localização'
+                        onChangeText={(txt) => setAgendamento({
+                            ...angendamento,
+                            localizacao: txt
+                        })}
                     />
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("SelectClinic") || setShowModalConsultas(false)}>
+                    <ButtonModalStyle onPress={() => handleContinue()}>
                         <ButtonTitle>Continuar</ButtonTitle>
                     </ButtonModalStyle>
 
@@ -144,7 +178,8 @@ export const ModalConsultas = ({
 export const ModalAgendarConsulta = ({
     visible,
     setShowModalAgendar,
-    navigation
+    navigation,
+    consulta
 }) => {
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
