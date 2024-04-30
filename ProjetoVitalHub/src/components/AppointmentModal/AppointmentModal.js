@@ -9,8 +9,11 @@ import { Subtitle, TextQuick } from "../Text/style"
 import { BoxInput } from "../BoxInput"
 import { BntListConsulta, BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { Label } from "../Label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Mapa } from "../../screens/Mapa/Mapa"
+import moment from "moment"
+import api from "../../services/services"
+import { userDecodeToken } from "../../Utils/Auth"
 
 
 export const AppointmentModal = ({
@@ -179,8 +182,37 @@ export const ModalAgendarConsulta = ({
     visible,
     setShowModalAgendar,
     navigation,
-    consulta
+    agendamento
 }) => {
+
+    const [profile, setProfile] = useState()
+
+    async function profileLoad() {
+        const token = await userDecodeToken()
+
+        if (token) {
+            setProfile(token)
+            console.log(token)
+        }
+    }
+
+    async function handleConfirm() {
+        await api.post(`/Consultas/Cadastrar`, {
+            ...agendamento,
+            pacienteId: profile.id,
+            situacaoId: "3B9BCB82-ED1F-48EA-817C-C0919A1A924F"
+        })
+            .then(async () => {
+                setShowModalAgendar(false)
+                navigation.replace('Main')
+            })
+            .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        profileLoad()
+    }, [])
+
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {/* Container */}
@@ -195,20 +227,20 @@ export const ModalAgendarConsulta = ({
 
                     <BoxInfosConsultas>
                         <TextQuick>Data da consulta</TextQuick>
-                        <Subtitle margin={"8px 0px 20px"}>1 de Novembro de 2023</Subtitle>
+                        <Subtitle margin={"8px 0px 20px"}>{moment(agendamento.dataConsulta).format("DD/MM/YYYY HH:mm")}</Subtitle>
 
                         <TextQuick>Médico(a) da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 0px"}>Dra Alessandra</Subtitle>
-                        <Subtitle margin={"3px 0px 20px"}>Demartologa, Esteticista</Subtitle>
+                        <Subtitle margin={"5px 0px 0px"}>{agendamento.medicoLabel}</Subtitle>
+                        <Subtitle margin={"3px 0px 20px"}>{agendamento.especialidadeLabel}</Subtitle>
 
                         <TextQuick>Local da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 20px"}>São Paulo, SP</Subtitle>
+                        <Subtitle margin={"5px 0px 20px"}>{agendamento.localizacao}</Subtitle>
 
                         <TextQuick>Tipo da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 0px"}>Rotina</Subtitle>
+                        <Subtitle margin={"5px 0px 0px"}>{agendamento.prioridadeLabel}</Subtitle>
                     </BoxInfosConsultas>
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("Main")}>
+                    <ButtonModalStyle onPress={() => handleConfirm()}>
                         <ButtonTitle>Confirmar</ButtonTitle>
                     </ButtonModalStyle>
 

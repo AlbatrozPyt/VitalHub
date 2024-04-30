@@ -22,6 +22,16 @@ export const SelectDate = ({
     const [data, setData] = useState('')
     const [hora, setHora] = useState('')
 
+    function handleContinue()
+    {
+        setAgendamento({
+            ...route.params.agendamento,
+            dataConsulta: `${data} ${hora}`
+        })
+
+        setShowModalAgendar(true)
+    }
+
     useEffect(() => {
         console.log(data)
     }, [data])
@@ -45,7 +55,7 @@ export const SelectDate = ({
 
                     <ButtonModalConfirmar
                         textValue={"Confirmar"}
-                        onPressConfirmar={() => setShowModalAgendar(true)}
+                        onPressConfirmar={() => handleContinue()}
                     />
 
                     <ButtonSecondary onPress={() => navigation.replace("Main")}>
@@ -56,6 +66,7 @@ export const SelectDate = ({
                         visible={showModalAgendar}
                         setShowModalAgendar={setShowModalAgendar}
                         navigation={navigation}
+                        agendamento={agendamento}
                     />
                 </ContentSelect>
             </Scroll>

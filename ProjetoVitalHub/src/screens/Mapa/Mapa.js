@@ -8,7 +8,7 @@ import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style
 import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
 import { MapsComponente } from "../../components/MapsComponente/MapsComponente"
 import { useEffect, useState } from "react"
-import api from "../../services/services"
+import api, { apiBuscaBairro } from "../../services/services"
 
 export const Mapa = ({ navigation, route }) => {
     const [clinica, setClinica] = useState(null)
@@ -17,10 +17,12 @@ export const Mapa = ({ navigation, route }) => {
     const [longitude, setLongitude] = useState()
     const [logradouro, setLogradouro] = useState()
     const [numero, setNumero] = useState()
+    const [bairro, setBairro] = useState()
 
     useEffect(() => {
         if (clinica == null) {
             BuscarClinica()
+            BuscarBairro()
         }
 
         // console.log(route.params.clinicaId);
@@ -37,6 +39,14 @@ export const Mapa = ({ navigation, route }) => {
 
         setLatitude(promise.data.endereco.latitude);
         setLongitude(promise.data.endereco.longitude);
+    }
+
+    async function BuscarBairro() {
+        const promise = await apiBuscaBairro.get(`/${clinica.endereco.cep}/json/`)
+        if (promise.data.bairro != null) {
+
+        }
+        setBairro(promise.data.bairro)
     }
 
     return (
@@ -71,7 +81,7 @@ export const Mapa = ({ navigation, route }) => {
                                     fieldWidth={50}
                                     textLabel='Bairro'
                                     placeholder='Bairro...'
-                                    fieldValue='Moema-SP'
+                                    fieldValue={bairro}
                                 />
                             </ContainerBox>
 

@@ -44,38 +44,36 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
 
     return (
         <Container>
-            <Scroll>
-                <ContentSelect>
-                    <TitleConsulta>Selecionar médico</TitleConsulta>
+            <ContentSelect>
+                <TitleConsulta>Selecionar médico</TitleConsulta>
 
-                    <ListComponent
-                        data={medicos}
-                        keyExtractor={(item) => item.id}
+                <ListComponent
+                    data={medicos}
+                    keyExtractor={(item) => item.id}
 
-                        renderItem={({ item }) =>
-                            <SelectView>
-                                <BoxSelectMedico
-                                    medicos={item}
-                                    ListMedicos={item}
-                                    situacao={item.situacao}
-                                    clickButton={item.id === selectMedico}
-                                    onPress={() => {
-                                        setSelectMedico(item.id)
-                                        setMedico({
-                                            medicoId: item.id,
-                                            especialidadeId: item.especialidade.id,
-                                            especialidadeLabel: item.especialidade.especialidade1, 
-                                            medicoLabel: item.idNavigation.nome
-                                        })
-                                    }}
-                                />
-                            </SelectView>
-                        }
-                        showsVerticalScrollIndicator={false}
-                    />
-                </ContentSelect>
+                    renderItem={({ item }) =>
+                        <SelectView>
+                            <BoxSelectMedico
+                                medicos={item}
+                                ListMedicos={item}
+                                situacao={item.situacao}
+                                clickButton={item.id === selectMedico}
+                                onPress={() => {
+                                    setSelectMedico(item.id)
+                                    setMedico({
+                                        medicoClinicaId: item.id,
+                                        especialidadeId: item.especialidade.id,
+                                        especialidadeLabel: item.especialidade.especialidade1,
+                                        medicoLabel: item.idNavigation.nome
+                                    })
+                                }}
+                            />
+                        </SelectView>
+                    }
+                    showsVerticalScrollIndicator={false}
+                />
+            </ContentSelect>
 
-            </Scroll>
 
             <ButtonModalStyle onPress={() => handleContinue()}>
                 <ButtonTitle>Continuar</ButtonTitle>

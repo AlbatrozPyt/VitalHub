@@ -90,7 +90,7 @@ export const Home = ({
 
         profileLoad()
         getConsultas();
-    }, [dataConsulta, showModalCancel]);
+    }, [dataConsulta, showModalCancel, profile]);
 
 
     function MostrarModal(modal, consulta) {

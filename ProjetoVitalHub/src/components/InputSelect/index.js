@@ -24,7 +24,7 @@ const InputSelect = ({ setHora }) => {
 
       // Para cada hora sera criada uma nova Option
       return {
-        label: `${valor}:00`, value: valor
+        label: `${valor}:00`, value: `${valor}:00`
       }
     })
 
@@ -58,7 +58,7 @@ const InputSelect = ({ setHora }) => {
               onValueChange={(value) => setHora(value)}
               items={arrayOptions}
             />
-          ) : <Spinner />
+          ) : <ActivityIndicator/>
       }
     </View>
   )

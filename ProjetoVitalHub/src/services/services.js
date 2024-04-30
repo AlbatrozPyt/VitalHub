@@ -15,4 +15,10 @@ const api = axios.create({
     baseURL: apiUrlLocal
 })
 
+const apiUrlBuscaBairro = `https://viacep.com.br/ws`
+
+export const apiBuscaBairro = axios.create({
+    baseURL: apiUrlBuscaBairro
+})
+
 export default api;
