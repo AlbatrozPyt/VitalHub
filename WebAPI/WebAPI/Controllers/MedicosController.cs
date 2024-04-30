@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class MedicosController : ControllerBase
     {
-        private IMedicoRepository _medicoRepository;
+        private readonly IMedicoRepository _medicoRepository;
         private readonly EmailSendService emailSendService;
         public MedicosController(EmailSendService _emailSendService)
         {
@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Cadastrar")]
         public async Task<IActionResult> Post([FromForm] MedicoViewModel medicoModel)
         {
             Usuario user = new Usuario();

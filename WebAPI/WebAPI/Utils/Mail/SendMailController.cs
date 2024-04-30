@@ -49,7 +49,7 @@ namespace WebAPI.Utils.Mail
             string Response = @"
          <div style=""width:100%; background-color:rgba(96, 191, 197, 1); padding: 20px;"">
             <div style=""max-width: 600px; margin: 0 auto; background-color:#FFFFFF; border-radius: 10px; padding: 20px;"">
-                <img src=""https://blobvitalhub.blob.core.windows.net/containervitalhub/logotipo.png"" alt="" Logotipo da Aplicação"" style="" display: block; margin: 0 auto; max-width: 200px;"" />
+                <img src=""https://blobvitalhubg15.blob.core.windows.net/containervitalhubpedro/logotipo.png"" alt="" Logotipo da Aplicação"" style="" display: block; margin: 0 auto; max-width: 200px;"" />
                 <h1 style=""color: #333333; text-align: center;"">Bem-vindo ao VitalHub!</h1>
                 <p style=""color: #666666; text-align: center;"">Olá <strong>" + userName + @"</strong>,</p>
                 <p style=""color: #666666;text-align: center"">Estamos muito felizes por você ter se inscrito na plataforma VitalHub.</p>

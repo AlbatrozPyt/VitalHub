@@ -117,6 +117,8 @@ builder.Services.AddScoped<EmailSendingService>();
 
 builder.Services.AddScoped<IExameRepository, ExameRepository>();
 
+
+
 builder.Services.AddScoped<OcrService>();
 
 
