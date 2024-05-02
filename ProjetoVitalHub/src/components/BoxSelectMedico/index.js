@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+import api from "../../services/services"
 import { ImageUser } from "../FotoPerfil/style"
 import { Subtitle } from "../Text/style"
 import { TitleName } from "../Title/style"
@@ -11,9 +13,8 @@ export const BoxSelectMedico = ({
     clickButton,
     onPress
 }) => {
-    console.log(`List Medicoss`);
-    console.log(ListMedicos);
 
+    console.log(medicos)
     return(
         
         <BoxSelectMedicoStyle clickButton={clickButton} onPress={onPress}>

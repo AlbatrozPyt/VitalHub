@@ -9,8 +9,11 @@ import { Subtitle, TextQuick } from "../Text/style"
 import { BoxInput } from "../BoxInput"
 import { BntListConsulta, BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { Label } from "../Label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Mapa } from "../../screens/Mapa/Mapa"
+import moment from "moment"
+import api from "../../services/services"
+import { userDecodeToken } from "../../Utils/Auth"
 
 
 export const AppointmentModal = ({
@@ -73,7 +76,15 @@ export const ModalConsultas = ({
     setShowModalConsultas,
     navigation
 }) => {
+
     const [statusLista, setStatusList] = useState("");
+    const [angendamento, setAgendamento] = useState();
+
+    async function handleContinue() {
+        await setShowModalConsultas(false);
+
+        navigation.replace('SelectClinic', { agendamento: angendamento })
+    }
 
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -95,7 +106,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "rotina"}
-                            onPress={() => setStatusList("rotina")}
+                            onPress={() => {
+                                setStatusList("rotina")
+                                setAgendamento({
+                                    ...angendamento, // Mantem as informacoes que ja existem no state
+                                    prioridadeId: "F04CB0C8-E413-408A-B2A9-4F4C87918696",
+                                    prioridadeLabel: "Rotina"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -104,7 +122,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "exame"}
-                            onPress={() => setStatusList("exame")}
+                            onPress={() => {
+                                setStatusList("exame")
+                                setAgendamento({
+                                    ...angendamento,
+                                    prioridadeId: "B7214CF6-F840-49D7-80C7-B50A1CED7187",
+                                    prioridadeLabel: "Exame"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -113,7 +138,14 @@ export const ModalConsultas = ({
                             fieldBorderColor="#60BFC5"
                             fieldColor={"#34898F"}
                             clickButton={statusLista === "urgencia"}
-                            onPress={() => setStatusList("urgencia")}
+                            onPress={() => {
+                                setStatusList("urgencia")
+                                setAgendamento({
+                                    ...angendamento,
+                                    prioridadeId: "1CEFF7CF-0BDE-4B3F-A376-8B5B411CB7A9",
+                                    prioridadeLabel: "Urgencia"
+                                })
+                            }}
                             fieldBckColor={"#60BFC5"}
                         />
 
@@ -123,11 +155,16 @@ export const ModalConsultas = ({
                         fieldColor={"#34898F"}
                         fieldBorderColor={"#49B3BA"}
                         fieldHeight={53}
+                        value={angendamento ? angendamento.localizacao : null}
                         textLabel='Informe a localização desejada'
                         placeholder='Informe a localização'
+                        onChangeText={(txt) => setAgendamento({
+                            ...angendamento,
+                            localizacao: txt
+                        })}
                     />
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("SelectClinic") || setShowModalConsultas(false)}>
+                    <ButtonModalStyle onPress={() => handleContinue()}>
                         <ButtonTitle>Continuar</ButtonTitle>
                     </ButtonModalStyle>
 
@@ -144,8 +181,38 @@ export const ModalConsultas = ({
 export const ModalAgendarConsulta = ({
     visible,
     setShowModalAgendar,
-    navigation
+    navigation,
+    agendamento
 }) => {
+
+    const [profile, setProfile] = useState()
+
+    async function profileLoad() {
+        const token = await userDecodeToken()
+
+        if (token) {
+            setProfile(token)
+            console.log(token)
+        }
+    }
+
+    async function handleConfirm() {
+        await api.post(`/Consultas/Cadastrar`, {
+            ...agendamento,
+            pacienteId: profile.id,
+            situacaoId: "3B9BCB82-ED1F-48EA-817C-C0919A1A924F"
+        })
+            .then(async () => {
+                setShowModalAgendar(false)
+                navigation.replace('Main')
+            })
+            .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        profileLoad()
+    }, [])
+
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {/* Container */}
@@ -160,20 +227,20 @@ export const ModalAgendarConsulta = ({
 
                     <BoxInfosConsultas>
                         <TextQuick>Data da consulta</TextQuick>
-                        <Subtitle margin={"8px 0px 20px"}>1 de Novembro de 2023</Subtitle>
+                        <Subtitle margin={"8px 0px 20px"}>{moment(agendamento.dataConsulta).format("DD/MM/YYYY HH:mm")}</Subtitle>
 
                         <TextQuick>Médico(a) da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 0px"}>Dra Alessandra</Subtitle>
-                        <Subtitle margin={"3px 0px 20px"}>Demartologa, Esteticista</Subtitle>
+                        <Subtitle margin={"5px 0px 0px"}>{agendamento.medicoLabel}</Subtitle>
+                        <Subtitle margin={"3px 0px 20px"}>{agendamento.especialidadeLabel}</Subtitle>
 
                         <TextQuick>Local da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 20px"}>São Paulo, SP</Subtitle>
+                        <Subtitle margin={"5px 0px 20px"}>{agendamento.localizacao}</Subtitle>
 
                         <TextQuick>Tipo da consulta</TextQuick>
-                        <Subtitle margin={"5px 0px 0px"}>Rotina</Subtitle>
+                        <Subtitle margin={"5px 0px 0px"}>{agendamento.prioridadeLabel}</Subtitle>
                     </BoxInfosConsultas>
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("Main")}>
+                    <ButtonModalStyle onPress={() => handleConfirm()}>
                         <ButtonTitle>Confirmar</ButtonTitle>
                     </ButtonModalStyle>
 

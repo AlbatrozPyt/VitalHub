@@ -2,6 +2,8 @@
 import { Container, ContainerBox, ContainerInputButtom, ContainerPerfil, Scroll } from "../../components/Container/style"
 import { FotoStyle } from "../../components/FotoPerfil/style"
 
+// Import da foto
+import fotoPerfil from '../../../assets/FotoPerfil.png'
 import { Title } from "../../components/Title/style"
 import { Subtitle } from "../../components/Text/style"
 import { BoxInput } from "../../components/BoxInput"
@@ -14,6 +16,7 @@ import { userDecodeToken } from "../../Utils/Auth"
 
 
 import api from "../../services/services"
+import { faL } from "@fortawesome/free-solid-svg-icons"
 import { Spinner } from "../../components/Spinner"
 
 
@@ -22,7 +25,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { BottomCamera } from "./style"
 import { CameraComp } from "../../components/CameraComp/CameraComp"
 
-export const Perfil = () => {
+export const Perfil = ({
+    navigation,
+}) => {
 
     // DADOS DO USUARIO
     const [userId, setUserId] = useState();
@@ -282,7 +287,7 @@ export const Perfil = () => {
                                     onChangeText={(x) => setCidade(x)}
                                     fieldWidth={50}
                                     textLabel='Cidade'
-                                    fieldValue={!edit ? cidade : "Cidade..."}
+                                    fieldValue={!edit ? cidade : null}
                                     placeholder={edit ? perfil.endereco.cidade: null}
                                     editable={edit}
                                 />

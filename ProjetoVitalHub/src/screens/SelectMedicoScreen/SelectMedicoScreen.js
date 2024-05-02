@@ -16,17 +16,26 @@ const ListMedicos = [
 
 ]
 
-export const SelectMedicoScreen = ({ navigation }) => {
+export const SelectMedicoScreen = ({ navigation, route }) => {
 
     const [selectMedico, setSelectMedico] = useState("")
     const [medicos, setMedicos] = useState([]);
+    const [medico, setMedico] = useState()
+
+    function handleContinue() {
+        navigation.replace('SelectDate', {
+            agendamento: {
+                ...route.params.agendamento,
+                ...medico
+            }
+        })
+    }
 
 
     useEffect(() => {
         async function getMedicos() {
-            const promise = await api.get(`/Medicos`);
+            const promise = await api.get(`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`);
             setMedicos(promise.data);
-            console.log(medicos);
         }
 
         getMedicos();
@@ -35,39 +44,44 @@ export const SelectMedicoScreen = ({ navigation }) => {
 
     return (
         <Container>
-            <Scroll>
-                <ContentSelect>
-                    <TitleConsulta>Selecionar médico</TitleConsulta>
+            <ContentSelect>
+                <TitleConsulta>Selecionar médico</TitleConsulta>
 
-                    <ListComponent
-                        data={medicos}
-                        keyExtractor={(item) => item.id}
+                <ListComponent
+                    data={medicos}
+                    keyExtractor={(item) => item.id}
 
-                        renderItem={({ item }) => 
-                            <SelectView>
-                                <BoxSelectMedico
-                                    medicos={item}
-                                    ListMedicos={item}
-                                    situacao={item.situacao}
-                                    clickButton={item.id === selectMedico}
-                                    onPress={() => setSelectMedico(item.id)}
-                                />
-                            </SelectView>
-                        }
-                        showsVerticalScrollIndicator={false}
-                    />
+                    renderItem={({ item }) =>
+                        <SelectView>
+                            <BoxSelectMedico
+                                medicos={item}
+                                ListMedicos={item}
+                                situacao={item.situacao}
+                                clickButton={item.id === selectMedico}
+                                onPress={() => {
+                                    setSelectMedico(item.id)
+                                    setMedico({
+                                        medicoClinicaId: item.id,
+                                        especialidadeId: item.especialidade.id,
+                                        especialidadeLabel: item.especialidade.especialidade1,
+                                        medicoLabel: item.idNavigation.nome
+                                    })
+                                }}
+                            />
+                        </SelectView>
+                    }
+                    showsVerticalScrollIndicator={false}
+                />
+            </ContentSelect>
 
 
+            <ButtonModalStyle onPress={() => handleContinue()}>
+                <ButtonTitle>Continuar</ButtonTitle>
+            </ButtonModalStyle>
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("SelectDate")}>
-                        <ButtonTitle>Continuar</ButtonTitle>
-                    </ButtonModalStyle>
-
-                    <ButtonSecondary onPress={() => navigation.replace("Main")}>
-                        <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
-                    </ButtonSecondary>
-                </ContentSelect>
-            </Scroll>
+            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
+            </ButtonSecondary>
         </Container>
     )
 }

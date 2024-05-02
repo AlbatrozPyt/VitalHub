@@ -73,7 +73,7 @@ export const Home = ({
         async function getConsultas() {
             const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
             setConsultaLista(promise.data);
-            console.log(promise.data);
+            // console.log(promise.data);
         }
 
         async function profileLoad() {
@@ -84,12 +84,13 @@ export const Home = ({
 
                 setNameUser(token.name)
                 setProfile(token.role)
+                // console.log(profile);
             }
         }
 
         profileLoad()
         getConsultas();
-    }, [dataConsulta, showModalCancel]);
+    }, [dataConsulta, showModalCancel, profile]);
 
 
     function MostrarModal(modal, consulta) {

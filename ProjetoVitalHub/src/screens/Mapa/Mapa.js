@@ -4,8 +4,8 @@ import mapaImage from "../../../assets/imageMapa.png"
 import { Title } from "../../components/Title/style"
 import { Subtitle } from "../../components/Text/style"
 import { BoxInput } from "../../components/BoxInput"
-import {  ButtonSecondary } from "../../components/Button/style"
-import { ButtonSecondaryTitle } from "../../components/ButtonTitle/style"
+import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style"
+import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
 import { MapsComponente } from "../../components/MapsComponente/MapsComponente"
 import { useEffect, useState } from "react"
 import api, { apiBuscaBairro } from "../../services/services"
@@ -16,13 +16,16 @@ export const Mapa = ({ navigation, route }) => {
     const [latitude, setLatitude] = useState()
     const [longitude, setLongitude] = useState()
     const [logradouro, setLogradouro] = useState()
-    const [bairro, setBairro] = useState()
     const [numero, setNumero] = useState()
+    const [bairro, setBairro] = useState()
 
     useEffect(() => {
-        BuscarClinica()
-        BuscarBairro()
-        
+        if (clinica == null) {
+            BuscarClinica()
+            BuscarBairro()
+        }
+
+        // console.log(route.params.clinicaId);
     }, [clinica])
 
     async function BuscarClinica() {
@@ -32,22 +35,19 @@ export const Mapa = ({ navigation, route }) => {
 
         setLogradouro(promise.data.endereco.logradouro)
         setNumero(promise.data.endereco.numero.toString())
+        // console.log(promise.data.endereco)
 
         setLatitude(promise.data.endereco.latitude);
         setLongitude(promise.data.endereco.longitude);
-
-        
     }
 
-    
     async function BuscarBairro() {
         const promise = await apiBuscaBairro.get(`/${clinica.endereco.cep}/json/`)
         if (promise.data.bairro != null) {
-            
+
         }
         setBairro(promise.data.bairro)
     }
-
 
     return (
         <Container>
@@ -77,14 +77,12 @@ export const Mapa = ({ navigation, route }) => {
                                     fieldValue={numero}
                                 />
 
-
                                 <BoxInput
                                     fieldWidth={50}
                                     textLabel='Bairro'
                                     placeholder='Bairro...'
                                     fieldValue={bairro}
                                 />
-
                             </ContainerBox>
 
                             <ButtonSecondary onPress={() => navigation.replace("Main")}>

@@ -10,13 +10,31 @@ import InputSelect from "../../components/InputSelect"
 import { InputLabel } from "../../components/Label/style"
 import { LabelDate } from "./style"
 import { ButtonModalConfirmar } from "../../components/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ModalAgendarConsulta } from "../../components/AppointmentModal/AppointmentModal"
 
 export const SelectDate = ({
-    navigation
+    navigation,
+    route
 }) => {
     const [showModalAgendar, setShowModalAgendar] = useState(false)
+    const [agendamento, setAgendamento] = useState('')
+    const [data, setData] = useState('')
+    const [hora, setHora] = useState('')
+
+    function handleContinue()
+    {
+        setAgendamento({
+            ...route.params.agendamento,
+            dataConsulta: `${data} ${hora}`
+        })
+
+        setShowModalAgendar(true)
+    }
+
+    useEffect(() => {
+        console.log(data)
+    }, [data])
 
     return (
         <Container>
@@ -24,14 +42,20 @@ export const SelectDate = ({
                 <ContentSelect>
                     <TitleConsulta marginTop={"35px"}>Selecione data</TitleConsulta>
 
-                    <CalendarMaximized />
+                    <CalendarMaximized
+                        setData={setData}
+                        data={data}
+                    />
 
                     <LabelDate>Selecione um horário disponível</LabelDate>
-                   <InputSelect/>
+                    
+                    <InputSelect 
+                        setHora={setHora}
+                    />
 
                     <ButtonModalConfirmar
                         textValue={"Confirmar"}
-                        onPressConfirmar={() => setShowModalAgendar(true)}
+                        onPressConfirmar={() => handleContinue()}
                     />
 
                     <ButtonSecondary onPress={() => navigation.replace("Main")}>
@@ -42,6 +66,7 @@ export const SelectDate = ({
                         visible={showModalAgendar}
                         setShowModalAgendar={setShowModalAgendar}
                         navigation={navigation}
+                        agendamento={agendamento}
                     />
                 </ContentSelect>
             </Scroll>

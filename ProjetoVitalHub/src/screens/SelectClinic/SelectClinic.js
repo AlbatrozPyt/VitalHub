@@ -18,15 +18,27 @@ const ListClinic = [
 ]
 
 export const SelectClinic = ({
-    navigation
+    navigation,
+    route
 }) => {
     const [selectedClinic, setSelectedClinic] = useState("teste");
 
     const [clinicas, setClinicas] = useState();
+    const [clinica, setClinica] = useState()
+
+    function handleContinue() {
+        navigation.replace('SelectMedicoScreen', {
+            agendamento: {
+                ...route.params.agendamento,
+                ...clinica
+            }
+        })
+    }
 
     useEffect(() => {
         async function getClinics() {
-            const promise = await api.get("/Clinica/ListarTodas")
+
+            const promise = await api.get(`/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`)
             await setClinicas(promise.data);
             console.log(clinicas);
         }
@@ -34,42 +46,47 @@ export const SelectClinic = ({
         getClinics()
     }, [])
 
-
     return (
         <Container>
-                <SelectContent>
-                    <TitleConsulta>Selecionar clínica</TitleConsulta>
+            <SelectContent>
+                <TitleConsulta>Selecionar clínica</TitleConsulta>
 
-                    
-                       <ListComponent
-                        data={clinicas}
-                        keyExtractor={(item) => item.id}
 
-                        renderItem={({ item }) =>
+                <ListComponent
+                    data={clinicas}
+                    keyExtractor={(item) => item.id}
+
+                    renderItem={({ item }) =>
                         <SelectView>
                             <BoxSelect
                                 clinica={item}
                                 ListClinic={item}
                                 situacao={item.situacao}
                                 clickButton={item.id === selectedClinic}
-                                onPress={() => setSelectedClinic(item.id)}
+                                onPress={() => {
+                                    setSelectedClinic(item.id)
+                                    setClinica({
+                                        clinicaId: item.id,
+                                        clinicaLabel: item.nomeFantasia
+                                    })
+                                }}
                             />
-                            </SelectView>
-                        }
-                        showsVerticalScrollIndicator={true}
-                    />
+                        </SelectView>
+                    }
+                    showsVerticalScrollIndicator={true}
+                />
 
-                    
 
-                    <ButtonModalStyle onPress={() => navigation.navigate("SelectMedicoScreen")}>
-                        <ButtonTitle>Continuar</ButtonTitle>
-                    </ButtonModalStyle>
 
-                    <ButtonSecondary onPress={() => navigation.replace("Main")}>
-                        <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
-                    </ButtonSecondary>
+                <ButtonModalStyle onPress={() => handleContinue()}>
+                    <ButtonTitle>Continuar</ButtonTitle>
+                </ButtonModalStyle>
 
-                </SelectContent>
+                <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                    <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
+                </ButtonSecondary>
+
+            </SelectContent>
         </Container>
     )
 }

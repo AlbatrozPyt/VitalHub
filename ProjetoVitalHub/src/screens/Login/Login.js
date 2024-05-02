@@ -15,7 +15,7 @@ import api from '../../services/services'
 // Import do icon
 import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { InputText } from "../../components/Input"
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native"
 
@@ -24,16 +24,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Componente que roda o spinner de load do login
 import { Spinner } from "../../components/Spinner"
+import { Message } from "../../components/Message/Message"
+import { Animated } from "react-native-maps"
 
 export const Login = ({
     navigation
 }) => {
 
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br')
+    const [senha, setSenha] = useState('Ggg')
     const [emailInvalid, setEmailInvalid] = useState(false);
     const [passwordInvalid, setPasswordInvalid] = useState(false);
     const [loadButton, setLoadButton] = useState(false);
+
+    // Mostra a mensagem de erro
+    const [errorMessage, setErrorMessage] = useState()
 
     // Funcao de login
     async function Logar() {
@@ -49,15 +54,9 @@ export const Login = ({
 
         }).catch(() => {
             setTimeout(() => {
-                Alert.alert(
-                    //Title
-                    'Erro',
-                    //Body
-                    'Email e/ou senha incorreto!!'
-                )
-
+                setErrorMessage(true)
                 setLoadButton(false);
-            }, 1000)
+            }, 500)
         })
     }
     return (
@@ -67,6 +66,14 @@ export const Login = ({
                 loadButton ? (
                     <Spinner />
                 ) : null
+            }
+            {
+                errorMessage &&
+                <Message
+                    title={`Login inválido`}
+                    text={`Email ou senha incorretos !!!`}
+                    type={`error`}
+                />
             }
 
             <LogoStyle source={logo} />
@@ -101,7 +108,7 @@ export const Login = ({
                 <Button
                     disabled={loadButton}
                     fieldBckColor={loadButton ? `gray` : " #496bba"}
-                    style={loadButton ? {borderColor: `gray`} : null}
+                    style={loadButton ? { borderColor: `gray` } : null}
                     onPress={() => {
                         // Mostrar o carregamento do bot
                         setLoadButton(true)

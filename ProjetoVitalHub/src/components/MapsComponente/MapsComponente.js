@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ActivityIndicator, StyleSheet, View } from "react-native"
+import { ActivityIndicator, StyleSheet } from "react-native"
 
 // Import do maps
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
@@ -59,7 +59,7 @@ export const MapsComponente = ({
         // )
     }, [10000000])
 
-
+ 
 
     return (
         <BoxMaps>
@@ -67,8 +67,8 @@ export const MapsComponente = ({
                 initialPosition != null
                     ? (
                         <MapView
-                            latitude={latitude}
-                            longitude={longitude}
+                        latitude={latitude}
+                        longitude={longitude}
                             initialRegion={{
                                 latitude: latitude,
                                 longitude: longitude,
@@ -98,10 +98,8 @@ export const MapsComponente = ({
                 /> */}
                         </MapView>) : (
                         <>
-                            <View style={styles.errorStyle}>
-                                <Title>Localização ainda não encontrada</Title>
-                                <ActivityIndicator />
-                            </View>
+                            <Title>Localização não encontrada</Title>
+                            <ActivityIndicator />
                         </>
                     )
             }
@@ -115,9 +113,5 @@ const styles = StyleSheet.create({
     map: {
         flex: 1,
         width: '100%'
-    },
-    errorStyle: {
-        alignItems: 'center',
-        justifyContent: 'center'
     }
 });
