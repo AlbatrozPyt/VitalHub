@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const BoxMessage = styled(Animated.View)`
     position: absolute;
     top: 100px;
-    z-index: 1;
+    z-index: 100;
     display: flex;
     align-items: center;
     gap: 10px;

@@ -15,7 +15,7 @@ import api from '../../services/services'
 // Import do icon
 import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/Input"
 import { ActivityIndicator, Alert, Animated, StyleSheet, Text, View } from "react-native"
 
@@ -29,7 +29,8 @@ import { Sla } from "../Perfil/style"
 import { Message } from "../../components/Message/Message"
 
 export const Login = ({
-    navigation
+    navigation,
+    route
 }) => {
 
     const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br')
@@ -67,6 +68,12 @@ export const Login = ({
 
         })
     }
+
+    useEffect(() => {
+    //    setEmail(route.params.data.email)
+    //    setSenha(route.params.data.senha)
+    }, [route])
+
     return (
         <Container>
 

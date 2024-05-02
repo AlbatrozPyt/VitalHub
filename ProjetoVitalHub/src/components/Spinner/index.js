@@ -1,10 +1,12 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 
-export const Spinner = ({ time = 2000, state = null, navigation = null, screen }) => {
+export const Spinner = ({ time = 2000, state = null, navigation = null, screen, value }) => {
 
     if (navigation !== null) {
-        setTimeout(() => navigation.replace(screen), time)
+        !value ?
+            setTimeout(() => navigation.replace(screen), time)
+            : setTimeout(() => navigation.replace(screen, {data: value}), time)
     }
     if (state !== null) {
         setTimeout(() => state(false), time)

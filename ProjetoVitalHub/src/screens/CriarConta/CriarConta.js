@@ -14,18 +14,23 @@ import api from "../../services/services"
 // Import da logo
 import logo from "../../../assets/logo.png"
 import { useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Animated } from "react-native"
 import { Spinner } from "../../components/Spinner"
+import { Message } from "../../components/Message/Message"
 
 export const CriarConta = ({
     navigation
 }) => {
 
-    const [nome, setNome] = useState();
-    const [sobrenome, setSobrenome] = useState();
-    const [email, setEmail] = useState();
-    const [senha, setSenha] = useState();
-    const [confirmarSenha, setConfirmarSenha] = useState();
+    const [nome, setNome] = useState('');
+    const [sobrenome, setSobrenome] = useState('');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [confirmarSenha, setConfirmarSenha] = useState('');
+
+    const [animSuccess] = useState(new Animated.Value(-1000))
+    const [animError] = useState(new Animated.Value(-1000))
+    const [error, setError] = useState(`#49b3ba`)
 
     async function createAccount() {
         const form = new FormData();
@@ -40,21 +45,48 @@ export const CriarConta = ({
                 'content-type': 'multipart/form-data'
             }
         })
-            .then(async () => Alert.alert(`Conta criada`, `A conta foi criada com sucesso.`))
+            .then(async () => {
+                // Mostra a mensagem de erro
+                Animated.spring(animSuccess, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+
+                setTimeout(() => {
+                    Animated.spring(animSuccess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                }, 2500)
+
+                setSpinner(true)
+            })
             .catch(async (e) => console.log(e))
 
     }
 
     const [spinner, setSpinner] = useState(false);
 
+    const user = { email: email, senha: senha }
+
     return (
         <Scroll>
             <Container>
+
+                <Message
+                    translate={animError}
+                    type={'error'}
+                    title={'Campos inválidos'}
+                    text={'Os campos foram digitados incorretamente'}
+                />
+
+                <Message
+                    translate={animSuccess}
+                    type={'success'}
+                    title={'Conta crida'}
+                    text={'A conta foi criada com sucesso'}
+                />
+
                 {
                     spinner ?
                         <Spinner
                             navigation={navigation}
                             screen={'Login'}
+                            value={user}
                         /> : null
                 }
 
@@ -68,27 +100,32 @@ export const CriarConta = ({
                 <ContainerInputButtom>
                     <ContainerInput>
                         <InputStyle
+                            style={{ borderColor: error }}
                             placeholder="Nome"
                             onChangeText={(txt) => setNome(txt)}
                         />
 
                         <InputStyle
+                            style={{ borderColor: error }}
                             placeholder="Sobrenome"
                             onChangeText={(txt) => setSobrenome(txt)}
                         />
 
                         <InputStyle
+                            style={{ borderColor: error }}
                             placeholder="E-mail"
                             onChangeText={(txt) => setEmail(txt)}
                         />
 
                         <InputStyle
+                            style={{ borderColor: error }}
                             placeholder="Senha"
                             onChangeText={(txt) => setSenha(txt)}
                             secureTextEntry={true}
                         />
 
                         <InputStyle
+                            style={{ borderColor: error }}
                             placeholder="Confirme a senha"
                             onChangeText={(txt) => setConfirmarSenha(txt)}
                             secureTextEntry={true}
@@ -96,12 +133,23 @@ export const CriarConta = ({
                     </ContainerInput>
 
                     <Button onPress={() => {
-                        if (senha === confirmarSenha) {
+                        if (senha === confirmarSenha && senha !== `` && confirmarSenha !== ``) {
                             createAccount();
-                            setSpinner(true)
                         }
                         else {
-                            alert(`As senhas estão diferentes`)
+
+                            // Mostra a mensagem de erro
+                            Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+
+                            setTimeout(() => {
+                                Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                            }, 2500)
+
+                            // Muda a cor das borda
+                            setError('#f64f77')
+                            setTimeout(() => {
+                                setError('#49b3ba')
+                            }, 2500)
                         }
                     }}>
                         <ButtonTitle>cadastrar</ButtonTitle>

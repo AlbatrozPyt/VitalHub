@@ -28,6 +28,7 @@ export const RedifinirSenha = ({
     const [spinner, setSpinner] = useState(false);
 
     const [animError] = useState(new Animated.Value(-1000))
+    const [error, setError] = useState('#49b3ba')
 
     async function AlterarSenha() {
         await api.put(`/Usuario/AlterarSenha?email=${route.params.email}`, {
@@ -40,11 +41,11 @@ export const RedifinirSenha = ({
     return (
         <Container>
 
-            <Message 
+            <Message
                 translate={animError}
                 type={`error`}
                 title={`Senhas inválidas`}
-                text={`As senhas não coincidem`}
+                text={`As senhas não coincidem ou estão inválidas`}
             />
 
             {
@@ -67,18 +68,24 @@ export const RedifinirSenha = ({
                         placeholder="Nova senha"
                         onChangeText={txt => setNovaSenha(txt)}
                         secureTextEntry={true}
+                        style={{ borderColor: error }}
                     />
                     <InputStyle
                         placeholder="Confirme a nova senha"
                         onChangeText={txt => setConfirmarSenha(txt)}
                         secureTextEntry={true}
+                        style={{ borderColor: error }}
                     />
                 </ContainerInput>
 
                 <Button onPress={() => {
-                    if (novaSenha === confirmarSenha) {
+                    if (novaSenha === confirmarSenha && novaSenha !== '' && confirmarSenha !== '') {
                         AlterarSenha();
                         return;
+                    }
+                    else if (novaSenha === '' || confirmarSenha === '') {
+                        setError(`#f64f77`)
+                        setTimeout(() => setError(`#49b3ba`), 3000)
                     }
 
                     Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
