@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Utils.Email;
 
 namespace WebAPI.Utils.Mail
 {

@@ -1,17 +1,30 @@
-import { Animated, Text } from "react-native"
-import { BackgroundMessage, BoxMessage, TextMessage, TitleMessage } from "./style"
-import { useRef } from "react";
+import { BoxMessage, Line, TextMessage, TitleMessage } from "./style"
 
-
-export const Message = ({ title, text, type }) => {
+export const Message = ({ title, text, translate = 0, type }) => {
     return (
         <BoxMessage
-            typeMessage={type}
-
+            style={{ transform: [{ translateX: translate }] }}
+            backgroundMessage={
+                type === `error` ? `#f64f77` : null
+            }
         >
-            <TitleMessage typeMessage={type}>{title}</TitleMessage>
+            <TitleMessage
+                textMessage={
+                    type === `error` ? `#f64f77` : null
+                }
+            >
+                {title}
+            </TitleMessage>
 
-            <TextMessage typeMessage={type}>{text}</TextMessage>
+            <Line/>
+
+            <TextMessage
+                textMessage={
+                    type === `error` ? `#f64f77` : null
+                }
+            >
+                {text}
+            </TextMessage>
         </BoxMessage>
     )
 }

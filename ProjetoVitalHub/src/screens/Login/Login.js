@@ -17,15 +17,16 @@ import { AntDesign } from '@expo/vector-icons';
 import { TextAccount } from "../../components/Text/style"
 import { useRef, useState } from "react"
 import { InputText } from "../../components/Input"
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Alert, Animated, StyleSheet, Text, View } from "react-native"
 
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Componente que roda o spinner de load do login
 import { Spinner } from "../../components/Spinner"
+import { MontserratAlternates_400Regular_Italic } from "@expo-google-fonts/montserrat-alternates"
+import { Sla } from "../Perfil/style"
 import { Message } from "../../components/Message/Message"
-import { Animated } from "react-native-maps"
 
 export const Login = ({
     navigation
@@ -39,6 +40,8 @@ export const Login = ({
 
     // Mostra a mensagem de erro
     const [errorMessage, setErrorMessage] = useState()
+
+    const [animError] = useState(new Animated.Value(-1000))
 
     // Funcao de login
     async function Logar() {
@@ -54,13 +57,26 @@ export const Login = ({
 
         }).catch(() => {
             setTimeout(() => {
-                setErrorMessage(true)
                 setLoadButton(false);
+                Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
             }, 500)
+
+            setTimeout(() => {
+                Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+            }, 2500)
+
         })
     }
     return (
         <Container>
+
+            <Message
+                translate={animError}
+                title={`Login inválido`}
+                text={`Emai ou senha incorretos !!!`}
+                type={`error`}
+            />
+
             {/* Spinner de carregamento para home */}
             {
                 loadButton ? (
@@ -133,6 +149,6 @@ export const Login = ({
                     Crie uma conta agora
                 </TextAccount>
             </ContentAccount>
-        </Container>
+        </Container >
     )
 }

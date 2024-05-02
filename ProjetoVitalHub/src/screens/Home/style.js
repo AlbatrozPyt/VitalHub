@@ -22,5 +22,5 @@ export const IconLogin = styled.Image`
 export const ButtonIcon = styled.TouchableOpacity`
     position: absolute;
     left: 20px;
-    top: 20px;
+    top: 50px;
 `

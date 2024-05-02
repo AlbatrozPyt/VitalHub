@@ -9,14 +9,14 @@ import logo from "../../../assets/logo.png"
 import { BoxCode, InputVerification } from "./style"
 import { Button } from "../../components/Button/style"
 import { ButtonTitle } from "../../components/ButtonTitle/style"
-import { InputStyle } from "../../components/Input/style"
 import { ButtonIcon, IconLogin } from "../Home/style"
 
 import iconFechar from "../../../assets/fecharIcon.png"
 import { useRef, useState } from "react"
 import api from "../../services/services"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert, Animated, TouchableOpacity } from "react-native"
 
+import { Message } from "../../components/Message/Message"
 
 export const VerificarEmail = ({
     navigation,
@@ -25,6 +25,8 @@ export const VerificarEmail = ({
 
     const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const [code, setCode] = useState('');
+
+    const [animError] = useState(new Animated.Value(-1000))
 
     function focusNextInput(index) {
         if (index < inputs.length - 1) {
@@ -43,7 +45,13 @@ export const VerificarEmail = ({
             .then(() => {
                 navigation.replace('RedifinirSenha', { email: route.params.email })
             })
-            .catch(e => Alert.alert(`Codigo`, `Codigo inválido.`))
+            .catch(e => {
+                Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+
+                setTimeout(() => {
+                    Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                }, 2500)
+            })
     }
 
     async function ReenviarCodigo(e) {
@@ -54,6 +62,14 @@ export const VerificarEmail = ({
 
     return (
         <Container>
+
+            <Message
+                translate={animError}
+                title={`Código inválido`}
+                text={'O código inserido, não é válido'}
+                type={'error'}
+            />
+
             <ButtonIcon onPress={() => navigation.navigate("Login")}>
                 <IconLogin source={iconFechar} />
             </ButtonIcon>

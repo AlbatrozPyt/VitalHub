@@ -15,6 +15,8 @@ import iconFechar from "../../../assets/fecharIcon.png"
 import api from "../../services/services.js"
 import { useState } from "react"
 import { Spinner } from "../../components/Spinner/index.js"
+import { Animated } from "react-native"
+import { Message } from "../../components/Message/Message.js"
 
 export const RedifinirSenha = ({
     navigation,
@@ -24,6 +26,8 @@ export const RedifinirSenha = ({
     const [novaSenha, setNovaSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const [spinner, setSpinner] = useState(false);
+
+    const [animError] = useState(new Animated.Value(-1000))
 
     async function AlterarSenha() {
         await api.put(`/Usuario/AlterarSenha?email=${route.params.email}`, {
@@ -36,6 +40,13 @@ export const RedifinirSenha = ({
     return (
         <Container>
 
+            <Message 
+                translate={animError}
+                type={`error`}
+                title={`Senhas inválidas`}
+                text={`As senhas não coincidem`}
+            />
+
             {
                 spinner ? <Spinner navigation={navigation} screen={'Login'} /> : null
             }
@@ -46,7 +57,7 @@ export const RedifinirSenha = ({
 
             <LogoStyle source={logo} />
 
-            <Title>Redifinir senha</Title>
+            <Title>Redefinir senha</Title>
 
             <Subtitle>Insira e confirme sua nova senha</Subtitle>
 
@@ -55,10 +66,12 @@ export const RedifinirSenha = ({
                     <InputStyle
                         placeholder="Nova senha"
                         onChangeText={txt => setNovaSenha(txt)}
+                        secureTextEntry={true}
                     />
                     <InputStyle
                         placeholder="Confirme a nova senha"
                         onChangeText={txt => setConfirmarSenha(txt)}
+                        secureTextEntry={true}
                     />
                 </ContainerInput>
 
@@ -68,7 +81,11 @@ export const RedifinirSenha = ({
                         return;
                     }
 
-                    alert('Senhas diferentes')
+                    Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+
+                    setTimeout(() => {
+                        Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                    }, 2500)
                 }}>
                     <ButtonTitle>confirme a nova senha</ButtonTitle>
                 </Button>

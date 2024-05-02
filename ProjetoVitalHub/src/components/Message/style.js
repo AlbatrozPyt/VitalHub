@@ -1,42 +1,34 @@
-import { Quicksand_500Medium } from "@expo-google-fonts/quicksand";
+import { Animated } from "react-native";
 import styled from "styled-components";
 
-export const BoxMessage = styled.View`
+export const BoxMessage = styled(Animated.View)`
     position: absolute;
+    top: 100px;
     z-index: 1;
-    top: 15%;
     display: flex;
     align-items: center;
-    width: 80%;
-    height: 150px;
-    border-radius: 20px;
-    background-color: #f64f77;
-    transition: 1.5s;
-`
-
-export const TitleMessage = styled.Text`
+    gap: 10px;
     width: 90%;
-    text-align: center;
-    padding: 2px;
-    margin-top: 20px;
-    font-family: MontserratAlternates_500Medium;
-    border-width: 2px;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-bottom-color: white;
-    font-size: 22px;
-    color: ${(props) =>
-        props.typeMessage === 'error'
-            ? '#fff' : 'white'
-    };
+    height: 120px;
+    background-color: ${(props) => props.backgroundMessage};
+    border-radius: 10px;
 `
 
-export const TextMessage = styled.Text`
-    margin-top: 20px;
-    font-family: Quicksand_500Medium;
-    color: ${(props) =>
-        props.typeMessage === 'error'
-            ? '#fff' : 'white'
-    };
+export const TitleMessage = styled(Animated.Text)`
+    font-family: 'MontserratAlternates_500Medium';
+    font-size: 30px;
+    color: #fff;
+    margin-top: 10px;
+`
+
+export const TextMessage = styled(Animated.Text)`
+    font-family: 'Quicksand_500Medium';
+    color: #fff;
+`
+
+export const Line = styled(Animated.View)`
+    width: 70%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 10px;
 `

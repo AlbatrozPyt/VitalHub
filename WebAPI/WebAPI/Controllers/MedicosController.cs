@@ -15,8 +15,8 @@ namespace WebAPI.Controllers
     public class MedicosController : ControllerBase
     {
         private IMedicoRepository _medicoRepository;
-        private readonly EmailSendService emailSendService;
-        public MedicosController(EmailSendService _emailSendService)
+        private readonly Utils.Mail.EmailSendService emailSendService;
+        public MedicosController(Utils.Mail.EmailSendService _emailSendService)
         {
             _medicoRepository = new MedicoRepository();
             emailSendService = _emailSendService;
@@ -67,11 +67,7 @@ namespace WebAPI.Controllers
             
             user.Foto = medicoModel.Foto;
 
-            // Define o nome do container do blob
-            var containerName = "containervitalhubpedro";
-
-            // String de conexão
-            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg15;AccountKey=IN+DEYZjIQLDCG4pTvAa3ZGD+yCno9aN4lFvYzx/c7gWu1qL5vkMS5xlDcs481AIga9Q68gZa3u1+AStLB6aag==;EndpointSuffix=core.windows.net";
+        
 
             // Método para upload de imagem            
             user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
