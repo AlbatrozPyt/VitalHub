@@ -14,34 +14,39 @@ import api from '../../services/services'
 
 // Import do icon
 import { AntDesign } from '@expo/vector-icons';
+
 import { TextAccount } from "../../components/Text/style"
 import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/Input"
-import { ActivityIndicator, Alert, Animated, StyleSheet, Text, View } from "react-native"
+import { Animated } from "react-native"
 
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Componente que roda o spinner de load do login
 import { Spinner } from "../../components/Spinner"
-import { MontserratAlternates_400Regular_Italic } from "@expo-google-fonts/montserrat-alternates"
-import { Sla } from "../Perfil/style"
+
+// Componente de mensagem com animacao
 import { Message } from "../../components/Message/Message"
+import { faL } from "@fortawesome/free-solid-svg-icons"
 
 export const Login = ({
     navigation,
     route
 }) => {
 
-    const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br')
-    const [senha, setSenha] = useState('Ggg')
-    const [emailInvalid, setEmailInvalid] = useState(false);
-    const [passwordInvalid, setPasswordInvalid] = useState(false);
+    const [email, setEmail] = useState(route.params && route.params.data.email)
+    const [senha, setSenha] = useState(route.params && route.params.data.senha)
+
+
+    // State para mostar o spinner de carregamento
     const [loadButton, setLoadButton] = useState(false);
 
     // Mostra a mensagem de erro
     const [errorMessage, setErrorMessage] = useState()
+    const [error, setError] = useState(`#F5F3F3`)
 
+    // State da animacao
     const [animError] = useState(new Animated.Value(-1000))
 
     // Funcao de login
@@ -50,13 +55,22 @@ export const Login = ({
             email: email,
             senha: senha
         }).then(async response => {
+
+            // Salva o token no async storage
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
 
+            // Vai para a tela principal
             setTimeout(() => {
                 navigation.replace("Main")
             }, 1000);
 
         }).catch(() => {
+
+            // Muda a cor da borda
+            setError(`#f64f77`)
+
+            // Configurando a animacao de erro e o tempo
+
             setTimeout(() => {
                 setLoadButton(false);
                 Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
@@ -66,17 +80,20 @@ export const Login = ({
                 Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
             }, 2500)
 
+            setTimeout(() => setError(`#F5F3F3`), 2500)
         })
     }
 
     useEffect(() => {
-    //    setEmail(route.params.data.email)
-    //    setSenha(route.params.data.senha)
+        if (route.params !== undefined) {
+            Logar()
+        }
     }, [route])
 
     return (
         <Container>
 
+            {/* Componente de animacao de erro */}
             <Message
                 translate={animError}
                 title={`Login inválido`}
@@ -90,37 +107,28 @@ export const Login = ({
                     <Spinner />
                 ) : null
             }
-            {
-                errorMessage &&
-                <Message
-                    title={`Login inválido`}
-                    text={`Email ou senha incorretos !!!`}
-                    type={`error`}
-                />
-            }
+
+            {/* Inicio da tela */}
 
             <LogoStyle source={logo} />
 
             <Title marginBottom={"20px"}>Entrar ou criar conta</Title>
 
             <ContainerInput>
-
                 <InputText
                     placeholder="Email"
-
+                    fieldBorderColor={error}
                     fieldValue={email}
                     onChangeText={(txt) => setEmail(txt)}
                 />
-                {/* { emailInvalid ? <ValidationText>Email inválido !!!</ValidationText> : null } */}
 
                 <InputText
                     placeholder="Senha"
                     secureTextEntry={true}
-
+                    fieldBorderColor={error}
                     fieldValue={senha}
                     onChangeText={(txt) => setSenha(txt)}
                 />
-                {/* { passwordInvalid ? <ValidationText>Senha inválida !!!</ValidationText> : null } */}
             </ContainerInput>
 
             <LinkUtil onPress={() => navigation.navigate("RecuperarSenha")}>
@@ -129,12 +137,15 @@ export const Login = ({
 
             <ContainerInput>
                 <Button
-                    disabled={loadButton}
-                    fieldBckColor={loadButton ? `gray` : " #496bba"}
-                    style={loadButton ? { borderColor: `gray` } : null}
+                    disabled={loadButton} // Desabilita o botao se o spinner estiver rodando
+                    fieldBckColor={loadButton ? `gray` : " #496bba"} // Muda a cor de fundo do botao
+                    style={loadButton ? { borderColor: `gray` } : null} // Muda a borda do botao
                     onPress={() => {
-                        // Mostrar o carregamento do bot
+
+                        // Mostrar o carregamento do spinner
                         setLoadButton(true)
+
+                        // Chama a funcao de Login
                         Logar()
                     }}>
                     <ButtonTitle>Entrar</ButtonTitle>

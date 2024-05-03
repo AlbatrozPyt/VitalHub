@@ -12,10 +12,10 @@ namespace WebAPI.Controllers
     public class ReuperarSenhaController : ControllerBase
     {
         private readonly VitalContext _context;
-        private readonly EmailSendingService _emailSendingService;
+        private readonly EmailSendService _emailSendingService;
 
 
-        public ReuperarSenhaController(VitalContext context, EmailSendingService emailSendingService) 
+        public ReuperarSenhaController(VitalContext context, EmailSendService emailSendingService) 
         {
             _context = context;
             _emailSendingService = emailSendingService;

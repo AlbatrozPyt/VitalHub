@@ -16,7 +16,7 @@ namespace WebAPI.Utils.Mail
 
         }
 
-        [HttpPost]
+        [HttpPost("EnviarEmail")]
         public async Task<IActionResult> SendMail(string email, string userName)
         {
             try

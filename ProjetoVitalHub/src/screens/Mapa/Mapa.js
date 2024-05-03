@@ -8,24 +8,27 @@ import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style
 import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
 import { MapsComponente } from "../../components/MapsComponente/MapsComponente"
 import { useEffect, useState } from "react"
+
+// Import da API
 import api, { apiBuscaBairro } from "../../services/services"
 
 export const Mapa = ({ navigation, route }) => {
     const [clinica, setClinica] = useState(null)
 
-    const [latitude, setLatitude] = useState()
-    const [longitude, setLongitude] = useState()
+    // Estados 'setados' a parte para ser passado como valor
     const [logradouro, setLogradouro] = useState()
     const [numero, setNumero] = useState()
     const [bairro, setBairro] = useState()
+    
+    // 'Setando' a latitude e longitude da clinica
+    const [latitude, setLatitude] = useState()
+    const [longitude, setLongitude] = useState()
 
     useEffect(() => {
         if (clinica == null) {
             BuscarClinica()
             BuscarBairro()
         }
-
-        // console.log(route.params.clinicaId);
     }, [clinica])
 
     async function BuscarClinica() {
@@ -35,18 +38,14 @@ export const Mapa = ({ navigation, route }) => {
 
         setLogradouro(promise.data.endereco.logradouro)
         setNumero(promise.data.endereco.numero.toString())
-        // console.log(promise.data.endereco)
-
         setLatitude(promise.data.endereco.latitude);
         setLongitude(promise.data.endereco.longitude);
     }
 
+    // Essa função serve para buscar o bairro através do cep
     async function BuscarBairro() {
-        const promise = await apiBuscaBairro.get(`/${clinica.endereco.cep}/json/`)
-        if (promise.data.bairro != null) {
-
-        }
-        setBairro(promise.data.bairro)
+        const promise = await apiBuscaBairro.get(`/${clinica.endereco.cep}/json/`);
+        setBairro(promise.data.bairro);
     }
 
     return (

@@ -16,10 +16,10 @@ namespace WebAPI.Controllers
     public class PacientesController : ControllerBase
     {
         private IPacienteRepository pacienteRepository { get; set; }
-        private readonly EmailSendingService _emailSendingService;
+        private readonly EmailSendService _emailSendingService;
 
 
-        public PacientesController(EmailSendingService emailSendingService)
+        public PacientesController(EmailSendService emailSendingService)
         {
             pacienteRepository = new PacienteRepository();
             _emailSendingService = emailSendingService;
@@ -48,36 +48,6 @@ namespace WebAPI.Controllers
             return Ok(pacienteRepository.BuscarPorId(id));
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Post(PacienteViewModel pacienteModel)
-        //{
-        //    Usuario user = new Usuario();
-
-        //    user.Nome = pacienteModel.Nome;
-        //    user.Email = pacienteModel.Email;
-        //    user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
-        //    user.Foto = pacienteModel.Foto;
-        //    user.Senha = pacienteModel.Senha;
-
-        //    user.Paciente = new Paciente();
-
-        //    user.Paciente.DataNascimento = pacienteModel.DataNascimento;
-        //    user.Paciente.Rg = pacienteModel.Rg;
-        //    user.Paciente.Cpf = pacienteModel.Cpf;
-
-        //    user.Paciente.Endereco = new Endereco();
-
-        //    user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-        //    user.Paciente.Endereco.Numero = pacienteModel.Numero;
-        //    user.Paciente.Endereco.Cep = pacienteModel.Cep;
-        //    user.Paciente.Endereco.Cidade = pacienteModel.Cidade;
-
-        //    pacienteRepository.Cadastrar(user);
-
-        //    await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
-
-        //    return Ok();
-        //}
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] PacienteViewModel pacienteModel)

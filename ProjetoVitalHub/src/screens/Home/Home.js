@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { Calendarhome } from "../../components/CalendarHome/CalendarHome"
 import { Container } from "../../components/Container/style"
@@ -15,16 +16,6 @@ import { Spinner } from "../../components/Spinner"
 // Import da API
 import api from "../../services/services"
 import { userDecodeToken } from "../../Utils/Auth"
-
-const Consultas = [
-    { id: 1, nome: "Pedro Felix Gentileza", idade: "20", typeExame: "Rotina", horario: "16h", situacao: "pendente" },
-    { id: 2, nome: "Enzo Gentileza", idade: "17", typeExame: "Rotina", horario: "17h", situacao: "realizado" },
-    { id: 3, nome: "Gois Garbelini", idade: "17", typeExame: "Exame", horario: "18h", situacao: "cancelado" },
-    { id: 4, nome: "Murilo Fois", idade: "18", typeExame: "Urgência", horario: "19h", situacao: "realizado" },
-    { id: 5, nome: "Daniel Viera", idade: "16", typeExame: "Rotina", horario: "20h", situacao: "cancelado" },
-    { id: 6, nome: "Pedro King's", idade: "16", typeExame: "Urgência", horario: "22h", situacao: "pendente" },
-
-]
 
 export const Home = ({
     navigation
@@ -73,7 +64,6 @@ export const Home = ({
         async function getConsultas() {
             const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
             setConsultaLista(promise.data);
-            // console.log(promise.data);
         }
 
         async function profileLoad() {
@@ -84,13 +74,11 @@ export const Home = ({
 
                 setNameUser(token.name)
                 setProfile(token.role)
-                // console.log(profile);
             }
         }
-
         profileLoad()
         getConsultas();
-    }, [dataConsulta, showModalCancel, profile]);
+    }, [dataConsulta, showModalCancel, profile, user]);
 
 
     function MostrarModal(modal, consulta) {
@@ -124,11 +112,8 @@ export const Home = ({
             }
 
 
-            {/* MUDAR O BACKGROUND COLOR
-             */}
-            <ButtonAppointment
-                onPressConsulta={() => setShowModalConsultas(true)}
-            />
+            {profile == 'Paciente' ? <ButtonAppointment onPressConsulta={() => setShowModalConsultas(true)}/> : null}
+            
 
             <HeaderHome
                 navigation={navigation}
@@ -178,8 +163,6 @@ export const Home = ({
                             nameUser={nameUser}
                             data={item}
                             situacao={item.situacao.situacao}
-                            // onPressAppointment={() => setShowModalAppointment(true)}
-                            // onPressPerfilMed={() => setShowModalPerfilMed(true)}
 
                             onPressAppointment={() => MostrarModal('prontuario', item)}
                             onPressPerfilMed={() => MostrarModal('prescricao', item)}
@@ -217,7 +200,6 @@ export const Home = ({
 
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
-                dados={Consultas}
                 navigation={navigation}
             />
 

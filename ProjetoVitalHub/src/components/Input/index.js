@@ -24,7 +24,6 @@ export const InputText = ({
             value={fieldValue}
             onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}
-            editable={editable}
         />
     )
 }

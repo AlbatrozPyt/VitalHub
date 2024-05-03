@@ -3,13 +3,12 @@ import { Container, ContainerBox, ContainerInputButtom, ContainerPerfil, Scroll 
 import { FotoStyle } from "../../components/FotoPerfil/style"
 
 // Import da foto
-import fotoPerfil from '../../../assets/FotoPerfil.png'
 import { Title } from "../../components/Title/style"
 import { Subtitle } from "../../components/Text/style"
 import { BoxInput } from "../../components/BoxInput"
 import { Button } from "../../components/Button/style"
 import { ButtonTitle } from "../../components/ButtonTitle/style"
-import { Alert, View } from "react-native"
+import { Alert, Animated, View } from "react-native"
 import { DadosPessoais } from "./style"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../Utils/Auth"
@@ -19,11 +18,12 @@ import api from "../../services/services"
 import { faL } from "@fortawesome/free-solid-svg-icons"
 import { Spinner } from "../../components/Spinner"
 
-
 //Importando os icones
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { BottomCamera } from "./style"
 import { CameraComp } from "../../components/CameraComp/CameraComp"
+import { Message } from "../../components/Message/Message"
+
 
 export const Perfil = ({
     navigation,
@@ -58,6 +58,9 @@ export const Perfil = ({
 
 
     const [showModalCamera, setShowModalCamera] = useState(false)
+
+    // State para animacao de sucesso
+    const [animSucess] = useState(new Animated.Value(-1000))
 
 
     // CARREGA O USUARIO
@@ -116,6 +119,15 @@ export const Perfil = ({
                 "cidade": cidade,
                 "dataNascimento": dataNascimento,
             })
+                .then(() => {
+                    setTimeout(() => {
+                        Animated.spring(animSucess, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                    }, 500)
+
+                    setTimeout(() => {
+                        Animated.spring(animSucess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                    }, 2500)
+                })
                 .catch(e => console.log(e))
             :
             await api.put(`/Medicos?idUsuario=${userId}`, {
@@ -124,6 +136,15 @@ export const Perfil = ({
                 "cidade": cidade,
                 "crm": crm,
             })
+                .then(() => {
+                    setTimeout(() => {
+                        Animated.spring(animSucess, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                    }, 500)
+
+                    setTimeout(() => {
+                        Animated.spring(animSucess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                    }, 2500)
+                })
                 .catch((e) => console.log(e))
     }
 
@@ -160,6 +181,13 @@ export const Perfil = ({
     return (
         <Container>
 
+            <Message
+                translate={animSucess}
+                type={`success`}
+                title={`Perfil Atualizado`}
+                text={`Perfil atualizado com sucesso !!!`}
+            />
+
             {
                 spinner ?
                     <Spinner
@@ -171,7 +199,7 @@ export const Perfil = ({
 
             <Scroll>
                 <View>
-                    <FotoStyle source={perfil !== undefined ? { uri: perfil.idNavigation.foto } : null} />
+                    <FotoStyle source={perfil !== undefined ? { uri: token.foto } : null} />
                     <BottomCamera onPress={() => setShowModalCamera(true)}>
                         <MaterialCommunityIcons name="camera-plus" size={20} color={'#fbfbfb'} />
                     </BottomCamera>
@@ -197,8 +225,11 @@ export const Perfil = ({
                                 onChangeText={(x) => setDataNascimento(x)}
                                 textLabel='Data de nascimento'
                                 fieldValue={
-                                    !edit ? new Date(dataNascimento).toLocaleDateString()
-                                        : null
+                                    !edit
+                                        ? dataNascimento !== undefined
+                                        && new Date(dataNascimento).toLocaleDateString()
+                                        : ''
+
                                 }
                                 placeholder={edit ? new Date(perfil.dataNascimento).toLocaleDateString() : null}
                                 editable={edit}
@@ -241,7 +272,7 @@ export const Perfil = ({
                                     fieldWidth={45}
                                     textLabel='CEP'
                                     fieldValue={!edit ? cep : null}
-                                    placeholder={edit ? perfil.endereco.cep: null}
+                                    placeholder={edit ? perfil.endereco.cep : null}
                                     editable={edit}
                                 />
 
@@ -250,7 +281,7 @@ export const Perfil = ({
                                     fieldWidth={50}
                                     textLabel='Cidade'
                                     fieldValue={!edit ? cidade : null}
-                                    placeholder={edit ? perfil.endereco.cidade: null}
+                                    placeholder={edit ? perfil.endereco.cidade : null}
                                     editable={edit}
                                 />
                             </ContainerBox>
@@ -263,7 +294,7 @@ export const Perfil = ({
                                 onChangeText={(x) => setCrm(x)}
                                 textLabel='CRM'
                                 fieldValue={!edit ? crm : null}
-                                placeholder={edit ? perfil.crm: null}
+                                placeholder={edit ? perfil.crm : null}
                                 editable={edit}
                             />
                             <BoxInput
@@ -279,7 +310,7 @@ export const Perfil = ({
                                     fieldWidth={45}
                                     textLabel='CEP'
                                     fieldValue={!edit ? cep : null}
-                                    placeholder={edit ? perfil.endereco.cep: null}
+                                    placeholder={edit ? perfil.endereco.cep : null}
                                     editable={edit}
                                 />
 
@@ -288,7 +319,7 @@ export const Perfil = ({
                                     fieldWidth={50}
                                     textLabel='Cidade'
                                     fieldValue={!edit ? cidade : null}
-                                    placeholder={edit ? perfil.endereco.cidade: null}
+                                    placeholder={edit ? perfil.endereco.cidade : null}
                                     editable={edit}
                                 />
                             </ContainerBox>

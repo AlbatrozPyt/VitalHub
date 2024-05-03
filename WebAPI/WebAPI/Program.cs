@@ -113,7 +113,7 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameo
 // Registrando o serviço de e-mail como uma instância transitória, que é criada cada vez que é solicitada
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-builder.Services.AddScoped<EmailSendingService>();
+builder.Services.AddScoped<EmailSendService>();
 
 builder.Services.AddScoped<IExameRepository, ExameRepository>();
 

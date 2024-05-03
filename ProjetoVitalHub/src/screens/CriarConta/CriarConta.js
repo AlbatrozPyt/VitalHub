@@ -22,17 +22,33 @@ export const CriarConta = ({
     navigation
 }) => {
 
+    // States para a requisicao
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
 
+    // State para animacao de sucesso
     const [animSuccess] = useState(new Animated.Value(-1000))
+
+    // State para animacao de erro
     const [animError] = useState(new Animated.Value(-1000))
+
+    // State para mudar a cor da borda
     const [error, setError] = useState(`#49b3ba`)
 
+    // State do spinner
+    const [spinner, setSpinner] = useState(false);
+
+    // Usuario que vai passar para a tela de login pelo route
+    const user = { email: email, senha: senha }
+
+    // Funcao de Criar Conta
     async function createAccount() {
+
+        // Logica para enviar uma requisicao do tipo form
+
         const form = new FormData();
 
         form.append("IdTipoUsuario", "300175F7-6A8F-4DAB-A5CF-5546D5E1B4A2")
@@ -46,41 +62,33 @@ export const CriarConta = ({
             }
         })
             .then(async () => {
-                // Mostra a mensagem de erro
+
+                // Configura a mensagem de sucesso e o tempo
                 Animated.spring(animSuccess, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
 
                 setTimeout(() => {
                     Animated.spring(animSuccess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
-                }, 2500)
+                }, 1500)
 
+                // Mostra o carregamento do spinner
                 setSpinner(true)
             })
-            .catch(async (e) => console.log(e))
+            .catch(async (e) => {
+                // Configura a mensagem de erro e o tempo
+                Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+
+                setTimeout(() => {
+                    Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                }, 2500)
+            })
 
     }
-
-    const [spinner, setSpinner] = useState(false);
-
-    const user = { email: email, senha: senha }
 
     return (
         <Scroll>
             <Container>
 
-                <Message
-                    translate={animError}
-                    type={'error'}
-                    title={'Campos inválidos'}
-                    text={'Os campos foram digitados incorretamente'}
-                />
-
-                <Message
-                    translate={animSuccess}
-                    type={'success'}
-                    title={'Conta crida'}
-                    text={'A conta foi criada com sucesso'}
-                />
-
+                {/* Mostra o spinner de carregamento */}
                 {
                     spinner ?
                         <Spinner
@@ -90,8 +98,25 @@ export const CriarConta = ({
                         /> : null
                 }
 
-                <LogoStyle source={logo} />
+                {/* Mensagem de erro */}
+                <Message
+                    translate={animError}
+                    type={'error'}
+                    title={'Campos inválidos'}
+                    text={'Os campos foram digitados incorretamente'}
+                />
 
+                {/* Mensagem de sucesso */}
+                <Message
+                    translate={animSuccess}
+                    type={'success'}
+                    title={'Conta crida'}
+                    text={'A conta foi criada com sucesso'}
+                />
+
+
+                {/* Inicio da tela */}
+                <LogoStyle source={logo} />
 
                 <Title>Criar conta</Title>
 
@@ -133,12 +158,14 @@ export const CriarConta = ({
                     </ContainerInput>
 
                     <Button onPress={() => {
+
+                        // Confirma se as senhas são válidas e chama a função
                         if (senha === confirmarSenha && senha !== `` && confirmarSenha !== ``) {
                             createAccount();
                         }
                         else {
 
-                            // Mostra a mensagem de erro
+                            // Mostra a mensagem de erro e o tempo
                             Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
 
                             setTimeout(() => {
