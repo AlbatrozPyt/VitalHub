@@ -26,7 +26,7 @@ const createNotSupportedComponent = (message) => () => {
     return null;
 };
 exports.createNotSupportedComponent = createNotSupportedComponent;
-exports.googleMapIsInstalled = !!react_native_1.UIManager.getViewManagerConfig(getNativeMapName(ProviderConstants_1.PROVIDER_GOOGLE));
+exports.googleMapIsInstalled = !!react_native_1.UIManager.hasViewManagerConfig(getNativeMapName(ProviderConstants_1.PROVIDER_GOOGLE));
 function decorateMapComponent(Component, componentName, providers) {
     const components = {};
     const getDefaultComponent = () => (0, react_native_1.requireNativeComponent)(getNativeComponentName(undefined, componentName));

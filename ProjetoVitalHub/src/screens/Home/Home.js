@@ -76,10 +76,25 @@ export const Home = ({
                 setProfile(token.role)
             }
         }
-        profileLoad()
+        profileLoad();
         getConsultas();
+        AtualizarStatus();
     }, [dataConsulta, showModalCancel, profile, user]);
 
+    function AtualizarStatus()
+    {
+        const currentDate = new Date();
+
+        consultaLista.forEach((item) => {
+            
+            // if(item.dataConsulta < currentDate)
+            // {
+            //     api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
+            // }
+            return console.log(item.dataConsulta);;
+        });
+        
+    }
 
     function MostrarModal(modal, consulta) {
 
@@ -158,7 +173,7 @@ export const Home = ({
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
-                    statusLista == item.situacao.situacao && (
+                    statusLista == item.situacao.situacao && (                  
                         <CardConsulta
                             nameUser={nameUser}
                             data={item}

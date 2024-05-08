@@ -42,6 +42,13 @@ import * as ImagePicker from "expo-image-picker"
 import { Camera } from 'expo-camera';
 import { useEffect } from 'react';
 
+
+// Tira os logs do app
+
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(["Warning: ..."])
+// LogBox.ignoreAllLogs()
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {

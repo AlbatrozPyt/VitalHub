@@ -1,5 +1,5 @@
 // import da camera
-import { Camera, CameraType } from 'expo-camera'
+import { Camera, CameraType } from 'expo-camera/legacy'
 
 // import style
 import { lastPhoto, BntClose, BoxModal, BoxPhotoView, ButtonFlip, ButtonModal, ButtonPhoto, CameraView, PhotoImage, ViewModal, LastPhoto } from './style'
@@ -91,6 +91,7 @@ export const CameraComp = ({
                 ref={cameraRef}
                 style={styles.camera}
                 type={tipoCamera}
+                flashMode={'on'}
                 ratio='16:9'
             >
                 <BoxPhotoView>

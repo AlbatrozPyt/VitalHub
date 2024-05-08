@@ -20,7 +20,8 @@ export const CardConsulta = ({
 
     roleUsuario,
     prioridade,
-    usuarioConsulta
+    usuarioConsulta,
+    atualizarStatus
 
 }) => {
     const [profile, setProfile] = useState("paciente")
@@ -33,6 +34,7 @@ export const CardConsulta = ({
         navigation.replace(rota, { consultaId: data.id })
     }
     
+
     return (
         // Container principal
 

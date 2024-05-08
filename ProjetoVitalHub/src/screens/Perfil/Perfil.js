@@ -61,6 +61,7 @@ export const Perfil = ({
 
     // State para animacao de sucesso
     const [animSucess] = useState(new Animated.Value(-1000))
+    const [animUpdatePhoto] = useState(new Animated.Value(-1000))
 
 
     // CARREGA O USUARIO
@@ -81,7 +82,6 @@ export const Perfil = ({
 
     // BUSCAR O USUARIO
     async function getPerfil(token) {
-
         const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
 
         const promise = await api.get(`/${rota}/BuscarPorId?id=${token.id}`);
@@ -107,9 +107,6 @@ export const Perfil = ({
 
     // ATUALIZAR O USUARIO
     async function putPerfil() {
-        console.log(cidade);
-
-
         token.role === `Paciente` ?
             await api.put(`/Pacientes?idUsuario=${userId}`, {
                 "rg": rg,
@@ -128,7 +125,6 @@ export const Perfil = ({
                         Animated.spring(animSucess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
                     }, 2500)
                 })
-                .catch(e => console.log(e))
             :
             await api.put(`/Medicos?idUsuario=${userId}`, {
                 "cep": cep,
@@ -163,14 +159,23 @@ export const Perfil = ({
                 'content-type': 'multipart/form-data'
             }
         })
-            .then(response => setPhoto(response))
+            .then(response => {
+                setPhoto(response)
+
+                setTimeout(() => {
+                    Animated.spring(animUpdatePhoto, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                }, 500)
+
+                setTimeout(() => {
+                    Animated.spring(animUpdatePhoto, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                }, 2500)
+            })
             .catch(error => console.log(error))
     }
 
-
     useEffect(() => {
         profileLoad()
-    }, [])
+    }, [photo])
 
     useEffect(() => {
         if (photo !== null) {
@@ -186,6 +191,13 @@ export const Perfil = ({
                 type={`success`}
                 title={`Perfil Atualizado`}
                 text={`Perfil atualizado com sucesso !!!`}
+            />
+
+            <Message
+                translate={animUpdatePhoto}
+                type={`success`}
+                title={`Foto Atualizada`}
+                text={`Foto de perfil atualizada com sucesso !!!`}
             />
 
             {
@@ -228,16 +240,16 @@ export const Perfil = ({
                                     !edit
                                         ? dataNascimento !== undefined
                                         && new Date(dataNascimento).toLocaleDateString()
-                                        : ''
+                                        : null
 
                                 }
-                                placeholder={edit ? new Date(perfil.dataNascimento).toLocaleDateString() : null}
+                                placeholder={''}
                                 editable={edit}
                             />
                             <BoxInput
                                 onChangeText={(x) => {
                                     setCpf(x)
-                                    console.log(cpf);
+                                    console.log(cpf)
                                 }}
                                 textLabel='CPF'
                                 fieldValue={
@@ -346,9 +358,12 @@ export const Perfil = ({
                         <ButtonTitle>editar</ButtonTitle>
                     </Button>
 
-                    {/* <Button fieldBckColor={"#ACABB7"} fieldBorderColor={"#ACABB7"}>
-                            <ButtonTitle>sair do app</ButtonTitle>
-                        </Button> */}
+                    {
+                        edit &&
+                        <Button onPress={() => setEdit(false)}>
+                            <ButtonTitle>Cancelar</ButtonTitle>
+                        </Button>
+                    }
                 </ContainerInputButtom>
 
             </Scroll>

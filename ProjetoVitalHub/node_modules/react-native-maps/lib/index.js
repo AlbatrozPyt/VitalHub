@@ -29,11 +29,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OverlayAnimated = exports.MarkerAnimated = exports.enableLatestRenderer = exports.MAP_TYPES = exports.Animated = exports.Overlay = exports.Marker = exports.Geojson = exports.AnimatedRegion = exports.MapCalloutSubview = exports.CalloutSubview = exports.MapCallout = exports.Callout = exports.MapLocalTile = exports.LocalTile = exports.MapWMSTile = exports.WMSTile = exports.MapUrlTile = exports.UrlTile = exports.MapCircle = exports.Circle = exports.MapPolygon = exports.Polygon = exports.MapHeatmap = exports.Heatmap = exports.MapPolyline = exports.Polyline = exports.MapOverlay = exports.MapMarker = void 0;
+exports.OverlayAnimated = exports.MarkerAnimated = exports.MAP_TYPES = exports.Animated = exports.Overlay = exports.Marker = exports.Geojson = exports.AnimatedRegion = exports.MapCalloutSubview = exports.CalloutSubview = exports.MapCallout = exports.Callout = exports.MapLocalTile = exports.LocalTile = exports.MapWMSTile = exports.WMSTile = exports.MapUrlTile = exports.UrlTile = exports.MapCircle = exports.Circle = exports.MapPolygon = exports.Polygon = exports.MapHeatmap = exports.Heatmap = exports.MapPolyline = exports.Polyline = exports.MapOverlay = exports.MapMarker = void 0;
 const MapView_1 = __importStar(require("./MapView"));
 Object.defineProperty(exports, "Animated", { enumerable: true, get: function () { return MapView_1.AnimatedMapView; } });
 Object.defineProperty(exports, "MAP_TYPES", { enumerable: true, get: function () { return MapView_1.MAP_TYPES; } });
-Object.defineProperty(exports, "enableLatestRenderer", { enumerable: true, get: function () { return MapView_1.enableLatestRenderer; } });
 const MapMarker_1 = __importDefault(require("./MapMarker"));
 exports.Marker = MapMarker_1.default;
 var MapMarker_2 = require("./MapMarker");

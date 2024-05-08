@@ -19,12 +19,12 @@ export type MapStyleElement = {
     stylers: object[];
 };
 export type EdgePadding = {
-    top: Number;
-    right: Number;
-    bottom: Number;
-    left: Number;
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
 };
-export type MapType = 'hybrid' | 'mutedStandard' | 'none' | 'satellite' | 'standard' | 'terrain';
+export type MapType = 'hybrid' | 'mutedStandard' | 'none' | 'satellite' | 'standard' | 'terrain' | 'satelliteFlyover' | 'hybridFlyover';
 export type MapTypes = {
     STANDARD: 'standard';
     SATELLITE: 'satellite';
@@ -32,6 +32,8 @@ export type MapTypes = {
     TERRAIN: 'terrain';
     NONE: 'none';
     MUTEDSTANDARD: 'mutedStandard';
+    SATELLITE_FLYOVER: 'satelliteFlyover';
+    HYBRID_FLYOVER: 'hybridFlyover';
 };
 export type IndoorLevel = {
     index: number;
@@ -150,5 +152,10 @@ export type Address = {
     subLocality: string;
     thoroughfare: string;
     subThoroughfare?: string;
+};
+export type CameraZoomRange = {
+    minCenterCoordinateDistance?: number;
+    maxCenterCoordinateDistance?: number;
+    animated?: boolean;
 };
 export type NativeCommandName = 'animateCamera' | 'animateToRegion' | 'coordinateForPoint' | 'fitToCoordinates' | 'fitToElements' | 'fitToSuppliedMarkers' | 'getAddressFromCoordinates' | 'getCamera' | 'getMapBoundaries' | 'getMarkersFrames' | 'pointForCoordinate' | 'setCamera' | 'setIndoorActiveLevelIndex' | 'setMapBoundaries' | 'takeSnapshot';

@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Spinner } from "../Spinner"
 import api from "../../services/services"
 
-export function HeaderHome({ navigation, setSpinnerHome }) {
+export function HeaderHome({ navigation, route, setSpinnerHome }) {
 
     const [user, setUser] = useState()
 

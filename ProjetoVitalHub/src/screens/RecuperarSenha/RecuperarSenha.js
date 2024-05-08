@@ -20,7 +20,7 @@ export const RecuperarSenha = ({
     navigation
 }) => {
 
-    const [email, setEmail] = useState('matheus.ortiz2@aluno.senai.br');
+    const [email, setEmail] = useState('');
     const [spinner, setSpinner] = useState(false);
 
     async function MandarCodigo(e) {

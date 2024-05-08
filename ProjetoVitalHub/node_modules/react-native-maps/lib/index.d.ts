@@ -1,4 +1,4 @@
-import MapView, { AnimatedMapView as Animated, MAP_TYPES, enableLatestRenderer, MapViewProps } from './MapView';
+import MapView, { AnimatedMapView as Animated, MAP_TYPES, MapViewProps } from './MapView';
 import Marker from './MapMarker';
 export { MapMarker } from './MapMarker';
 export type { MapMarkerProps } from './MapMarker';
@@ -28,7 +28,7 @@ export { default as Geojson } from './Geojson';
 export type { GeojsonProps } from './Geojson';
 export { Marker, Overlay };
 export type { MapViewProps };
-export { Animated, MAP_TYPES, enableLatestRenderer };
+export { Animated, MAP_TYPES };
 export * from './ProviderConstants';
 export * from './MapView.types';
 export * from './MapPolygon.types';
