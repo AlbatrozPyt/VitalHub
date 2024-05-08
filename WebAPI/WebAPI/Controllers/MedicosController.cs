@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.Utils.BlobStorage;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
@@ -14,48 +15,62 @@ namespace WebAPI.Controllers
     public class MedicosController : ControllerBase
     {
         private IMedicoRepository _medicoRepository;
-        public MedicosController()
+        private readonly Utils.Mail.EmailSendService emailSendService;
+        public MedicosController(Utils.Mail.EmailSendService _emailSendService)
         {
             _medicoRepository = new MedicoRepository();
+            emailSendService = _emailSendService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_medicoRepository.ListarTodos());
-        }
-
-        [HttpGet("BuscarPorData")]
-        public IActionResult BuscarPorData(DateTime data, Guid id)
-        {
-            return Ok(_medicoRepository.BuscarPorData(data, id));
+            try
+            {
+                return Ok(_medicoRepository.ListarTodos());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("BuscarPorId")]
         public IActionResult GetById(Guid id)
         {
-
-            return Ok(_medicoRepository.BuscarPorId(id)); ;
+            try
+            {
+                return Ok(_medicoRepository.BuscarPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [Authorize]
-        [HttpPut]
-        public IActionResult AtualizarPerfil(MedicoViewModel medico)
-        {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
-        }
 
         [HttpPost]
-        public IActionResult Post(MedicoViewModel medicoModel)
+        public async Task<IActionResult> Post([FromForm] MedicoViewModel medicoModel)
         {
             Usuario user = new Usuario();
             user.Nome = medicoModel.Nome;
             user.Email = medicoModel.Email;
             user.TipoUsuarioId = medicoModel.IdTipoUsuario;
-            user.Foto = medicoModel.Foto;
+
+            var containerName = "conteiner-mk";
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobmatheusenrike;AccountKey=wBs/O9Sjz94SbXLDSZa1JvmHfkKtI7sCuf5ZXRNMtYKQ6do+ljl+GJKB/0ySq4Yd34Wx8u6609c1+AStnI0uXg==;EndpointSuffix=core.windows.net";
+
+            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
+
+
             user.Senha = medicoModel.Senha;
+            
+            user.Foto = medicoModel.Foto;
+
+        
+
+            // Método para upload de imagem            
+            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo!, connectionString, containerName);
 
             user.Medico = new Medico();
             user.Medico.Crm = medicoModel.Crm;
@@ -69,20 +84,53 @@ namespace WebAPI.Controllers
 
             _medicoRepository.Cadastrar(user);
 
+            await emailSendService.SendWelcomeEmail(user.Email!, user.Nome!);
+
             return Ok();
         }
 
         [HttpGet("BuscarPorIdClinica")]
         public IActionResult GetByIdClinica(Guid id)
         {
+            try
+            {
+                return Ok(_medicoRepository.ListarPorClinica(id)); ;
 
-            return Ok(_medicoRepository.ListarPorClinica(id)); ;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("BuscarPorData")]
         public IActionResult GetByDate(DateTime data, Guid id)
         {
-            return Ok(_medicoRepository.BuscarPorData(data, id)); 
+            try
+            {
+                return Ok(_medicoRepository.BuscarPorData(data, id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        public IActionResult UpdateProfile(MedicoViewModel medico)
+        {
+            try
+            {
+                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+
+                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

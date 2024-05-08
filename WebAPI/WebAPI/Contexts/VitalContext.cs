@@ -42,44 +42,8 @@ public partial class VitalContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-
-    // IP Matheus Note-Senai
-<<<<<<< HEAD
-    // HEAD
-
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
-=======
-
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
->>>>>>> origin/Pedro
-
-
-    // IP Pedro Note-Senai
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
-
-    // IP Pedro PC-Casa
-<<<<<<< HEAD
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
-=======
-  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); 
-
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
->>>>>>> origin/Pedro
-
-
-    // IP Pedro Note-Senai
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
-
-    // IP Pedro PC-Casa
-    /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE20-S21; initial catalog=VitalHub_G15_Tarde; TrustServerCertificate=true; user Id = sa; pwd=Senai@134"); */
-<<<<<<< HEAD
-
-    // Ip Senai Lucca
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=NOTE19-SALA21; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
-=======
->>>>>>> origin/Pedro
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-MHF127S; initial catalog=VitalHub_G15_Tarde_v2; TrustServerCertificate=true; user Id = sa; pwd=Senai@134");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -180,9 +144,6 @@ public partial class VitalContext : DbContext
                 .HasColumnName("ID");
             entity.Property(e => e.ConsultaId).HasColumnName("ConsultaID");
             entity.Property(e => e.Descricao).HasColumnType("text");
-            entity.Property(e => e.Titulo)
-                .HasMaxLength(100)
-                .IsUnicode(false);
 
             entity.HasOne(d => d.Consulta).WithMany(p => p.Exames)
                 .HasForeignKey(d => d.ConsultaId)
@@ -279,7 +240,6 @@ public partial class VitalContext : DbContext
             entity.Property(e => e.Medicamento)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-            entity.Property(e => e.Observacoes).HasColumnType("text");
         });
 
         modelBuilder.Entity<SituacaoConsulta>(entity =>
@@ -306,6 +266,8 @@ public partial class VitalContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
+            entity.HasIndex(e => e.Email, "UQ_Email").IsUnique();
+
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");

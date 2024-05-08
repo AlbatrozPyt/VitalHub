@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using WebAPI.Domains;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.Repositories;
+using WebAPI.Utils.BlobStorage;
 using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
@@ -20,20 +17,58 @@ namespace WebAPI.Controllers
             usuarioRepository = new UsuarioRepository();
         }
 
-        [Authorize]
         [HttpPut("AlterarSenha")]
-        public IActionResult AlterarSenha(AlterarSenhaViewModel senhas)
+        public IActionResult UpdatePassword(string email, AlterarSenhaViewModel senha)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
+            try
+            {
+                usuarioRepository.AlterarSenha(email, senha.SenhaNova!);
 
-            bool correto = usuarioRepository.AlterarSenha(idUsuario, senhas.SenhaAntiga, senhas.SenhaNova);
-            if (!correto)
-                return Unauthorized("Senha incorreta");
-
-            return Ok();
+                return Ok("Senha alterada com sucesso !");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        
+        [HttpGet("BuscarPorId")]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(usuarioRepository.BuscarPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
+        [HttpPut("AlterarFotoPerfil")]
+        public async Task<IActionResult> UploadProfileImage(Guid id, [FromForm] UsusarioViewModel user)
+        {
+            try
+            {
+                var usuarioBuscado = usuarioRepository.BuscarPorId(id);
+                // lógica para o upload de imagem
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobmatheusenrike;AccountKey=wBs/O9Sjz94SbXLDSZa1JvmHfkKtI7sCuf5ZXRNMtYKQ6do+ljl+GJKB/0ySq4Yd34Wx8u6609c1+AStnI0uXg==;EndpointSuffix=core.windows.net";
+
+                var containerName = "conteiner-mk";
+
+                string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(user.Arquivo!, connectionString, containerName);
+
+
+                usuarioBuscado.Foto = fotoUrl;
+
+                usuarioRepository.AtualizarFoto(id, fotoUrl);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
