@@ -61,8 +61,7 @@ export const BntClose = styled.TouchableOpacity`
 
 // Atualizar a foto do usuario
 export const LastPhoto = styled.Image`
-    margin-bottom: 30px;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 5px;
 `

@@ -5,7 +5,7 @@ import { Camera, CameraType } from 'expo-camera/legacy'
 import { lastPhoto, BntClose, BoxModal, BoxPhotoView, ButtonFlip, ButtonModal, ButtonPhoto, CameraView, PhotoImage, ViewModal, LastPhoto } from './style'
 
 // import do modal
-import { Modal, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
+import { Modal, StatusBar, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 
 // import do react
 import { useEffect, useRef, useState } from 'react'
@@ -33,7 +33,7 @@ export const CameraComp = ({
     const [photo, setPhoto] = useState(null)
     const [openModal, setOpenModal] = useState(false)
     const [lastPhoto, setLastPhoto] = useState(null)
-
+    const [flash, setFlash] = useState('off')
 
     async function GetLatestPhoto() {
         const { assets } = await MediaLibrary.getAssetsAsync(
@@ -48,7 +48,6 @@ export const CameraComp = ({
     async function CapturePhotos() {
         if (cameraRef) {
             const photo = await cameraRef.current.takePictureAsync()
-            setGalleryPhoto(photo.uri)
             setPhoto(photo.uri)
             setOpenModal(true)
 
@@ -91,7 +90,7 @@ export const CameraComp = ({
                 ref={cameraRef}
                 style={styles.camera}
                 type={tipoCamera}
-                flashMode={'on'}
+                flashMode={flash}
                 ratio='16:9'
             >
                 <BoxPhotoView>
@@ -103,13 +102,24 @@ export const CameraComp = ({
                         <MaterialIcons name="restart-alt" size={24} color="#fff" />
                     </ButtonPhoto>
 
+                    <ButtonPhoto onPress={() => flash === 'off' ? setFlash('on') : setFlash('off')}>
+                        {
+                            flash === 'on' ?
+                                <MaterialIcons name="flash-on" size={24} color="#fff" />
+                                : <MaterialIcons name="flash-off" size={24} color="#fff" />
+                        }
+                    </ButtonPhoto>
+
                     <BntClose onPress={() => setShowCamera(false)}>
                         <AntDesign name="close" size={30} color="#fff" />
                     </BntClose>
 
-                    <TouchableOpacity onPress={() => SelectImageGallery()}>
+                    <TouchableOpacity
+                        style={styles.lastPhotoButton}
+                        onPress={() => SelectImageGallery()}
+                    >
                         {
-                            lastPhoto !== null ? <LastPhoto source={{ uri: lastPhoto }} /> : null
+                            lastPhoto !== null && <LastPhoto source={{ uri: lastPhoto }} />
                         }
                     </TouchableOpacity>
                 </BoxPhotoView>
@@ -134,7 +144,9 @@ export const CameraComp = ({
                             <ButtonTitle>Continuar</ButtonTitle>
                         </Button>
 
-                        <Button onPress={() => ClearModal()} >
+                        <Button onPress={() => {
+                            ClearModal()
+                        }} >
                             <ButtonTitle>Cancelar</ButtonTitle>
                         </Button>
                     </BoxModal>
@@ -151,11 +163,17 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     camera: {
+        position: `absolute`,
         flex: 1,
-        height: '80%',
+        height: '100%',
         width: '100%'
     },
+    lastPhotoButton: {
+        position: `absolute`,
+        top: 50,
+        left: 30
+    }
 })

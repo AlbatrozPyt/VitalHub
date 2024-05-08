@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { Animated, Modal } from "react-native"
 import { Title, TitleConsulta } from "../Title/style"
 
 import fotoPerfil from '../../../assets/FotoPerfil.png'
@@ -14,6 +14,7 @@ import { Mapa } from "../../screens/Mapa/Mapa"
 import moment from "moment"
 import api from "../../services/services"
 import { userDecodeToken } from "../../Utils/Auth"
+import { Message } from "../Message/Message"
 
 
 export const AppointmentModal = ({
@@ -28,6 +29,7 @@ export const AppointmentModal = ({
         navigation.navigate(rota, { consultaId: consulta.id })
         setShowModalAppointment(false)
     }
+
 
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -77,8 +79,16 @@ export const ModalConsultas = ({
     navigation
 }) => {
 
+    const [cidades, setCidades] = useState()
+
     const [statusLista, setStatusList] = useState("");
     const [angendamento, setAgendamento] = useState();
+
+    const [validPrioridade, setValidPrioridade] = useState(false)
+    const [validLocalizacao, setValidLocalizacao] = useState("")
+
+    const [animError] = useState(new Animated.Value(-1000))
+    const [animEstadoInvalido] = useState(new Animated.Value(-1000))
 
     async function handleContinue() {
         await setShowModalConsultas(false);
@@ -86,8 +96,31 @@ export const ModalConsultas = ({
         navigation.replace('SelectClinic', { agendamento: angendamento })
     }
 
+    async function buscarCidade() { 
+        const promise = await api.get(`/Endereco/ListarCidades?cidade=${validLocalizacao}`)
+        const response = promise.data;
+
+        setCidades(response)
+    }
+
+    useEffect(() => buscarCidade, [validLocalizacao])
+
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
+            <Message
+                translate={animError}
+                title={'Campos inválidos'}
+                text={'Selecione ou preencha todos os campos !!!'}
+                type={'error'}
+            />
+
+            <Message
+                translate={animEstadoInvalido}
+                title={`Cidade inválida`}
+                text={'Não há nehuma clínica nessa cidade'}
+                type={'error'}
+            />
+
             <ConsultaStyleModal>
                 <ConsultasContent>
 
@@ -113,6 +146,7 @@ export const ModalConsultas = ({
                                     prioridadeId: "F04CB0C8-E413-408A-B2A9-4F4C87918696",
                                     prioridadeLabel: "Rotina"
                                 })
+                                setValidPrioridade(true)
                             }}
                             fieldBckColor={"#60BFC5"}
                         />
@@ -129,6 +163,7 @@ export const ModalConsultas = ({
                                     prioridadeId: "B7214CF6-F840-49D7-80C7-B50A1CED7187",
                                     prioridadeLabel: "Exame"
                                 })
+                                setValidPrioridade(true)
                             }}
                             fieldBckColor={"#60BFC5"}
                         />
@@ -145,6 +180,7 @@ export const ModalConsultas = ({
                                     prioridadeId: "1CEFF7CF-0BDE-4B3F-A376-8B5B411CB7A9",
                                     prioridadeLabel: "Urgencia"
                                 })
+                                setValidPrioridade(true)
                             }}
                             fieldBckColor={"#60BFC5"}
                         />
@@ -158,13 +194,39 @@ export const ModalConsultas = ({
                         value={angendamento ? angendamento.localizacao : null}
                         textLabel='Informe a localização desejada'
                         placeholder='Informe a localização'
-                        onChangeText={(txt) => setAgendamento({
-                            ...angendamento,
-                            localizacao: txt
-                        })}
+                        onChangeText={(txt) => {
+                            setAgendamento({
+                                ...angendamento,
+                                localizacao: txt
+                            })
+                            setValidLocalizacao(txt)
+                        }}
                     />
 
-                    <ButtonModalStyle onPress={() => handleContinue()}>
+                    <ButtonModalStyle onPress={() => {
+                        if (cidades.length === 0) {
+                            setTimeout(() => {
+                                Animated.spring(animEstadoInvalido, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                            }, 500)
+
+                            setTimeout(() => {
+                                Animated.spring(animEstadoInvalido, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                            }, 2500)
+                        }
+
+                        if (validPrioridade && cidades.length !== 0) {
+                            handleContinue()
+                        }
+                        else {
+                            setTimeout(() => {
+                                Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                            }, 500)
+
+                            setTimeout(() => {
+                                Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                            }, 2500)
+                        }
+                    }}>
                         <ButtonTitle>Continuar</ButtonTitle>
                     </ButtonModalStyle>
 
