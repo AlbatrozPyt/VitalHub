@@ -23,10 +23,9 @@ export const SelectDate = ({
     const [data, setData] = useState('')
     const [hora, setHora] = useState('')
 
-    const [animError] = useState(new Animated.Value(0))
+    const [animError] = useState(new Animated.Value(-1000))
 
-    function handleContinue()
-    {
+    function handleContinue() {
         setAgendamento({
             ...route.params.agendamento,
             dataConsulta: `${data} ${hora}`
@@ -43,7 +42,9 @@ export const SelectDate = ({
         <Container>
             <Message
                 title={`Data e Hora`}
-                text={`Escolha uma data e uma hora`}
+                text={`Escolha uma data e uma hora !!!`}
+                type={`error`}
+                translate={animError}
             />
 
             <Scroll>
@@ -56,17 +57,27 @@ export const SelectDate = ({
                     />
 
                     <LabelDate>Selecione um horário disponível</LabelDate>
-                    
-                    <InputSelect 
+
+                    <InputSelect
                         setHora={setHora}
                     />
 
                     <ButtonModalConfirmar
                         textValue={"Confirmar"}
                         onPressConfirmar={() => {
-                            if (data === '' || hora === '')
-                            {
-                                
+                            if (data === '' || hora === '') {
+
+                                setTimeout(() => {
+                                    Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                                }, 500)
+
+                                setTimeout(() => {
+                                    Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                                }, 2500)
+
+                            }
+                            else {
+                                handleContinue()
                             }
                         }}
                     />

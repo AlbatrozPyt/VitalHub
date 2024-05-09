@@ -16,6 +16,8 @@ import { Spinner } from "../../components/Spinner"
 // Import da API
 import api from "../../services/services"
 import { userDecodeToken } from "../../Utils/Auth"
+import { Modal, StyleSheet } from "react-native"
+import { ViewNotification } from "../../components/ViewNotification/ViewNotification"
 
 export const Home = ({
     navigation
@@ -55,7 +57,9 @@ export const Home = ({
 
     const [spinner, setSpinner] = useState(false);
 
+    const [viewNotification, setViewNotification] = useState(false)
 
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
 
@@ -67,11 +71,11 @@ export const Home = ({
 
                 if (token) {
                     setIdUser(token.id);
-    
+
                     setNameUser(token.name)
                     setProfile(token.role)
                 }
-                if (dataConsulta) {                    
+                if (dataConsulta) {
                     const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
                     setConsultaLista(promise.data);
                 }
@@ -82,22 +86,25 @@ export const Home = ({
 
         getConsultas();
         AtualizarStatus();
-    }, [dataConsulta, showModalCancel, profile, user]);
+    }, [dataConsulta, showModalCancel, profile, user, reload]);
 
-    function AtualizarStatus()
-    {
+    function AtualizarStatus() {
         const currentDate = new Date();
 
         consultaLista.forEach((item) => {
-            
-            // if(item.dataConsulta < currentDate)
-            // {
-            //     api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
-            // }
-            return console.log(item.dataConsulta);;
+
+            const dataComoObjeto = new Date(item.dataConsulta);
+            const dataComoInteiro = dataComoObjeto.getTime();
+            if (dataComoInteiro < currentDate.getTime()) {
+                async () => {
+                    await api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
+                    setReload(true)
+                }
+            }
+
+            console.log(item.id);
         });
-        console.log(currentDate);
-        
+
     }
 
     function MostrarModal(modal, consulta) {
@@ -130,14 +137,21 @@ export const Home = ({
                 ) : null
             }
 
+            <ViewNotification
+                visible={viewNotification}
+                setVisible={setViewNotification}
+            />
 
-            {profile == 'Paciente' ? <ButtonAppointment onPressConsulta={() => setShowModalConsultas(true)}/> : null}
-            
+
+            {profile == 'Paciente' ? <ButtonAppointment onPressConsulta={() => setShowModalConsultas(true)} /> : null}
+
 
             <HeaderHome
                 navigation={navigation}
                 setSpinnerHome={setSpinner}
+                setViewNotifcation={setViewNotification}
             />
+
 
             {/* Calendario */}
             <Calendarhome
@@ -177,7 +191,7 @@ export const Home = ({
                 keyExtractor={(item) => item.id}
 
                 renderItem={({ item }) =>
-                    statusLista == item.situacao.situacao && (                  
+                    statusLista == item.situacao.situacao && (
                         <CardConsulta
                             nameUser={nameUser}
                             data={item}
@@ -241,3 +255,4 @@ export const Home = ({
         </Container>
     )
 }
+

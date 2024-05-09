@@ -1,6 +1,5 @@
 import { BoxIcons, FotoPerfilHome, IconeSino } from "../FotoPerfil/style"
-import { BoxHeader, CntHeader, ContainerTxtHeader, HeaderContainer, HeaderContent, TextHeader, TextName } from "./style"
-import fotoPerfilHome from "../../../assets/fotoPerfilHome.png"
+import { BoxHeader, CntHeader, ContainerTxtHeader, HeaderContent, TextHeader, TextName } from "./style"
 import sino from "../../../assets/iconeSino.png"
 
 import { userDecodeToken } from "../../Utils/Auth"
@@ -9,10 +8,8 @@ import { useEffect, useState } from "react"
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { TouchableOpacity, View } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Spinner } from "../Spinner"
-import api from "../../services/services"
 
-export function HeaderHome({ navigation, route, setSpinnerHome }) {
+export function HeaderHome({ navigation, route, setSpinnerHome, setViewNotifcation }) {
 
     const [user, setUser] = useState()
 
@@ -46,7 +43,9 @@ export function HeaderHome({ navigation, route, setSpinnerHome }) {
                             </BoxHeader>
 
                             <BoxIcons>
-                                <IconeSino source={sino} />
+                                <TouchableOpacity onPress={() => setViewNotifcation(true)}>
+                                    <IconeSino source={sino} />
+                                </TouchableOpacity>
 
                                 <TouchableOpacity onPress={() => {
                                     AsyncStorage.removeItem('token');

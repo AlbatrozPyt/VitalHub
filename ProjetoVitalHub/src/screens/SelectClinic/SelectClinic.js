@@ -30,7 +30,7 @@ export const SelectClinic = ({
     const [animError] = useState(new Animated.Value(-1000))
 
     function handleContinue() {
-        navigation.replace('SelectMedicoScreen', {
+        navigation.navigate('SelectMedicoScreen', {
             agendamento: {
                 ...route.params.agendamento,
                 ...clinica

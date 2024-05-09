@@ -16,7 +16,7 @@ export const TitleName = styled.Text`
 `
 
 export const TitleConsulta = styled.Text`
-    margin: 30px 0px ${props => props.marginTop ? props.marginTop : "0px"};
+    margin: 55px 0px ${props => props.marginTop ? props.marginTop : "0px"};
     font-size: 20px;
     font-family: 'MontserratAlternates_600SemiBold';
     color: #33303e;

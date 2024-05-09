@@ -13,12 +13,13 @@ namespace WebAPI.Repositories
         {
             return ctx.Enderecos
                 .Select(e => new Endereco
-            {
-               Cidade = e.Cidade,
-            })
-                .Where(x => x.Cidade == cidade)
+                {
+                    Cidade = e.Cidade,
+                    Clinicas = e.Clinicas
+                })
+                .Where(x => x.Cidade == cidade && x.Clinicas.Count != 0)
                 .ToList();
-               
+
         }
     }
 }

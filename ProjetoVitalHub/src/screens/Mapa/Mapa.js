@@ -1,6 +1,4 @@
 import { Container, ContainerBox, ContainerPerfil } from "../../components/Container/style"
-import { ImageMapa } from "./style"
-import mapaImage from "../../../assets/imageMapa.png"
 import { Title } from "../../components/Title/style"
 import { Subtitle } from "../../components/Text/style"
 import { BoxInput } from "../../components/BoxInput"
@@ -19,44 +17,51 @@ export const Mapa = ({ navigation, route }) => {
     const [logradouro, setLogradouro] = useState('')
     const [numero, setNumero] = useState('')
     const [bairro, setBairro] = useState('')
-    
+
     // 'Setando' a latitude e longitude da clinica
     const [latitude, setLatitude] = useState(null)
     const [longitude, setLongitude] = useState(null)
 
     useEffect(() => {
-            BuscarClinica()
-    }, [clinica])
+        BuscarClinica()
+    }, [])
 
     async function BuscarClinica() {
-        // try {
-        //     const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
-        //     if (!promise.data) {
-        //         throw new Error('Dados da resposta estão vazios');
-        //     }
+        try {
+            const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
+            if (!promise.data) {
+                throw new Error('Dados da resposta estão vazios');
+            }
 
-        //     // Essa rota serve para buscar o bairro através do cep
-        //     const response = await apiBuscaBairro.get(`/${promise.data.endereco.cep}/json/`);
-        //     setBairro(response.data.bairro);
+            // Essa rota serve para buscar o bairro através do cep
+            const response = await apiBuscaBairro.get(`${promise.data.endereco.cep}`);
+            setBairro(response.data.bairro);
 
-        //     setClinica(promise.data)
-        //     setLogradouro(promise.data.endereco.logradouro)
-        //     setNumero(promise.data.endereco.numero.toString())
-            
-        //     setLatitude(promise.data.endereco.latitude);
-        //     setLongitude(promise.data.endereco.longitude);
-        // } catch (error) {
-        //     console.log('Ocorreu um erro ao carregar informações do mapa \n' + error.message);
-        // }
-        const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
+            setClinica(promise.data)
+            setLogradouro(promise.data.endereco.logradouro)
+            setNumero(promise.data.endereco.numero.toString())
 
-        setClinica(promise.data)
+            setLatitude(promise.data.endereco.latitude);
+            setLongitude(promise.data.endereco.longitude);
+        } catch (error) {
+            console.log('Ocorreu um erro ao carregar informações do mapa \n' + error.message);
+        }
+        // const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
 
-        setLogradouro(promise.data.endereco.logradouro)
-        setNumero(promise.data.endereco.numero.toString())
-        setLatitude(promise.data.endereco.latitude);
-        setLongitude(promise.data.endereco.longitude);
+        // setClinica(promise.data)
+
+        // setLogradouro(promise.data.endereco.logradouro)
+        // setNumero(promise.data.endereco.numero.toString())
+        // setLatitude(promise.data.endereco.latitude);
+        // setLongitude(promise.data.endereco.longitude);
+        // console.log(clinica);
+
+        // // Essa rota serve para buscar o bairro através do cep
+        // const response = await apiBuscaBairro.get(`/${promise.data.endereco.cep}/json/`);
+        // setBairro(response.data.bairro);
+
     }
+    console.log(clinica);
 
 
     return (

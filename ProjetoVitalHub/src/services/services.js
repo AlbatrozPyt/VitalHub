@@ -15,7 +15,7 @@ const api = axios.create({
     baseURL: apiUrlLocal
 })
 
-const apiUrlBuscaBairro = `https://viacep.com.br/ws`
+const apiUrlBuscaBairro = `https://opencep.com/v1/`
 
 export const apiBuscaBairro = axios.create({
     baseURL: apiUrlBuscaBairro

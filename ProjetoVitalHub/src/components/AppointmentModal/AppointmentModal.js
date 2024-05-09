@@ -96,14 +96,18 @@ export const ModalConsultas = ({
         navigation.replace('SelectClinic', { agendamento: angendamento })
     }
 
-    async function buscarCidade() { 
+    async function buscarCidade() {
         const promise = await api.get(`/Endereco/ListarCidades?cidade=${validLocalizacao}`)
         const response = promise.data;
 
         setCidades(response)
     }
 
-    useEffect(() => buscarCidade, [validLocalizacao])
+    useEffect(() => {
+        if (validLocalizacao !== "") {
+            buscarCidade()
+        }
+    }, [validLocalizacao])
 
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
@@ -204,26 +208,27 @@ export const ModalConsultas = ({
                     />
 
                     <ButtonModalStyle onPress={() => {
-                        if (cidades.length === 0) {
-                            setTimeout(() => {
-                                Animated.spring(animEstadoInvalido, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
-                            }, 500)
-
-                            setTimeout(() => {
-                                Animated.spring(animEstadoInvalido, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
-                            }, 2500)
-                        }
-
-                        if (validPrioridade && cidades.length !== 0) {
-                            handleContinue()
-                        }
-                        else {
+                        if (validLocalizacao === "" || validPrioridade === false) {
                             setTimeout(() => {
                                 Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
                             }, 500)
 
                             setTimeout(() => {
                                 Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                            }, 2500)
+                        }
+
+                        if (validPrioridade && cidades.length !== 0) {
+                            handleContinue()
+                        }
+
+                        if (validLocalizacao !== "" && cidades.length === 0) {
+                            setTimeout(() => {
+                                Animated.spring(animEstadoInvalido, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                            }, 500)
+
+                            setTimeout(() => {
+                                Animated.spring(animEstadoInvalido, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
                             }, 2500)
                         }
                     }}>
