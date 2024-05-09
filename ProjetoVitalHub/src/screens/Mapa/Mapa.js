@@ -16,22 +16,38 @@ export const Mapa = ({ navigation, route }) => {
     const [clinica, setClinica] = useState(null)
 
     // Estados 'setados' a parte para ser passado como valor
-    const [logradouro, setLogradouro] = useState()
-    const [numero, setNumero] = useState()
-    const [bairro, setBairro] = useState()
+    const [logradouro, setLogradouro] = useState('')
+    const [numero, setNumero] = useState('')
+    const [bairro, setBairro] = useState('')
     
     // 'Setando' a latitude e longitude da clinica
-    const [latitude, setLatitude] = useState()
-    const [longitude, setLongitude] = useState()
+    const [latitude, setLatitude] = useState(null)
+    const [longitude, setLongitude] = useState(null)
 
     useEffect(() => {
-        if (clinica == null) {
             BuscarClinica()
-            BuscarBairro()
-        }
     }, [clinica])
 
     async function BuscarClinica() {
+        // try {
+        //     const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
+        //     if (!promise.data) {
+        //         throw new Error('Dados da resposta estão vazios');
+        //     }
+
+        //     // Essa rota serve para buscar o bairro através do cep
+        //     const response = await apiBuscaBairro.get(`/${promise.data.endereco.cep}/json/`);
+        //     setBairro(response.data.bairro);
+
+        //     setClinica(promise.data)
+        //     setLogradouro(promise.data.endereco.logradouro)
+        //     setNumero(promise.data.endereco.numero.toString())
+            
+        //     setLatitude(promise.data.endereco.latitude);
+        //     setLongitude(promise.data.endereco.longitude);
+        // } catch (error) {
+        //     console.log('Ocorreu um erro ao carregar informações do mapa \n' + error.message);
+        // }
         const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
 
         setClinica(promise.data)
@@ -42,11 +58,6 @@ export const Mapa = ({ navigation, route }) => {
         setLongitude(promise.data.endereco.longitude);
     }
 
-    // Essa função serve para buscar o bairro através do cep
-    async function BuscarBairro() {
-        const promise = await apiBuscaBairro.get(`/${clinica.endereco.cep}/json/`);
-        setBairro(promise.data.bairro);
-    }
 
     return (
         <Container>

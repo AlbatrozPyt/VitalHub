@@ -11,7 +11,8 @@ export const BoxSelectMedico = ({
     medicos,
     ListMedicos,
     clickButton,
-    onPress
+    onPress,
+    route
 }) => {
 
     console.log(medicos)
@@ -25,7 +26,7 @@ export const BoxSelectMedico = ({
             <BoxInfosMedicos>
             <TitleName>{medicos.idNavigation.nome}</TitleName>
 
-            <Subtitle>Nome da clinica, {medicos.especialidade.especialidade1}</Subtitle>
+            <Subtitle>{route.params.agendamento.clinicaLabel},  {medicos.especialidade.especialidade1}</Subtitle>
             </BoxInfosMedicos>
             </>
         </BoxSelectMedicoStyle>

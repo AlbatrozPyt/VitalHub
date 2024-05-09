@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { Animated, Modal } from "react-native"
 import { Title, TitleConsulta, TitleName } from "../../components/Title/style"
 import { ButtonModalStyle, ButtonSecondary } from "../../components/Button/style"
 import { ButtonSecondaryTitle, ButtonTitle } from "../../components/ButtonTitle/style"
@@ -9,6 +9,7 @@ import { BoxSelect } from "../../components/BoxSelect"
 import { useEffect, useState } from "react"
 import { ListComponent } from "../../components/List/List"
 import api from "../../services/services"
+import { Message } from "../../components/Message/Message"
 
 const ListClinic = [
     { id: 1, nome: "Clinic Natureh", estado: "SP", cidade: "SCS" },
@@ -24,7 +25,9 @@ export const SelectClinic = ({
     const [selectedClinic, setSelectedClinic] = useState("teste");
 
     const [clinicas, setClinicas] = useState();
-    const [clinica, setClinica] = useState()
+    const [clinica, setClinica] = useState(null)
+
+    const [animError] = useState(new Animated.Value(-1000))
 
     function handleContinue() {
         navigation.replace('SelectMedicoScreen', {
@@ -48,6 +51,15 @@ export const SelectClinic = ({
 
     return (
         <Container>
+
+            <Message
+                title={`Selecione uma clinica`}
+                text={`Selecione uma clinica para continuar`}
+                type={`error`}
+                translate={animError}
+            />
+
+
             <SelectContent>
                 <TitleConsulta>Selecionar clínica</TitleConsulta>
 
@@ -78,7 +90,20 @@ export const SelectClinic = ({
 
 
 
-                <ButtonModalStyle onPress={() => handleContinue()}>
+                <ButtonModalStyle onPress={() => {
+                    if (clinica === null) {
+                        setTimeout(() => {
+                            Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                        }, 500)
+
+                        setTimeout(() => {
+                            Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                        }, 2500)
+                    }
+                    else {
+                        handleContinue()
+                    }
+                }}>
                     <ButtonTitle>Continuar</ButtonTitle>
                 </ButtonModalStyle>
 

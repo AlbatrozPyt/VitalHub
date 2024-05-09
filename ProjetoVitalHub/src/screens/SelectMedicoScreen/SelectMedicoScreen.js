@@ -8,6 +8,8 @@ import { SelectView } from "../SelectClinic/style"
 import { ContentSelect } from "./style"
 import { ListComponent } from "../../components/List/List"
 import api from "../../services/services"
+import { Animated } from "react-native"
+import { Message } from "../../components/Message/Message"
 
 const ListMedicos = [
     { id: 1, nome: "Pedro Felix", area: "Demartologa", especializacao: "Estitca" },
@@ -20,7 +22,9 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
 
     const [selectMedico, setSelectMedico] = useState("")
     const [medicos, setMedicos] = useState([]);
-    const [medico, setMedico] = useState()
+    const [medico, setMedico] = useState(null)
+
+    const [animError] = useState(new Animated.Value(-1000))
 
     function handleContinue() {
         navigation.replace('SelectDate', {
@@ -44,6 +48,13 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
 
     return (
         <Container>
+            <Message
+                title={`Selecione um médico`}
+                text={`Selecione uma médico para continuar`}
+                type={`error`}
+                translate={animError}
+            />
+
             <ContentSelect>
                 <TitleConsulta>Selecionar médico</TitleConsulta>
 
@@ -54,6 +65,7 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
                     renderItem={({ item }) =>
                         <SelectView>
                             <BoxSelectMedico
+                                route={route}
                                 medicos={item}
                                 ListMedicos={item}
                                 situacao={item.situacao}
@@ -75,7 +87,22 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
             </ContentSelect>
 
 
-            <ButtonModalStyle onPress={() => handleContinue()}>
+            <ButtonModalStyle onPress={() => {
+                if (medico === null) {
+
+                    setTimeout(() => {
+                        Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+                    }, 500)
+
+                    setTimeout(() => {
+                        Animated.spring(animError, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+                    }, 2500)
+
+                }
+                else {
+                    handleContinue()
+                }
+            }}>
                 <ButtonTitle>Continuar</ButtonTitle>
             </ButtonModalStyle>
 

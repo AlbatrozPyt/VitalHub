@@ -23,13 +23,13 @@ export const Home = ({
 
     const [user, setUser] = useState();
 
-    async function loadProfile() {
-        const token = await userDecodeToken();
+    // async function loadProfile() {
+    //     const token = await userDecodeToken();
 
-        if (token !== null) {
-            setUser(token);
-        }
-    }
+    //     if (token !== null) {
+    //         setUser(token);
+    //     }
+    // }
 
     // State para o estado da lista(cards)
     const [statusLista, setStatusList] = useState("pendente");
@@ -62,21 +62,24 @@ export const Home = ({
         const url = (profile == 'Medico' ? "Medicos" : "Pacientes")
 
         async function getConsultas() {
-            const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
-            setConsultaLista(promise.data);
-        }
+            try {
+                const token = await userDecodeToken();
 
-        async function profileLoad() {
-            const token = await userDecodeToken();
-
-            if (token) {
-                setIdUser(token.id);
-
-                setNameUser(token.name)
-                setProfile(token.role)
+                if (token) {
+                    setIdUser(token.id);
+    
+                    setNameUser(token.name)
+                    setProfile(token.role)
+                }
+                if (dataConsulta) {                    
+                    const promise = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${idUser}`);
+                    setConsultaLista(promise.data);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar consultas: ', error.message);
             }
         }
-        profileLoad();
+
         getConsultas();
         AtualizarStatus();
     }, [dataConsulta, showModalCancel, profile, user]);
@@ -93,6 +96,7 @@ export const Home = ({
             // }
             return console.log(item.dataConsulta);;
         });
+        console.log(currentDate);
         
     }
 

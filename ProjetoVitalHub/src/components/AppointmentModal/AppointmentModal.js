@@ -79,7 +79,7 @@ export const ModalConsultas = ({
     navigation
 }) => {
 
-    const [cidades, setCidades] = useState()
+    const [cidades, setCidades] = useState([])
 
     const [statusLista, setStatusList] = useState("");
     const [angendamento, setAgendamento] = useState();

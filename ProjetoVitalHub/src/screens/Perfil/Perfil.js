@@ -175,7 +175,7 @@ export const Perfil = ({
 
     useEffect(() => {
         profileLoad()
-    }, [photo])
+    }, [photo, spinner])
 
     useEffect(() => {
         if (photo !== null) {
@@ -243,7 +243,7 @@ export const Perfil = ({
                                         : null
 
                                 }
-                                placeholder={''}
+                                placeholder={edit ? new Date(perfil.dataNascimento).toLocaleDateString() : ''}
                                 editable={edit}
                             />
                             <BoxInput

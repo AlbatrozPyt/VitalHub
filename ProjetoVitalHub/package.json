@@ -38,7 +38,8 @@
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
     "react-native-picker-select": "^9.0.1",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "react-native-reanimated": "~3.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"
