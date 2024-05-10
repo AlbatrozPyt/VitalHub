@@ -14,11 +14,12 @@ import api from '../../services/services'
 
 // Import do icon
 import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 import { TextAccount } from "../../components/Text/style"
 import { useEffect, useRef, useState } from "react"
 import { InputText } from "../../components/Input"
-import { Animated } from "react-native"
+import { Animated, Touchable, TouchableOpacity, View } from "react-native"
 
 // Import do Storage
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -33,7 +34,9 @@ import { faL } from "@fortawesome/free-solid-svg-icons"
 export const Login = ({
     navigation,
     route
-}) => {
+}) => { 
+
+    const [eye, setEye] = useState(true)
 
     const [email, setEmail] = useState(route.params && route.params.data.email)
     const [senha, setSenha] = useState(route.params && route.params.data.senha)
@@ -122,13 +125,34 @@ export const Login = ({
                     onChangeText={(txt) => setEmail(txt)}
                 />
 
-                <InputText
-                    placeholder="Senha"
-                    secureTextEntry={true}
-                    fieldBorderColor={error}
-                    fieldValue={senha}
-                    onChangeText={(txt) => setSenha(txt)}
-                />
+                <View
+                    style={{
+                        width: `90%`,
+                        flexDirection: `row`,
+                        alignItems: `center`,
+                        gap: 6,
+                        backgroundColor: `#F5F3F3`,
+                        borderRadius: 5
+                    }}
+                >
+                    <InputText
+                        placeholder="Senha"
+                        secureTextEntry={eye}
+                        fieldBorderColor={error}
+                        fieldValue={senha}
+                        onChangeText={(txt) => setSenha(txt)}
+                    />
+
+                    <TouchableOpacity
+                        onPress={() => eye ? setEye(false) : setEye(true)}
+                    >
+                        {
+                            eye 
+                            ? <Feather name="eye" size={24} color="black" />
+                            : <Feather name="eye-off" size={24} color="black" />
+                        }
+                    </TouchableOpacity>
+                </View>
             </ContainerInput>
 
             <LinkUtil onPress={() => navigation.navigate("RecuperarSenha")}>

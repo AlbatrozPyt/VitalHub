@@ -25,14 +25,6 @@ export const Home = ({
 
     const [user, setUser] = useState();
 
-    // async function loadProfile() {
-    //     const token = await userDecodeToken();
-
-    //     if (token !== null) {
-    //         setUser(token);
-    //     }
-    // }
-
     // State para o estado da lista(cards)
     const [statusLista, setStatusList] = useState("pendente");
 
@@ -58,8 +50,16 @@ export const Home = ({
     const [spinner, setSpinner] = useState(false);
 
     const [viewNotification, setViewNotification] = useState(false)
+    const [notificatios, setNotificatios] = useState(null)
 
     const [reload, setReload] = useState(false)
+
+    const [token, setToken] = useState(null)
+
+    // States para verficar os dias
+    const [diaAtual, setDiaAtual] = useState()
+    const [diaDaConsulta, setDiaDaConsulta] = useState()
+
 
     useEffect(() => {
 
@@ -71,7 +71,7 @@ export const Home = ({
 
                 if (token) {
                     setIdUser(token.id);
-
+                    setToken(token)
                     setNameUser(token.name)
                     setProfile(token.role)
                 }
@@ -90,11 +90,13 @@ export const Home = ({
 
     function AtualizarStatus() {
         const currentDate = new Date();
+        setDiaAtual(currentDate.getTime())
 
         consultaLista.forEach((item) => {
 
             const dataComoObjeto = new Date(item.dataConsulta);
             const dataComoInteiro = dataComoObjeto.getTime();
+            setDiaDaConsulta(dataComoInteiro);
             if (dataComoInteiro < currentDate.getTime()) {
                 async () => {
                     await api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
@@ -102,7 +104,7 @@ export const Home = ({
                 }
             }
 
-            console.log(item.id);
+            //console.log(item.id);
         });
 
     }
@@ -124,7 +126,27 @@ export const Home = ({
     }
 
 
+    // Função que busca as consultas do paciente
+    async function BuscarConsultas() {
+        const response = await api.get('/Consultas/ConsultasPaciente', {
+            headers: {
+                Authorization: `Bearer ${token.token}`
+            }
+        })
+            .then((res) => {
+                setNotificatios(res.data)
+            })
+    }
+
+    useEffect(() => {
+        if (viewNotification) {
+            BuscarConsultas()
+        }
+    }, [viewNotification])
+
+
     return (
+
         <Container>
             {/* Spinner de carregamento */}
             {
@@ -140,6 +162,7 @@ export const Home = ({
             <ViewNotification
                 visible={viewNotification}
                 setVisible={setViewNotification}
+                notifications={notificatios}
             />
 
 
@@ -234,6 +257,10 @@ export const Home = ({
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
+
+                // Dias para comparar no modal
+                diaAtual={diaAtual}
+                diaDaConsulta={diaDaConsulta}
             />
 
             <ModalConsultas

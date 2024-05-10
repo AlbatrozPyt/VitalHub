@@ -17,8 +17,7 @@ export const Button = styled.TouchableOpacity`
     flex-direction: row;
     gap: ${props => props.fieldGap ? props.fieldGap : "0px"};
 `
-// ************************ Button Prontuário
-//     width: ${props => `${props.fieldWidth}%`} ;
+
 
 export const ButtonGoogle = styled(Button)`
     background-color: #FAFAFA;
@@ -28,7 +27,9 @@ export const ButtonGoogle = styled(Button)`
 
 export const ButtonModal = styled(Button)`
     width: 90%;  
-    /* width: ${props => `${props.fieldWidth}%`}; */
+    /* width: ${props => `${props.fieldWidth}%`};*/
+    background-color: ${props => props.bckColor ? props.bckColor : "#496bba"};
+    border: ${props => props.border ? props.border : " 1px solid #496bba"}; 
     margin-top: 25px;
 `
 

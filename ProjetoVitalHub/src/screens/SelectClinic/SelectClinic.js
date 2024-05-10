@@ -11,12 +11,12 @@ import { ListComponent } from "../../components/List/List"
 import api from "../../services/services"
 import { Message } from "../../components/Message/Message"
 
-const ListClinic = [
-    { id: 1, nome: "Clinic Natureh", estado: "SP", cidade: "SCS" },
-    { id: 2, nome: "Clinic Natureh", estado: "SP", cidade: "São Paulo" },
-    { id: 3, nome: "Clinic Natureh", estado: "SP", cidade: "São Paulo" },
+// const ListClinic = [
+//     { id: 1, nome: "Clinic Natureh", estado: "SP", cidade: "SCS" },
+//     { id: 2, nome: "Clinic Natureh", estado: "SP", cidade: "São Paulo" },
+//     { id: 3, nome: "Clinic Natureh", estado: "SP", cidade: "São Paulo" },
 
-]
+// ]
 
 export const SelectClinic = ({
     navigation,

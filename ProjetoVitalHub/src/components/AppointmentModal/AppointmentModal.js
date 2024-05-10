@@ -23,14 +23,16 @@ export const AppointmentModal = ({
     dados,
     navigation,
     roleUsuario,
-    consulta
+    consulta,
+    diaDaConsulta,
+    diaAtual
 }) => {
     function handlePress(rota) {
         navigation.navigate(rota, { consultaId: consulta.id })
         setShowModalAppointment(false)
     }
 
-
+    //console.log(consulta);
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             {
@@ -41,7 +43,7 @@ export const AppointmentModal = ({
                                 <AppointmentModalStyle>
 
                                     <AppointmentContent>
-                                        <ImagePatient source={fotoPerfil} />
+                                        <ImagePatient source={{ uri: consulta != null ? consulta.paciente.idNavigation.foto : "Nome não carregou"} }/>
 
                                         <Title>{consulta != null ? consulta.paciente.idNavigation.nome : "Nome não carregou"}</Title>
 
@@ -51,8 +53,12 @@ export const AppointmentModal = ({
                                         <Subtitle>{consulta.paciente.dataNascimento == null ? "não há nada"
                                             : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1) || consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
 
-                                        <ButtonModal onPress={() => handlePress("MedicoProntuario")} >
+                                        {/* <ButtonModal {diaAtual < diaDaConsulta ? diaAtual : "Nome não carregou"} onPress={() => handlePress("MedicoProntuario")} >
                                             <ButtonTitle>Inserir protuário</ButtonTitle>
+                                        </ButtonModal> */}
+                                       
+                                        <ButtonModal bckColor={"#ACABB7"} border={"none"} >
+                                            <ButtonTitle>{diaAtual < diaDaConsulta ? diaAtual : "Nome não carregou"}</ButtonTitle>
                                         </ButtonModal>
 
                                         <ButtonSecondary onPress={() => setShowModalAppointment(false)}>

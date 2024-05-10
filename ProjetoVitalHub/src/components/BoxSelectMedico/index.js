@@ -21,7 +21,7 @@ export const BoxSelectMedico = ({
         <BoxSelectMedicoStyle clickButton={clickButton} onPress={onPress}>
             <>
             <ImageUser source={{
-                    uri: "https://github.com/guihenrique16.png",
+                    uri: medicos.idNavigation.foto,
                 }}/>
             <BoxInfosMedicos>
             <TitleName>{medicos.idNavigation.nome}</TitleName>

@@ -46,20 +46,6 @@ export const Mapa = ({ navigation, route }) => {
         } catch (error) {
             console.log('Ocorreu um erro ao carregar informações do mapa \n' + error.message);
         }
-        // const promise = await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
-
-        // setClinica(promise.data)
-
-        // setLogradouro(promise.data.endereco.logradouro)
-        // setNumero(promise.data.endereco.numero.toString())
-        // setLatitude(promise.data.endereco.latitude);
-        // setLongitude(promise.data.endereco.longitude);
-        // console.log(clinica);
-
-        // // Essa rota serve para buscar o bairro através do cep
-        // const response = await apiBuscaBairro.get(`/${promise.data.endereco.cep}/json/`);
-        // setBairro(response.data.bairro);
-
     }
     console.log(clinica);
 

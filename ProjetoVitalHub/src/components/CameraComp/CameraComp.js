@@ -12,8 +12,8 @@ import { useEffect, useRef, useState } from 'react'
 
 // Icon
 import { FontAwesome } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import * as MediaLibrary from "expo-media-library"
 import * as ImagePicker from "expo-image-picker"
