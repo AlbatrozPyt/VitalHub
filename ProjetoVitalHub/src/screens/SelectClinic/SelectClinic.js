@@ -107,7 +107,7 @@ export const SelectClinic = ({
                     <ButtonTitle>Continuar</ButtonTitle>
                 </ButtonModalStyle>
 
-                <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                     <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
                 </ButtonSecondary>
 

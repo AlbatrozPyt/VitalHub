@@ -82,7 +82,7 @@ export const SelectDate = ({
                         }}
                     />
 
-                    <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                    <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                         <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
                     </ButtonSecondary>
 

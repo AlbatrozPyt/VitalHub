@@ -27,7 +27,7 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
     const [animError] = useState(new Animated.Value(-1000))
 
     function handleContinue() {
-        navigation.replace('SelectDate', {
+        navigation.navigate('SelectDate', {
             agendamento: {
                 ...route.params.agendamento,
                 ...medico
@@ -106,7 +106,7 @@ export const SelectMedicoScreen = ({ navigation, route }) => {
                 <ButtonTitle>Continuar</ButtonTitle>
             </ButtonModalStyle>
 
-            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+            <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                 <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
             </ButtonSecondary>
         </Container>

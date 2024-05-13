@@ -82,27 +82,32 @@ export const Perfil = ({
 
     // BUSCAR O USUARIO
     async function getPerfil(token) {
-        const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
-
-        const promise = await api.get(`/${rota}/BuscarPorId?id=${token.id}`);
-        const response = promise.data
-
-        setPerfil(response)
-
-        if (rota === 'Medicos') {
-            setCrm(response.crm)
-            setLogradouro(response.endereco.logradouro)
-            setCep(response.endereco.cep)
-            setCidade(response.endereco.cidade)
+        if(token != null)
+        {
+            const rota = (token.role === 'Paciente' ? `Pacientes` : `Medicos`);
+            const promise = await api.get(`/${rota}/BuscarPorId?id=${token.id}`);
+            const response = promise.data
+    
+            setPerfil(response)
+    
+            if (rota === 'Medicos') {
+                setCrm(response.crm)
+                setLogradouro(response.endereco.logradouro)
+                setCep(response.endereco.cep)
+                console.log(response.endereco.cep);
+                setCidade(response.endereco.cidade)
+                console.log(response.endereco.cidade)
+            }
+            else {
+                setDataNascimento(response.dataNascimento)
+                setLogradouro(response.endereco.logradouro)
+                setCep(response.endereco.cep)
+                setCidade(response.endereco.cidade)
+                setCpf(response.cpf)
+                setRg(response.rg)
+            }
         }
-        else {
-            setDataNascimento(response.dataNascimento)
-            setLogradouro(response.endereco.logradouro)
-            setCep(response.endereco.cep)
-            setCidade(response.endereco.cidade)
-            setCpf(response.cpf)
-            setRg(response.rg)
-        }
+        
     }
 
     // ATUALIZAR O USUARIO

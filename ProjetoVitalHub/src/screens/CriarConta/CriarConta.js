@@ -182,7 +182,7 @@ export const CriarConta = ({
                         <ButtonTitle>cadastrar</ButtonTitle>
                     </Button>
                 </ContainerInputButtom>
-                <LinkUtil onPress={() => navigation.replace("Login")}>Cancelar</LinkUtil>
+                <LinkUtil onPress={() => navigation.navigate("Login")}>Cancelar</LinkUtil>
             </Container>
         </Scroll>
     )

@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 
+import Animated from 'react-native-reanimated'
+
 // Import do navigator
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';

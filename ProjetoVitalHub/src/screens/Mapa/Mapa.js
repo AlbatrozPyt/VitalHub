@@ -86,7 +86,7 @@ export const Mapa = ({ navigation, route }) => {
                                 />
                             </ContainerBox>
 
-                            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                            <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                                 <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
                             </ButtonSecondary>
 

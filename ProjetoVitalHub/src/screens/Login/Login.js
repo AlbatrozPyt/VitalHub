@@ -64,7 +64,7 @@ export const Login = ({
 
             // Vai para a tela principal
             setTimeout(() => {
-                navigation.replace("Main")
+                navigation.navigate("Main")
             }, 1000);
 
         }).catch(() => {
@@ -186,7 +186,7 @@ export const Login = ({
                 <TextAccount>Não tem conta? </TextAccount>
                 <TextAccount
                     fieldColor={"#4d659d"}
-                    onPress={() => navigation.replace("CriarConta")}
+                    onPress={() => navigation.navigate("CriarConta")}
                 >
                     Crie uma conta agora
                 </TextAccount>

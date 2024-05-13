@@ -52,7 +52,7 @@ export const RedifinirSenha = ({
                 spinner ? <Spinner navigation={navigation} screen={'Login'} /> : null
             }
 
-            <ButtonIcon onPress={() => navigation.replace("Login")}>
+            <ButtonIcon onPress={() => navigation.navigate("Login")}>
                 <IconLogin source={iconFechar} />
             </ButtonIcon>
 

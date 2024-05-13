@@ -43,7 +43,7 @@ export const VerificarEmail = ({
     async function ValidarCodigo(code) {
         const promise = await api.post(`/ReuperarSenha/Validar?codigo=${code}`)
             .then(() => {
-                navigation.replace('RedifinirSenha', { email: route.params.email })
+                navigation.navigate('RedifinirSenha', { email: route.params.email })
             })
             .catch(e => {
                 Animated.spring(animError, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()

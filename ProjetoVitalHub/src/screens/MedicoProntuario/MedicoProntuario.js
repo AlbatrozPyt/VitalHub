@@ -9,7 +9,7 @@ import { FotoStyle } from "../../components/FotoPerfil/style"
 import { Subtitle } from "../../components/Text/style"
 import { Title } from "../../components/Title/style"
 import api from "../../services/services"
-import { Text } from "react-native"
+import { Text, Animated } from "react-native"
 
 export const MedicoProntuario = ({
     navigation,
@@ -24,6 +24,13 @@ export const MedicoProntuario = ({
     const [medicamento, setMedicamento] = useState()
 
     // const [id, setId] = useState(route.params.consultaId)
+
+    // State da animacao
+    const [animError] = useState(new Animated.Value(-1000))
+
+    // State para animacao de sucesso
+    const [animSucess] = useState(new Animated.Value(-1000))
+    const [animUpdatePhoto] = useState(new Animated.Value(-1000))
 
     function edit() {
         setEditable(true)
@@ -56,13 +63,31 @@ export const MedicoProntuario = ({
             "medicamento": medicamento,
             "descricao": descricao,
             "diagnostico": diagnostico
+        }).then(response => {
+            setPhoto(response)
+
+            setTimeout(() => {
+                Animated.spring(animUpdatePhoto, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
+            }, 500)
+
+            setTimeout(() => {
+                Animated.spring(animUpdatePhoto, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
+            }, 2500)
         })
-        setEditable(false)
+        .catch(error => console.log(error))
+
+        await api.put(`/Consultas/Status?idConsulta=${route.params.consultaId}&status=realizado`)
 
     }
 
     return (
         <Container>
+            <Message
+                translate={animSucess}
+                type={`success`}
+                title={`Perfil Atualizado`}
+                text={`Perfil atualizado com sucesso !!!`}
+            />
             {
                 consulta != null && (
                     <Scroll>
@@ -119,7 +144,7 @@ export const MedicoProntuario = ({
                                 </Button>
                             </ContainerInputButtom>
 
-                            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+                            <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                                 <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
                             </ButtonSecondary>
                         </ContainerPerfil>

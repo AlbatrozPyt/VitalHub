@@ -43,23 +43,28 @@ export const AppointmentModal = ({
                                 <AppointmentModalStyle>
 
                                     <AppointmentContent>
-                                        <ImagePatient source={{ uri: consulta != null ? consulta.paciente.idNavigation.foto : "Nome não carregou"} }/>
+                                        <ImagePatient source={{ uri: consulta != null ? consulta.paciente.idNavigation.foto : "Nome não carregou" }} />
 
                                         <Title>{consulta != null ? consulta.paciente.idNavigation.nome : "Nome não carregou"}</Title>
-
-                                        {/* Teste para não quebrar o code */}
-                                        {/* {consulta == null ? "não há nada" : "Há algo"} */}
 
                                         <Subtitle>{consulta.paciente.dataNascimento == null ? "não há nada"
                                             : new Date().getFullYear() - consulta.paciente.dataNascimento.substring(4, -1) || consulta != null ? consulta.paciente.idNavigation.email : null}</Subtitle>
 
-                                        {/* <ButtonModal {diaAtual < diaDaConsulta ? diaAtual : "Nome não carregou"} onPress={() => handlePress("MedicoProntuario")} >
-                                            <ButtonTitle>Inserir protuário</ButtonTitle>
-                                        </ButtonModal> */}
-                                       
-                                        <ButtonModal bckColor={"#ACABB7"} border={"none"} >
-                                            <ButtonTitle>{diaAtual < diaDaConsulta ? diaAtual : "Nome não carregou"}</ButtonTitle>
-                                        </ButtonModal>
+                                        {
+                                            diaAtual < diaDaConsulta ? (
+                                                <>
+                                                    <ButtonModal bckColor={"#ACABB7"} border={"none"} >
+                                                        <ButtonTitle>inserir prontuário</ButtonTitle>
+                                                    </ButtonModal>
+                                                </>
+                                            )
+                                                :
+                                                (
+                                                    <ButtonModal onPress={() => handlePress("MedicoProntuario")} >
+                                                        <ButtonTitle>Inserir protuário</ButtonTitle>
+                                                    </ButtonModal>
+                                                )
+                                        }
 
                                         <ButtonSecondary onPress={() => setShowModalAppointment(false)}>
                                             <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
@@ -99,7 +104,7 @@ export const ModalConsultas = ({
     async function handleContinue() {
         await setShowModalConsultas(false);
 
-        navigation.replace('SelectClinic', { agendamento: angendamento })
+        navigation.navigate('SelectClinic', { agendamento: angendamento })
     }
 
     async function buscarCidade() {
@@ -277,7 +282,7 @@ export const ModalAgendarConsulta = ({
         })
             .then(async () => {
                 setShowModalAgendar(false)
-                navigation.replace('Main')
+                navigation.navigate('Main')
             })
             .catch(e => console.log(e))
     }

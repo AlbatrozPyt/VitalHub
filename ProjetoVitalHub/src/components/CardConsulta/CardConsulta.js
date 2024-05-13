@@ -31,7 +31,7 @@ export const CardConsulta = ({
 
 
     function handlePress(rota) {
-        navigation.replace(rota, { consultaId: data.id })
+        navigation.navigate(rota, { consultaId: data.id })
     }
     
 

@@ -35,7 +35,7 @@ export const RecuperarSenha = ({
             } */}
 
 
-            <ButtonIcon onPress={() => navigation.replace("Login")}>
+            <ButtonIcon onPress={() => navigation.navigate("Login")}>
                 <IconLogin source={IconVoltar} />
             </ButtonIcon>
 
@@ -57,7 +57,7 @@ export const RecuperarSenha = ({
                         MandarCodigo(email)
                     }
 
-                    navigation.replace("VerificarEmail", {email});
+                    navigation.navigate("VerificarEmail", {email});
                     setSpinner(true)
                 }}>
                     <ButtonTitle>Continuar</ButtonTitle>

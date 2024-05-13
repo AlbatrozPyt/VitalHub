@@ -13,7 +13,6 @@ export function HeaderHome({ navigation, route, setSpinnerHome, setViewNotifcati
 
     const [user, setUser] = useState()
 
-
     useEffect(() => {
         async function profileLoad() {
             const token = await userDecodeToken();
@@ -49,7 +48,7 @@ export function HeaderHome({ navigation, route, setSpinnerHome, setViewNotifcati
 
                                 <TouchableOpacity onPress={() => {
                                     AsyncStorage.removeItem('token');
-                                    setSpinnerHome(true)
+                                    navigation.replace(`Login`)
                                 }}>
                                     <SimpleLineIcons name="logout" size={20} color="white" />
                                 </TouchableOpacity>

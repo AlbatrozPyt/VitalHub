@@ -92,16 +92,14 @@ export const Home = ({
         const currentDate = new Date();
         setDiaAtual(currentDate.getTime())
 
-        consultaLista.forEach((item) => {
+        consultaLista.forEach(async (item) => {
 
             const dataComoObjeto = new Date(item.dataConsulta);
             const dataComoInteiro = dataComoObjeto.getTime();
             setDiaDaConsulta(dataComoInteiro);
             if (dataComoInteiro < currentDate.getTime()) {
-                async () => {
-                    await api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
-                    setReload(true)
-                }
+                await api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)
+                setReload(true)
             }
 
             //console.log(item.id);
@@ -150,19 +148,18 @@ export const Home = ({
         <Container>
             {/* Spinner de carregamento */}
             {
-                spinner ? (
+                spinner && (
                     <Spinner
-                        setFalse={setSpinner}
                         navigation={navigation}
                         screen={'Login'}
                     />
-                ) : null
+                )
             }
 
             <ViewNotification
                 visible={viewNotification}
                 setVisible={setViewNotification}
-                notifications={notificatios}
+                notifications={notificatios !== null ? notificatios : []}
             />
 
 
