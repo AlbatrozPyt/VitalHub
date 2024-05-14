@@ -75,6 +75,7 @@ export const CameraComp = ({
     useEffect(() => {
         (async () => {
             const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync()
+            const { status: mediaLibrary } = await MediaLibrary.requestPermissionsAsync()
         })();
 
         if (getMediaLibrary) {
@@ -86,6 +87,8 @@ export const CameraComp = ({
 
     return (
         <Modal style={styles.container} visible={visible} transparent={true} animationType="fade">
+
+            <StatusBar hidden={true}/>
             <Camera
                 ref={cameraRef}
                 style={styles.camera}

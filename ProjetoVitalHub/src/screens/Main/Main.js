@@ -4,10 +4,16 @@ import { Perfil } from "../Perfil/Perfil";
 import { ContentIcon, TextIcon } from "./style";
 
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import { useEffect, useState } from "react";
 
 const BottomTab = createBottomTabNavigator();
 
 export const Main = () => {
+
+    const [route, setRoute] = useState(route)
+
+    useEffect(() => { }, [route])
+
     return (
         <BottomTab.Navigator
             initialRouteName="Home"

@@ -17,6 +17,7 @@ import { useState } from "react"
 import { Alert, Animated } from "react-native"
 import { Spinner } from "../../components/Spinner"
 import { Message } from "../../components/Message/Message"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const CriarConta = ({
     navigation
@@ -44,6 +45,25 @@ export const CriarConta = ({
     // Usuario que vai passar para a tela de login pelo route
     const user = { email: email, senha: senha }
 
+
+    async function Logar() {
+        await api.post('/Login', {
+            email: email,
+            senha: senha
+        }).then(async response => {
+
+            // Salva o token no async storage
+            await AsyncStorage.setItem("token", JSON.stringify(response.data))
+
+            // Vai para a tela principal
+            setTimeout(() => {
+                navigation.navigate("Main")
+            }, 1000);
+
+        })
+    }
+
+
     // Funcao de Criar Conta
     async function createAccount() {
 
@@ -70,8 +90,9 @@ export const CriarConta = ({
                     Animated.spring(animSuccess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
                 }, 1500)
 
-                // Mostra o carregamento do spinner
                 setSpinner(true)
+
+                Logar()
             })
             .catch(async (e) => {
                 // Configura a mensagem de erro e o tempo
@@ -92,9 +113,7 @@ export const CriarConta = ({
                 {
                     spinner ?
                         <Spinner
-                            navigation={navigation}
-                            screen={'Login'}
-                            value={user}
+                            time={2000}
                         /> : null
                 }
 

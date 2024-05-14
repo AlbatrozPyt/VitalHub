@@ -13,13 +13,13 @@ namespace WebAPI.Repositories
     {
         VitalContext ctx = new VitalContext();
 
-        public Medico AtualizarPerfil(Guid Id, MedicoViewModel medico)
+        public Medico AtualizarPerfil(Guid id, MedicoViewModel medico)
         {
             try
             {
                 Medico medicoBuscado = ctx.Medicos
                     .Include(x => x.Endereco)
-                    .FirstOrDefault(x => x.Id == Id)!;
+                    .FirstOrDefault(x => x.Id == id)!;
 
 
                 if (medicoBuscado == null) return null!;

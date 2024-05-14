@@ -12,7 +12,7 @@ import { CameraComp } from "../../components/CameraComp/CameraComp"
 
 //Componente nativo
 import { useEffect, useState } from "react"
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from "react-native"
 import { Label } from "../../components/Label"
 import api from "../../services/services"
 
@@ -26,6 +26,7 @@ export const Prescricao = ({
     const [photo, setPhoto] = useState(null)
     const [descricao, setDescricao] = useState(null)
     const [consulta, setConsulta] = useState(null)
+    const [mensagemError, setMensagemError] = useState(false);
 
     async function InserirExame() {
         const formData = new FormData()
@@ -42,17 +43,17 @@ export const Prescricao = ({
             }
         })
             .then(response => {
-                setDescricao('\n' + response.data.descricao)
-                console.log(descricao);
+                setDescricao(response.data.descricao)
+                console.log(response.data.descricao);
             })
-            .catch(e => console.log(e))
+            .catch(e => setMensagemError(true))
     }
 
     useEffect(() => {
         if (photo !== null) {
             InserirExame()
         }
-    }, [photo])
+    }, [photo, showCamera])
 
     useEffect(() => {
         async function getConsultas() {
@@ -135,8 +136,35 @@ export const Prescricao = ({
 
                             <Linha />
 
-                            <ScrollView style={{ width: '90%', height: 103 }}>
-                                <Text>{descricao}</Text>
+                            <ScrollView
+                                style={{
+                                    width: '90%',
+                                    height: 90,
+                                    borderColor: '#F5F3F3',
+                                    backgroundColor: '#F5F3F3',
+                                    borderWidth: 2,
+                                    borderRadius: 5,
+                                    flex: 1
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        gap: 10,
+                                        padding: 5
+                                    }}>
+                                    <Title>Prescrição</Title>
+
+                                    <Text style={{ width: `100%`, textAlign: "center" }}>
+                                        {
+                                            mensagemError
+                                                ? `Não foi possível ler os dados da imagem`
+                                                : descricao === null ? <ActivityIndicator /> : descricao
+                                        }
+                                    </Text>
+                                </View>
                             </ScrollView>
 
                             <ButtonSecondary onPress={() => navigation.navigate("Main")}>

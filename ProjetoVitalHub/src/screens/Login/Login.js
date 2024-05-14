@@ -34,7 +34,7 @@ import { faL } from "@fortawesome/free-solid-svg-icons"
 export const Login = ({
     navigation,
     route
-}) => { 
+}) => {
 
     const [eye, setEye] = useState(true)
 
@@ -127,10 +127,12 @@ export const Login = ({
 
                 <View
                     style={{
+                        borderWidth: 2,
+                        borderColor: error,
+                        position: `relative`,
                         width: `90%`,
                         flexDirection: `row`,
                         alignItems: `center`,
-                        gap: 6,
                         backgroundColor: `#F5F3F3`,
                         borderRadius: 5
                     }}
@@ -138,7 +140,6 @@ export const Login = ({
                     <InputText
                         placeholder="Senha"
                         secureTextEntry={eye}
-                        fieldBorderColor={error}
                         fieldValue={senha}
                         onChangeText={(txt) => setSenha(txt)}
                     />
@@ -147,9 +148,9 @@ export const Login = ({
                         onPress={() => eye ? setEye(false) : setEye(true)}
                     >
                         {
-                            eye 
-                            ? <Feather name="eye" size={24} color="black" />
-                            : <Feather name="eye-off" size={24} color="black" />
+                            eye
+                                ? <Feather name="eye" size={24} color="black" />
+                                : <Feather name="eye-off" size={24} color="black" />
                         }
                     </TouchableOpacity>
                 </View>

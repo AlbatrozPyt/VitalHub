@@ -10,13 +10,15 @@ import { Subtitle } from "../../components/Text/style"
 import { Title } from "../../components/Title/style"
 import api from "../../services/services"
 import { Text, Animated } from "react-native"
+import { Message } from "../../components/Message/Message"
+import { faL } from "@fortawesome/free-solid-svg-icons"
 
 export const MedicoProntuario = ({
     navigation,
     route,
 }) => {
     const [consulta, setConsulta] = useState()
-    const [editable, setEditable] = useState()
+    const [editable, setEditable] = useState(false)
 
     // Dados da consulta
     const [descricao, setDescricao] = useState()
@@ -34,8 +36,6 @@ export const MedicoProntuario = ({
 
     function edit() {
         setEditable(true)
-        setDescricao("")
-        setDiagnostico(null)
     }
 
     useEffect(() => {
@@ -64,7 +64,6 @@ export const MedicoProntuario = ({
             "descricao": descricao,
             "diagnostico": diagnostico
         }).then(response => {
-            setPhoto(response)
 
             setTimeout(() => {
                 Animated.spring(animUpdatePhoto, { toValue: 0, speed: 0.1, bounciness: 2, useNativeDriver: true }).start()
@@ -73,8 +72,9 @@ export const MedicoProntuario = ({
             setTimeout(() => {
                 Animated.spring(animUpdatePhoto, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
             }, 2500)
+            setEditable(false)
         })
-        .catch(error => console.log(error))
+            .catch(error => console.log(error))
 
         await api.put(`/Consultas/Status?idConsulta=${route.params.consultaId}&status=realizado`)
 
@@ -83,10 +83,10 @@ export const MedicoProntuario = ({
     return (
         <Container>
             <Message
-                translate={animSucess}
+                translate={animUpdatePhoto}
                 type={`success`}
-                title={`Perfil Atualizado`}
-                text={`Perfil atualizado com sucesso !!!`}
+                title={`Prontuario inserido`}
+                text={`O prontuario do inserido com sucess !!!`}
             />
             {
                 consulta != null && (
@@ -135,11 +135,25 @@ export const MedicoProntuario = ({
                             />
 
                             <ContainerInputButtom>
-                                <Button onPress={() => PutConsultas()}>
+                                <Button
+                                    onPress={
+                                        () => PutConsultas()
+                                    }
+                                    fieldBckColor={editable ? "#496bba" : "#ACABB7"}
+                                    fieldBorderColor={editable ? "#496bba" : "#ACABB7"}
+                                    disabled={!editable}>
                                     <ButtonTitle>Salvar</ButtonTitle>
                                 </Button>
 
-                                <Button onPress={() => edit()} fieldBckColor={"#ACABB7"} fieldBorderColor={"#ACABB7"}>
+                                <Button
+                                    onPress={
+                                        () => edit()
+                                    }
+
+                                    fieldBckColor={editable ? "#ACABB7" : "#496bba"}
+                                    fieldBorderColor={editable ? "#ACABB7" : "#496bba"}
+                                    disabled={editable}
+                                >
                                     <ButtonTitle>editar</ButtonTitle>
                                 </Button>
                             </ContainerInputButtom>
@@ -153,6 +167,6 @@ export const MedicoProntuario = ({
                 )
             }
 
-        </Container>
+        </Container >
     )
 }
