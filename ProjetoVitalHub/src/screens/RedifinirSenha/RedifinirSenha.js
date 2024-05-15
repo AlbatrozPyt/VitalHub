@@ -11,17 +11,21 @@ import { ButtonTitle } from "../../components/ButtonTitle/style"
 import { ButtonIcon, IconLogin } from "../Home/style"
 
 import iconFechar from "../../../assets/fecharIcon.png"
+import { Feather } from '@expo/vector-icons';
 
 import api from "../../services/services.js"
 import { useState } from "react"
 import { Spinner } from "../../components/Spinner/index.js"
-import { Animated } from "react-native"
+import { Animated, TouchableOpacity, View } from "react-native"
 import { Message } from "../../components/Message/Message.js"
 
 export const RedifinirSenha = ({
     navigation,
     route
 }) => {
+
+    const [eye, setEye] = useState(true)
+    const [eyeTwo, setEyeTwo] = useState(true)
 
     const [novaSenha, setNovaSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
@@ -64,18 +68,68 @@ export const RedifinirSenha = ({
 
             <ContainerInputButtom>
                 <ContainerInput>
-                    <InputStyle
+
+                <View
+                    style={{
+                        borderWidth: 2,
+                        borderColor: error,
+                        position: `relative`,
+                        width: `90%`,
+                        flexDirection: `row`,
+                        alignItems: `center`,
+                        backgroundColor: `#F5F3F3`,
+                        borderRadius: 5
+                    }}
+                >
+                     <InputStyle
                         placeholder="Nova senha"
                         onChangeText={txt => setNovaSenha(txt)}
-                        secureTextEntry={true}
-                        style={{ borderColor: error }}
+                        secureTextEntry={eye}
+                        style={{ borderWidth: 0 }}
                     />
+
+                    <TouchableOpacity
+                        onPress={() => eye ? setEye(false) : setEye(true)}
+                    >
+                        {
+                            eye
+                                ? <Feather name="eye" size={24} color="black" />
+                                : <Feather name="eye-off" size={24} color="black" />
+                        }
+                    </TouchableOpacity>
+                </View>
+                
+                <View
+                    style={{
+                        borderWidth: 2,
+                        borderColor: error,
+                        position: `relative`,
+                        width: `90%`,
+                        flexDirection: `row`,
+                        alignItems: `center`,
+                        backgroundColor: `#F5F3F3`,
+                        borderRadius: 5
+                    }}
+                >
                     <InputStyle
                         placeholder="Confirme a nova senha"
                         onChangeText={txt => setConfirmarSenha(txt)}
-                        secureTextEntry={true}
-                        style={{ borderColor: error }}
+                        secureTextEntry={eyeTwo}
+                        style={{ borderWidth: 0 }}
                     />
+
+                    <TouchableOpacity
+                        onPress={() => eyeTwo ? setEyeTwo(false) : setEyeTwo(true)}
+                    >
+                        {
+                            eyeTwo
+                                ? <Feather name="eye" size={24} color="black" />
+                                : <Feather name="eye-off" size={24} color="black" />
+                        }
+                    </TouchableOpacity>
+                </View>
+                   
+                    
                 </ContainerInput>
 
                 <Button onPress={() => {

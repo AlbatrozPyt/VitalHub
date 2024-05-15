@@ -12,8 +12,6 @@ export const Main = () => {
 
     const [route, setRoute] = useState(route)
 
-    useEffect(() => { }, [route])
-
     return (
         <BottomTab.Navigator
             initialRouteName="Home"

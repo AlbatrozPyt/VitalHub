@@ -94,9 +94,7 @@ export const Perfil = ({
                 setCrm(response.crm)
                 setLogradouro(response.endereco.logradouro)
                 setCep(response.endereco.cep)
-                console.log(response.endereco.cep);
                 setCidade(response.endereco.cidade)
-                console.log(response.endereco.cidade)
             }
             else {
                 setDataNascimento(response.dataNascimento)
@@ -146,7 +144,6 @@ export const Perfil = ({
                         Animated.spring(animSucess, { toValue: -1000, duration: 800, useNativeDriver: true }).start()
                     }, 2500)
                 })
-                .catch((e) => console.log(e))
     }
 
     // ATUALIZAR A FOTO DE PERFIL
@@ -180,7 +177,7 @@ export const Perfil = ({
 
     useEffect(() => {
         profileLoad()
-    }, [photo, spinner])
+    }, [photo, spinner, edit])
 
     useEffect(() => {
         if (photo !== null) {
@@ -248,13 +245,11 @@ export const Perfil = ({
                                         : null
 
                                 }
-                                placeholder={edit ? new Date(perfil.dataNascimento).toLocaleDateString() : ''}
-                                editable={edit}
+                               editable={edit}
                             />
                             <BoxInput
                                 onChangeText={(x) => {
                                     setCpf(x)
-                                    console.log(cpf)
                                 }}
                                 textLabel='CPF'
                                 fieldValue={
@@ -286,7 +281,7 @@ export const Perfil = ({
                             <ContainerBox>
                                 <BoxInput
                                     onChangeText={(x) => setCep(x)}
-                                    fieldWidth={45}
+                                    fieldWidth={40}
                                     textLabel='CEP'
                                     fieldValue={!edit ? cep : null}
                                     placeholder={edit ? perfil.endereco.cep : null}
@@ -295,7 +290,7 @@ export const Perfil = ({
 
                                 <BoxInput
                                     onChangeText={(x) => setCidade(x)}
-                                    fieldWidth={50}
+                                    fieldWidth={55}
                                     textLabel='Cidade'
                                     fieldValue={!edit ? cidade : null}
                                     placeholder={edit ? perfil.endereco.cidade : null}
@@ -324,7 +319,7 @@ export const Perfil = ({
                             <ContainerBox>
                                 <BoxInput
                                     onChangeText={(x) => setCep(x)}
-                                    fieldWidth={45}
+                                    fieldWidth={35}
                                     textLabel='CEP'
                                     fieldValue={!edit ? cep : null}
                                     placeholder={edit ? perfil.endereco.cep : null}
@@ -333,10 +328,10 @@ export const Perfil = ({
 
                                 <BoxInput
                                     onChangeText={(x) => setCidade(x)}
-                                    fieldWidth={50}
+                                    fieldWidth={55}
                                     textLabel='Cidade'
                                     fieldValue={!edit ? cidade : null}
-                                    placeholder={edit ? perfil.endereco.cidade : null}
+                                    placeholder={edit ? cidade : null}
                                     editable={edit}
                                 />
                             </ContainerBox>

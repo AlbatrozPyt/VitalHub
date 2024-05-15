@@ -47,9 +47,9 @@ import { useEffect } from 'react';
 
 // Tira os logs do app
 
-// import { LogBox } from 'react-native';
-// LogBox.ignoreLogs(["Warning: ..."])
-// LogBox.ignoreAllLogs()
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(["Warning: ..."])
+LogBox.ignoreAllLogs()
 
 const Stack = createNativeStackNavigator();
 

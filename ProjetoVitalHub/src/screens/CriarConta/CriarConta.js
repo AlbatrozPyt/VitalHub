@@ -14,10 +14,13 @@ import api from "../../services/services"
 // Import da logo
 import logo from "../../../assets/logo.png"
 import { useState } from "react"
-import { Alert, Animated } from "react-native"
+import { Alert, Animated, TouchableOpacity, View } from "react-native"
 import { Spinner } from "../../components/Spinner"
 import { Message } from "../../components/Message/Message"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Feather } from '@expo/vector-icons';
+import { InputText } from "../../components/Input"
+
 
 export const CriarConta = ({
     navigation
@@ -29,6 +32,9 @@ export const CriarConta = ({
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+
+    const [eye, setEye] = useState(true)
+    const [eyeTwo, setEyeTwo] = useState(true)
 
     // State para animacao de sucesso
     const [animSuccess] = useState(new Animated.Value(-1000))
@@ -57,7 +63,7 @@ export const CriarConta = ({
 
             // Vai para a tela principal
             setTimeout(() => {
-                navigation.navigate("Main")
+                navigation.navigate("Perfil")
             }, 1000);
 
         })
@@ -161,19 +167,65 @@ export const CriarConta = ({
                             onChangeText={(txt) => setEmail(txt)}
                         />
 
-                        <InputStyle
-                            style={{ borderColor: error }}
+                        <View
+                            style={{
+                                borderWidth: 2,
+                                borderColor: error,
+                                position: `relative`,
+                                width: `90%`,
+                                flexDirection: `row`,
+                                alignItems: `center`,
+                                backgroundColor: `#F5F3F3`,
+                                borderRadius: 5
+                            }}
+                        >
+                            <InputStyle
+                            style={{ borderWidth: 0 }}
                             placeholder="Senha"
                             onChangeText={(txt) => setSenha(txt)}
-                            secureTextEntry={true}
-                        />
+                            secureTextEntry={eyeTwo}
+                        /> 
 
-                        <InputStyle
-                            style={{ borderColor: error }}
-                            placeholder="Confirme a senha"
-                            onChangeText={(txt) => setConfirmarSenha(txt)}
-                            secureTextEntry={true}
-                        />
+                            <TouchableOpacity
+                                onPress={() => eyeTwo ? setEyeTwo(false) : setEyeTwo(true)}
+                            >
+                                {
+                                    eyeTwo
+                                        ? <Feather name="eye" size={24} color="black" />
+                                        : <Feather name="eye-off" size={24} color="black" />
+                                }
+                            </TouchableOpacity>
+                        </View>
+
+                        <View
+                            style={{
+                                borderWidth: 2,
+                                borderColor: error,
+                                position: `relative`,
+                                width: `90%`,
+                                flexDirection: `row`,
+                                alignItems: `center`,
+                                backgroundColor: `#F5F3F3`,
+                                borderRadius: 5
+                            }}
+                        >
+                            <InputStyle
+                                style={{ borderWidth: 0 }}
+                                placeholder="Confirme a senha"
+                                onChangeText={(txt) => setConfirmarSenha(txt)}
+                                secureTextEntry={eye}
+                            />
+
+                            <TouchableOpacity
+                                onPress={() => eye ? setEye(false) : setEye(true)}
+                            >
+                                {
+                                    eye
+                                        ? <Feather name="eye" size={24} color="black" />
+                                        : <Feather name="eye-off" size={24} color="black" />
+                                }
+                            </TouchableOpacity>
+                        </View>
                     </ContainerInput>
 
                     <Button onPress={() => {

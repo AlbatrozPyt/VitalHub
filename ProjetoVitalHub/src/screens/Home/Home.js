@@ -96,6 +96,7 @@ export const Home = ({
 
             const dataComoObjeto = new Date(item.dataConsulta);
             const dataComoInteiro = dataComoObjeto.getTime();
+
             setDiaDaConsulta(dataComoInteiro);
             if (dataComoInteiro < currentDate.getTime()) {
                 await api.put(`/Consultas/Status?idConsulta=${item.id}&status=realizado`)

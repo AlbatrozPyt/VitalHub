@@ -8,6 +8,7 @@ export const FotoStyle = styled.Image`
 export const FotoPerfilHome = styled.Image`
     width: 60px;
     height: 60px;
+    border-radius: 10px;
 `
 
 export const IconeSino = styled(FotoPerfilHome)`
