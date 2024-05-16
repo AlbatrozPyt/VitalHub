@@ -63,7 +63,7 @@ export const CriarConta = ({
 
             // Vai para a tela principal
             setTimeout(() => {
-                navigation.navigate("Perfil")
+                navigation.navigate("Main")
             }, 1000);
 
         })

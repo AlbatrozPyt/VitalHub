@@ -23,6 +23,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { BottomCamera } from "./style"
 import { CameraComp } from "../../components/CameraComp/CameraComp"
 import { Message } from "../../components/Message/Message"
+import { unMask } from "remask"
 
 
 export const Perfil = ({
@@ -113,7 +114,7 @@ export const Perfil = ({
         token.role === `Paciente` ?
             await api.put(`/Pacientes?idUsuario=${userId}`, {
                 "rg": rg,
-                "cpf": cpf,
+                "cpf": unMask(cpf),
                 "cep": cep,
                 "logradouro": logradouro,
                 "cidade": cidade,
